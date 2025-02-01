@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <InvariantGlobalization>true</InvariantGlobalization>
+        <UserSecretsId>33fef6c4-5626-4aa5-961b-50fe2e067265</UserSecretsId>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Azurite" Version="2.6.5" />
+        <PackageReference Include="Ignore" Version="0.2.1" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.1" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\InnoClinic.DocumentsApi.BL\InnoClinic.DocumentsApi.BL.csproj" />
+      <ProjectReference Include="..\InnoClinic.DocumentsApi.DAL\InnoClinic.DocumentsApi.DAL.csproj" />
+    </ItemGroup>
+
+</Project>

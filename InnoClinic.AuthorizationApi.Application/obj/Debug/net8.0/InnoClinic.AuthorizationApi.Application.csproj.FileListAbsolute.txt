@@ -1,0 +1,16 @@
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.AuthorizationApi.Application\bin\Debug\net8.0\InnoClinic.AuthorizationApi.Application.deps.json
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.AuthorizationApi.Application\bin\Debug\net8.0\InnoClinic.AuthorizationApi.Application.dll
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.AuthorizationApi.Application\bin\Debug\net8.0\InnoClinic.AuthorizationApi.Application.pdb
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.AuthorizationApi.Application\bin\Debug\net8.0\InnoClinic.AuthorizationApi.Core.dll
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.AuthorizationApi.Application\bin\Debug\net8.0\InnoClinic.AuthorizationApi.Core.pdb
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.AuthorizationApi.Application\obj\Debug\net8.0\InnoClinic.AuthorizationApi.Application.csproj.AssemblyReference.cache
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.AuthorizationApi.Application\obj\Debug\net8.0\InnoClinic.AuthorizationApi.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.AuthorizationApi.Application\obj\Debug\net8.0\InnoClinic.AuthorizationApi.Application.AssemblyInfoInputs.cache
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.AuthorizationApi.Application\obj\Debug\net8.0\InnoClinic.AuthorizationApi.Application.AssemblyInfo.cs
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.AuthorizationApi.Application\obj\Debug\net8.0\InnoClinic.AuthorizationApi.Application.csproj.CoreCompileInputs.cache
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.AuthorizationApi.Application\obj\Debug\net8.0\InnoClinic.AuthorizationApi.Application.dll
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.AuthorizationApi.Application\obj\Debug\net8.0\refint\InnoClinic.AuthorizationApi.Application.dll
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.AuthorizationApi.Application\obj\Debug\net8.0\InnoClinic.AuthorizationApi.Application.pdb
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.AuthorizationApi.Application\obj\Debug\net8.0\ref\InnoClinic.AuthorizationApi.Application.dll
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.AuthorizationApi.Application\obj\Debug\net8.0\InnoClin.03B60F64.Up2Date
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.AuthorizationApi.Application\obj\Debug\net8.0\InnoClinic.AuthorizationApi.Application.sourcelink.json

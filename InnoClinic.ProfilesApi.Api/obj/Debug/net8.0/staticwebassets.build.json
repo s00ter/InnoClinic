@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "2z4ynApzAFCEPJjAlOgDq/m0l8ZLJPge20rCCQYnxEo=",
+  "Source": "InnoClinic.ProfilesApi.Api",
+  "BasePath": "_content/InnoClinic.ProfilesApi.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

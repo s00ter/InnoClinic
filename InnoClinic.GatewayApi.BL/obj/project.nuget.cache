@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "OW8zyUHfxGmgIFC3t4Z3+amqj5bzCeKyr/EecG7h7/+sda0b/AZfqPEF6fac+PcGOpKTBlTW750tOVEMJeFWDg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\User\\RiderProjects\\InnoClinic\\InnoClinic.GatewayApi.BL\\InnoClinic.GatewayApi.BL.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\User\\.nuget\\packages\\ignore\\0.2.1\\ignore.0.2.1.nupkg.sha512"
+  ],
+  "logs": []
+}

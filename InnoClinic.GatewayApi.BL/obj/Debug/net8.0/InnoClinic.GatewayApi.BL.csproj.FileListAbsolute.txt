@@ -1,0 +1,11 @@
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.GatewayApi.BL\bin\Debug\net8.0\InnoClinic.GatewayApi.BL.deps.json
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.GatewayApi.BL\bin\Debug\net8.0\InnoClinic.GatewayApi.BL.dll
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.GatewayApi.BL\bin\Debug\net8.0\InnoClinic.GatewayApi.BL.pdb
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.GatewayApi.BL\obj\Debug\net8.0\InnoClinic.GatewayApi.BL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.GatewayApi.BL\obj\Debug\net8.0\InnoClinic.GatewayApi.BL.AssemblyInfoInputs.cache
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.GatewayApi.BL\obj\Debug\net8.0\InnoClinic.GatewayApi.BL.AssemblyInfo.cs
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.GatewayApi.BL\obj\Debug\net8.0\InnoClinic.GatewayApi.BL.csproj.CoreCompileInputs.cache
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.GatewayApi.BL\obj\Debug\net8.0\InnoClinic.GatewayApi.BL.dll
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.GatewayApi.BL\obj\Debug\net8.0\refint\InnoClinic.GatewayApi.BL.dll
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.GatewayApi.BL\obj\Debug\net8.0\InnoClinic.GatewayApi.BL.pdb
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.GatewayApi.BL\obj\Debug\net8.0\ref\InnoClinic.GatewayApi.BL.dll

@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "dtuMqEFvZXsRCYYrRRvyofkMiPr0g5K/nJXHQVa49Ng=",
+  "Source": "InnoClinic.GatewayApi.Api",
+  "BasePath": "_content/InnoClinic.GatewayApi.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

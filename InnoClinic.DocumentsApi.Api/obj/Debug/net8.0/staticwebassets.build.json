@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "xTtPklgbQGnOYKz7p0dh9h+JuIvLvYvfejvzlPefQDk=",
+  "Source": "InnoClinic.DocumentsApi.Api",
+  "BasePath": "_content/InnoClinic.DocumentsApi.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

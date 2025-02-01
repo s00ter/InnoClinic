@@ -1,0 +1,17 @@
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.Application\bin\Debug\net8.0\InnoClinic.Application.deps.json
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.Application\bin\Debug\net8.0\InnoClinic.Application.dll
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.Application\bin\Debug\net8.0\InnoClinic.Application.pdb
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.Application\obj\Debug\net8.0\InnoClinic.Application.csproj.AssemblyReference.cache
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.Application\obj\Debug\net8.0\InnoClinic.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.Application\obj\Debug\net8.0\InnoClinic.Application.AssemblyInfoInputs.cache
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.Application\obj\Debug\net8.0\InnoClinic.Application.AssemblyInfo.cs
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.Application\obj\Debug\net8.0\InnoClinic.Application.csproj.CoreCompileInputs.cache
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.Application\obj\Debug\net8.0\InnoClinic.Application.dll
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.Application\obj\Debug\net8.0\refint\InnoClinic.Application.dll
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.Application\obj\Debug\net8.0\InnoClinic.Application.pdb
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.Application\obj\Debug\net8.0\ref\InnoClinic.Application.dll
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.Application\bin\Debug\net8.0\InnoClinic.Core.dll
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.Application\bin\Debug\net8.0\InnoClinic.Shared.dll
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.Application\bin\Debug\net8.0\InnoClinic.Core.pdb
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.Application\bin\Debug\net8.0\InnoClinic.Shared.pdb
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.Application\obj\Debug\net8.0\InnoClinic.Application.csproj.CopyComplete

@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\InnoClinic.OfficesApi.Api.props" />
+</Project>

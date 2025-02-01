@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\InnoClinic.AppointmentApi.Api.props" />
+</Project>

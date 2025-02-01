@@ -1,0 +1,15 @@
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.Off.BusinessLogic\bin\Debug\net8.0\InnoClinic.Off.BusinessLogic.deps.json
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.Off.BusinessLogic\bin\Debug\net8.0\InnoClinic.Off.BusinessLogic.dll
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.Off.BusinessLogic\bin\Debug\net8.0\InnoClinic.Off.BusinessLogic.pdb
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.Off.BusinessLogic\bin\Debug\net8.0\InnoClinic.Off.DataAccess.dll
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.Off.BusinessLogic\bin\Debug\net8.0\InnoClinic.Off.DataAccess.pdb
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.Off.BusinessLogic\obj\Debug\net8.0\InnoClinic.Off.BusinessLogic.csproj.AssemblyReference.cache
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.Off.BusinessLogic\obj\Debug\net8.0\InnoClinic.Off.BusinessLogic.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.Off.BusinessLogic\obj\Debug\net8.0\InnoClinic.Off.BusinessLogic.AssemblyInfoInputs.cache
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.Off.BusinessLogic\obj\Debug\net8.0\InnoClinic.Off.BusinessLogic.AssemblyInfo.cs
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.Off.BusinessLogic\obj\Debug\net8.0\InnoClinic.Off.BusinessLogic.csproj.CoreCompileInputs.cache
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.Off.BusinessLogic\obj\Debug\net8.0\InnoClinic.Off.BusinessLogic.csproj.CopyComplete
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.Off.BusinessLogic\obj\Debug\net8.0\InnoClinic.Off.BusinessLogic.dll
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.Off.BusinessLogic\obj\Debug\net8.0\refint\InnoClinic.Off.BusinessLogic.dll
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.Off.BusinessLogic\obj\Debug\net8.0\InnoClinic.Off.BusinessLogic.pdb
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.Off.BusinessLogic\obj\Debug\net8.0\ref\InnoClinic.Off.BusinessLogic.dll

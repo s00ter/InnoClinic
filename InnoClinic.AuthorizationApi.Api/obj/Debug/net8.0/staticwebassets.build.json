@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "mLpq3KMKpJCWScKYpJtU9LhJ7PWGSZoNfWh6ANWaW18=",
+  "Source": "InnoClinic.AuthorizationApi.Api",
+  "BasePath": "_content/InnoClinic.AuthorizationApi.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

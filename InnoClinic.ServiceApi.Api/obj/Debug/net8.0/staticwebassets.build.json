@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "uxdSbvRFgdDz5MMvMDm73XNdkpd/JSIMB83kzds+oR4=",
+  "Source": "InnoClinic.ServiceApi.Api",
+  "BasePath": "_content/InnoClinic.ServiceApi.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
