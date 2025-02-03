@@ -80,12 +80,6 @@ builder.Services.AddAuthentication(options =>
 builder.Services.Configure<DataProtectionTokenProviderOptions>(opt =>
     opt.TokenLifespan = TimeSpan.FromHours(2));
 
-builder.Services.AddAuthentication().AddGoogle(options =>
-{
-    options.ClientId = builder.Configuration["Google:ClientId"];
-    options.ClientSecret = builder.Configuration["Google:ClientSecret"];
-});
-
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("OnlyAdminUsers",

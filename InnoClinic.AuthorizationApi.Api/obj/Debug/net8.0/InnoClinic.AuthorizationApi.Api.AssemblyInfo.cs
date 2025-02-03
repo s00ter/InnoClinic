@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("InnoClinic.AuthorizationApi.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+676e130fbf4bc0d64d9e965f42c13a223e58e2fb")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+25f6faa963ffa8685cae3b4c87e6882bf7c3d5f5")]
 [assembly: System.Reflection.AssemblyProductAttribute("InnoClinic.AuthorizationApi.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("InnoClinic.AuthorizationApi.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

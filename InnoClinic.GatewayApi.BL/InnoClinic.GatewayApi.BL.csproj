@@ -7,11 +7,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Services\" />
+      <PackageReference Include="Ignore" Version="0.2.1" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Ignore" Version="0.2.1" />
+      <ProjectReference Include="..\InnoClinic.AuthorizationApi.Application\InnoClinic.AuthorizationApi.Application.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Services\" />
     </ItemGroup>
 
 </Project>

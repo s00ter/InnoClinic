@@ -195,3 +195,4 @@ C:\Users\User\RiderProjects\InnoClinic\InnoClinic.AuthorizationApi.Api\obj\Debug
 C:\Users\User\RiderProjects\InnoClinic\InnoClinic.AuthorizationApi.Api\obj\Debug\net8.0\InnoClin.AD6C202E.Up2Date
 C:\Users\User\RiderProjects\InnoClinic\InnoClinic.AuthorizationApi.Api\bin\Debug\net8.0\Ignore.dll
 C:\Users\User\RiderProjects\InnoClinic\InnoClinic.AuthorizationApi.Api\obj\Debug\net8.0\InnoClinic.AuthorizationApi.Api.sourcelink.json
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.AuthorizationApi.Api\bin\Debug\net8.0\Polly.dll

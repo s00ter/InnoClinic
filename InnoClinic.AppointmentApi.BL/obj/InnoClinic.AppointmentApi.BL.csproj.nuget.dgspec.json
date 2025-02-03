@@ -47,6 +47,10 @@
             "Ignore": {
               "target": "Package",
               "version": "[0.2.1, )"
+            },
+            "Microsoft.Extensions.Http.Polly": {
+              "target": "Package",
+              "version": "[9.0.1, )"
             }
           },
           "imports": [

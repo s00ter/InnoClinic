@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("InnoClinic.AppointmentApi.BL")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b90533ae512441a45a489ad7cdff8a3ccf0fb6a9")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+25f6faa963ffa8685cae3b4c87e6882bf7c3d5f5")]
 [assembly: System.Reflection.AssemblyProductAttribute("InnoClinic.AppointmentApi.BL")]
 [assembly: System.Reflection.AssemblyTitleAttribute("InnoClinic.AppointmentApi.BL")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

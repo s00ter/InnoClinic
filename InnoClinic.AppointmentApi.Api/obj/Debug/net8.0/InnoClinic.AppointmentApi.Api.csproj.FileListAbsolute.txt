@@ -175,3 +175,12 @@ C:\Users\User\RiderProjects\InnoClinic\InnoClinic.AppointmentApi.Api\obj\Debug\n
 C:\Users\User\RiderProjects\InnoClinic\InnoClinic.AppointmentApi.Api\obj\Debug\net8.0\InnoClin.2FDFB3EF.Up2Date
 C:\Users\User\RiderProjects\InnoClinic\InnoClinic.AppointmentApi.Api\bin\Debug\net8.0\Ignore.dll
 C:\Users\User\RiderProjects\InnoClinic\InnoClinic.AppointmentApi.Api\obj\Debug\net8.0\InnoClinic.AppointmentApi.Api.sourcelink.json
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.AppointmentApi.Api\bin\Debug\net8.0\Microsoft.Extensions.Configuration.dll
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.AppointmentApi.Api\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Binder.dll
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.AppointmentApi.Api\bin\Debug\net8.0\Microsoft.Extensions.Diagnostics.dll
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.AppointmentApi.Api\bin\Debug\net8.0\Microsoft.Extensions.Diagnostics.Abstractions.dll
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.AppointmentApi.Api\bin\Debug\net8.0\Microsoft.Extensions.Http.dll
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.AppointmentApi.Api\bin\Debug\net8.0\Microsoft.Extensions.Http.Polly.dll
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.AppointmentApi.Api\bin\Debug\net8.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.AppointmentApi.Api\bin\Debug\net8.0\Polly.dll
+C:\Users\User\RiderProjects\InnoClinic\InnoClinic.AppointmentApi.Api\bin\Debug\net8.0\Polly.Extensions.Http.dll

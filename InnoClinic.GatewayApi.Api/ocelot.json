@@ -56,9 +56,19 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5020
+          "Port": 5021
         }
-      ]
+      ],
+      "AddHeadersToRequest": {
+        "UserId": "Claims[userId]",
+        "UserName": "Claims[username]",
+        "UserEmail": "Claims[email]"
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 3,
+        "DurationOfBreak": 2000,
+        "TimeoutValue": 5000
+      }
     },
     {
       "UpstreamPathTemplate": "/gateway/result/{id}",
@@ -285,6 +295,18 @@
         {
           "Host": "localhost",
           "Port": 5091
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/account/authenticate",
+      "UpstreamHttpMethod": ["Post"],
+      "DownstreamPathTemplate": "/api/account/authenticate",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5266
         }
       ]
     }

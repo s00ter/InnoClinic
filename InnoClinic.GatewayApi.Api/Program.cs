@@ -1,66 +1,65 @@
+using System.Globalization;
+using System.Text;
+using InnoClinic.GatewayApi.Api.Middlewares;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Ocelot.Cache.CacheManager;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using Ocelot.Provider.Polly;
+using Polly;
+using Serilog;
 
-var builder = WebApplication.CreateBuilder(args);
+Log.Logger = new LoggerConfiguration().WriteTo.Console(formatProvider: CultureInfo.CurrentCulture)
+    .CreateBootstrapLogger();
 
-builder.Services.AddSwaggerGen(option =>
+try
 {
-    option.SwaggerDoc("v1", new OpenApiInfo { Title = "Demo API", Version = "v1" });
-    option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        In = ParameterLocation.Header,
-        Description = "Please enter a valid token",
-        Name = "Authorization",
-        Type = SecuritySchemeType.Http,
-        BearerFormat = "JWT",
-        Scheme = "Bearer"
-    });
-    option.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
+    Log.Information("Starting web host");
+    
+    var builder = WebApplication.CreateBuilder(args);
+
+    builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
+    builder.Services.AddOcelot(builder.Configuration).AddCacheManager(
+        x =>
         {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            []
-        }
-    });
-});
+            x.WithDictionaryHandle();
+        })
+        .AddPolly();
 
-builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
-builder.Services.AddOcelot(builder.Configuration).AddCacheManager(
-    x =>
+    // Add services to the container.
+    // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen();
+    builder.Services.AddControllers();
+
+    var app = builder.Build();
+
+    // Configure the HTTP request pipeline.
+    if (app.Environment.IsDevelopment())
     {
-        x.WithDictionaryHandle();
-    });
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddControllers();
+    app.UseMiddleware<ParseAuthTokenMiddleware>();
 
-var app = builder.Build();
+    app.UseHttpsRedirection();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseAuthentication();
+
+    app.MapControllers();
+
+    await app.UseOcelot();
+    app.Run();
 }
-
-app.UseHttpsRedirection();
-
-app.UseAuthentication();
-
-app.MapControllers();
-
-await app.UseOcelot();
-app.Run();
+catch (Exception ex)
+{
+    Log.Information($"Catch exсeption {ex}");
+}
+finally
+{
+    
+}
 

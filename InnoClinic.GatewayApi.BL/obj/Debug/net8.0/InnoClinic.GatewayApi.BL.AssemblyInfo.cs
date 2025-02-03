@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("InnoClinic.GatewayApi.BL")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+84d488eec4cee2b94a4fc77e7400f1995b30326b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+25f6faa963ffa8685cae3b4c87e6882bf7c3d5f5")]
 [assembly: System.Reflection.AssemblyProductAttribute("InnoClinic.GatewayApi.BL")]
 [assembly: System.Reflection.AssemblyTitleAttribute("InnoClinic.GatewayApi.BL")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
