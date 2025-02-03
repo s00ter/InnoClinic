@@ -92,7 +92,12 @@
           "Host": "localhost",
           "Port": 5098
         }
-      ]
+      ],
+      "AddHeadersToRequest": {
+        "UserId": "Claims[userId]",
+        "UserName": "Claims[username]",
+        "UserEmail": "Claims[email]"
+      }
     },
     {
       "UpstreamPathTemplate": "/gateway/document/{id}",
