@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\buildMultiTargeting\InnoClinic.Off.Api.props" />
-</Project>
