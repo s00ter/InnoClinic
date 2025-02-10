@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>InnoClinic.BusinessLogic</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Ignore" Version="0.2.1" />
+      <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="8.0.12" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Extensions\" />
+      <Folder Include="Interfaces\" />
+      <Folder Include="Services\" />
+      <Folder Include="Specifications\" />
+    </ItemGroup>
+
+</Project>
