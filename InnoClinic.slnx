@@ -1,12 +1,17 @@
 ﻿<Solution>
-  <Folder Name="/AppointmentApi/" />
-  <Folder Name="/AuthorizationApi/" />
-  <Folder Name="/DocumentsApi/" />
-  <Folder Name="/GatewayApi/" />
-  <Folder Name="/OfficesApi/" />
-  <Folder Name="/ProfilesApi/" />
-  <Folder Name="/ServicesApi/" />
-  <Folder Name="/Solution Items/">
-    <File Path="docker-compose.yml" />
-  </Folder>
+    <Folder Name="/AppointmentApi/"/>
+    <Folder Name="/AuthorizationApi/">
+        <Project Path="AuthorizationApi\InnoClinic.AuthorizationApi.Api\InnoClinic.AuthorizationApi.Api.csproj"/>
+        <Project Path="AuthorizationApi\InnoClinic.AuthorizationApi.Application\InnoClinic.AuthorizationApi.Application.csproj"/>
+        <Project Path="AuthorizationApi\InnoClinic.AuthorizationApi.Core\InnoClinic.AuthorizationApi.Core.csproj"/>
+        <Project Path="AuthorizationApi\InnoClinic.AuthorizationApi.Infrastructure\InnoClinic.AuthorizationApi.Infrastructure.csproj"/>
+    </Folder>
+    <Folder Name="/DocumentsApi/"/>
+    <Folder Name="/GatewayApi/"/>
+    <Folder Name="/OfficesApi/"/>
+    <Folder Name="/ProfilesApi/"/>
+    <Folder Name="/ServicesApi/"/>
+    <Folder Name="/Solution Items/">
+        <File Path="docker-compose.yml"/>
+    </Folder>
 </Solution>
