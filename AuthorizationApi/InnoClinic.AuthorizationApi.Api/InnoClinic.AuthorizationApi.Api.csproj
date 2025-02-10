@@ -6,6 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <InvariantGlobalization>false</InvariantGlobalization>
         <RootNamespace>InnoClinic.Authorization</RootNamespace>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
@@ -29,6 +30,12 @@
       <ProjectReference Include="..\InnoClinic.AuthorizationApi.Application\InnoClinic.AuthorizationApi.Application.csproj" />
       <ProjectReference Include="..\InnoClinic.AuthorizationApi.Core\InnoClinic.AuthorizationApi.Core.csproj" />
       <ProjectReference Include="..\InnoClinic.AuthorizationApi.Infrastructure\InnoClinic.AuthorizationApi.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
 </Project>

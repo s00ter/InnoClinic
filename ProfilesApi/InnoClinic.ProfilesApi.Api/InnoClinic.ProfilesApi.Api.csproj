@@ -6,6 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <InvariantGlobalization>false</InvariantGlobalization>
         <RootNamespace>InnoClinic.ProfilesApi</RootNamespace>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
@@ -23,6 +24,12 @@
     <ItemGroup>
       <ProjectReference Include="..\InnoClinic.ProfilesApi.BL\InnoClinic.ProfilesApi.BL.csproj" />
       <ProjectReference Include="..\InnoClinic.ProfilesApi.DAL\InnoClinic.ProfilesApi.DAL.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
 </Project>

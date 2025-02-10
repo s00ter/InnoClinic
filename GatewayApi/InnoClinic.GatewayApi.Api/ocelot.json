@@ -10,8 +10,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5020
+          "Host": "innoclinic.appointmentapi.api",
+          "Port": 8080
         }
       ],
       "RateLimitOptions": {
@@ -31,8 +31,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5020
+          "Host": "innoclinic.appointmentapi.api",
+          "Port": 8080
         }
       ]
     },
@@ -43,8 +43,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5020
+          "Host": "innoclinic.appointmentapi.api",
+          "Port": 8080
         }
       ]
     },
@@ -55,8 +55,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5020
+          "Host": "innoclinic.appointmentapi.api",
+          "Port": 8080
         }
       ],
       "AddHeadersToRequest": {
@@ -77,8 +77,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5020
+          "Host": "innoclinic.appointmentapi.api",
+          "Port": 8080
         }
       ]
     },
@@ -90,7 +90,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5098
+          "Port": 8080
         }
       ],
       "AddHeadersToRequest": {
@@ -107,7 +107,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5098
+          "Port": 8080
         }
       ]
     },
@@ -119,7 +119,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5098
+          "Port": 8080
         }
       ]
     },
@@ -131,7 +131,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5098
+          "Port": 8080
         }
       ]
     },
@@ -143,7 +143,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5199
+          "Port": 8080
         }
       ]
     },
@@ -155,7 +155,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5199
+          "Port": 8080
         }
       ]
     },
@@ -166,8 +166,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5086
+          "Host": "innoclinic.profilesapi.api",
+          "Port": 8080
         }
       ]
     },
@@ -178,8 +178,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5086
+          "Host": "innoclinic.profilesapi.api",
+          "Port": 8080
         }
       ]
     },
@@ -190,8 +190,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5086
+          "Host": "innoclinic.profilesapi.api",
+          "Port": 8080
         }
       ]
     },
@@ -202,8 +202,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5086
+          "Host": "innoclinic.profilesapi.api",
+          "Port": 8080
         }
       ]
     },
@@ -214,8 +214,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5086
+          "Host": "innoclinic.profilesapi.api",
+          "Port": 8080
         }
       ]
     },
@@ -226,8 +226,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5086
+          "Host": "innoclinic.profilesapi.api",
+          "Port": 8080
         }
       ]
     },
@@ -238,8 +238,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5086
+          "Host": "innoclinic.profilesapi.api",
+          "Port": 8080
         }
       ]
     },
@@ -250,8 +250,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5086
+          "Host": "innoclinic.profilesapi.api",
+          "Port": 8080
         }
       ]
     },
@@ -262,8 +262,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5091
+          "Host": "innoclinic.serviceapi.api",
+          "Port": 8080
         }
       ]
     },
@@ -274,8 +274,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5091
+          "Host": "innoclinic.serviceapi.api",
+          "Port": 8080
         }
       ]
     },
@@ -286,8 +286,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5091
+          "Host": "innoclinic.serviceapi.api",
+          "Port": 8080
         }
       ]
     },
@@ -298,8 +298,32 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5091
+          "Host": "innoclinic.serviceapi.api",
+          "Port": 8080
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/account/register",
+      "UpstreamHttpMethod": ["Post"],
+      "DownstreamPathTemplate": "/api/account/register",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "innoclinic.authorizationapi.api",
+          "Port": 8080
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/account/email-verification",
+      "UpstreamHttpMethod": ["Post"],
+      "DownstreamPathTemplate": "/api/account/email-verification",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "innoclinic.authorizationapi.api",
+          "Port": 8080
         }
       ]
     },
@@ -310,8 +334,32 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5266
+          "Host": "innoclinic.authorizationapi.api",
+          "Port": 8080
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/account/forgot-password",
+      "UpstreamHttpMethod": ["Post"],
+      "DownstreamPathTemplate": "/api/account/forgot-password",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "innoclinic.authorizationapi.api",
+          "Port": 8080
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/account/reset-password",
+      "UpstreamHttpMethod": ["Post"],
+      "DownstreamPathTemplate": "/api/account/reset-password",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "innoclinic.authorizationapi.api",
+          "Port": 8080
         }
       ]
     }
