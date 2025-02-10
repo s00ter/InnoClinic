@@ -1,0 +1,108 @@
+﻿services:
+  innoclinic.authorizationapi.api:
+    image: innoclinic.authorizationapi.api
+    build:
+      context: .
+      dockerfile: AuthorizationApi/InnoClinic.AuthorizationApi.Api/Dockerfile
+    ports:
+      - "5266:8080"
+    depends_on:
+      - sqlserver
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - innoclinicnetwork
+    restart: on-failure 
+    
+  innoclinic.serviceapi.api:
+    image: innoclinic.serviceapi.api
+    build:
+      context: .
+      dockerfile: ServiceApi/InnoClinic.ServiceApi.Api/Dockerfile
+    ports:
+      - "5091:8080"
+    depends_on:
+      - sqlserver
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - innoclinicnetwork
+    restart: on-failure
+    
+  innoclinic.profilesapi.api:
+    image: innoclinic.profilesapi.api
+    build:
+      context: .
+      dockerfile: ProfilesApi/InnoClinic.ProfilesApi.Api/Dockerfile
+    ports:
+      - "5086:8080"
+    depends_on:
+      - sqlserver
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - innoclinicnetwork
+    restart: on-failure
+    
+  innoclinic.appointmentapi.api:
+    image: innoclinic.appointmentapi.api
+    build:
+      context: .
+      dockerfile: AppointmentApi/InnoClinic.AppointmentApi.Api/Dockerfile
+    ports:
+      - "5020:8080"
+    depends_on:
+      - postgres
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - innoclinicnetwork
+    restart: on-failure
+    
+  innoclinic.gatewayapi.api:
+    image: innoclinic.gatewayapi.api
+    build:
+      context: .
+      dockerfile: GatewayApi/InnoClinic.GatewayApi.Api/Dockerfile
+    ports:
+      - "5050:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - innoclinicnetwork
+    restart: on-failure
+      
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      SA_PASSWORD: "Password123!"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlvolume:/var/opt/mssql
+    networks:
+      - innoclinicnetwork
+  
+  postgres:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: innoclinic
+      POSTGRES_PASSWORD: Password123!
+      POSTGRES_DB: InnoClinicAppointments
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - innoclinicnetwork
+
+networks:
+  innoclinicnetwork:
+    
+volumes:
+  sqlvolume:
+  pgdata:

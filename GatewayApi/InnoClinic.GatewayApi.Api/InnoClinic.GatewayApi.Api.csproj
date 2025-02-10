@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <InvariantGlobalization>true</InvariantGlobalization>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
@@ -27,6 +28,13 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\AuthorizationApi\InnoClinic.AuthorizationApi.Core\InnoClinic.AuthorizationApi.Core.csproj" />
+      <ProjectReference Include="..\InnoClinic.GatewayApi.BL\InnoClinic.GatewayApi.BL.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
 </Project>
