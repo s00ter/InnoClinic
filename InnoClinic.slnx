@@ -1,0 +1,17 @@
+﻿<Solution>
+  <Folder Name="/AppointmentApi/" />
+  <Folder Name="/AuthorizationApi/">
+    <Project Path="AuthorizationApi\InnoClinic.AuthorizationApi.Api\InnoClinic.AuthorizationApi.Api.csproj" Type="Classic C#" />
+    <Project Path="AuthorizationApi\InnoClinic.AuthorizationApi.Application\InnoClinic.AuthorizationApi.Application.csproj" Type="Classic C#" />
+    <Project Path="AuthorizationApi\InnoClinic.AuthorizationApi.Core\InnoClinic.AuthorizationApi.Core.csproj" Type="Classic C#" />
+    <Project Path="AuthorizationApi\InnoClinic.AuthorizationApi.Infrastructure\InnoClinic.AuthorizationApi.Infrastructure.csproj" Type="Classic C#" />
+  </Folder>
+  <Folder Name="/DocumentsApi/" />
+  <Folder Name="/GatewayApi/" />
+  <Folder Name="/OfficesApi/" />
+  <Folder Name="/ProfilesApi/" />
+  <Folder Name="/ServicesApi/" />
+  <Folder Name="/Solution Items/">
+    <File Path="docker-compose.yml" />
+  </Folder>
+</Solution>
