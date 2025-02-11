@@ -20,12 +20,6 @@ public class AppointmentRepository(InnoClinicAppointmentContext context) : IAppo
         return doctor;
     }
 
-    public Task UpdateRange(List<Appointment> doctors)
-    {
-        context.Appointments.UpdateRange(doctors);
-        return context.SaveChangesAsync();
-    }
-
     public async Task<Appointment?> Delete(string id)
     {
         var res = await context.Appointments.FirstOrDefaultAsync(x => x.Id == id);
@@ -51,6 +45,6 @@ public class AppointmentRepository(InnoClinicAppointmentContext context) : IAppo
         
         var skipNumber = (query.PageNumber - 1) * query.PageSize;
         
-        return await Queryable.Take(Queryable.Skip(doctors, skipNumber), query.PageSize).ToListAsync();
+        return await doctors.Skip(skipNumber).Take(query.PageSize).ToListAsync();
     }
 }

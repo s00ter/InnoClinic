@@ -20,12 +20,6 @@ public class ResultRepository(InnoClinicAppointmentContext context) : IResultRep
         return doctor;
     }
 
-    public Task UpdateRange(List<Result> doctors)
-    {
-        context.Results.UpdateRange(doctors);
-        return context.SaveChangesAsync();
-    }
-
     public async Task<Result?> Delete(string id)
     {
         var res = await context.Results.FirstOrDefaultAsync(x => x.Id == id);
@@ -51,6 +45,6 @@ public class ResultRepository(InnoClinicAppointmentContext context) : IResultRep
         
         var skipNumber = (query.PageNumber - 1) * query.PageSize;
         
-        return await Queryable.Take(Queryable.Skip(doctors, skipNumber), query.PageSize).ToListAsync();
+        return await doctors.Skip(skipNumber).Take(query.PageSize).ToListAsync();
     }
 }

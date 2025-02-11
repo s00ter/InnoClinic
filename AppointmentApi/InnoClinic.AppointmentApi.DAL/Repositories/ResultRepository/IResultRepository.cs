@@ -7,7 +7,6 @@ public interface IResultRepository
 {
     Task<Result> Add(Result product);
     Task<Result> Update(Result product);
-    Task UpdateRange(List<Result> products);
     Task<Result?> Delete(string id);
     Task<Result?> GetByIdAsync(string id);
     Task<List<Result>> GetAllAsync(QueryObject query);

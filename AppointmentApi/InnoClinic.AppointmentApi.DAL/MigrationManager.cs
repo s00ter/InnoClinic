@@ -6,23 +6,10 @@ namespace InnoClinic.AppointmentApi.DataAccess;
 
 public static class MigrationManager
 {
-    public static WebApplication MigrateDatabase(this WebApplication webApp)
+    public static void MigrateDatabase(this WebApplication webApp)
     {
-        using (var scope = webApp.Services.CreateScope())
-        {
-            using (var appContext = scope.ServiceProvider.GetRequiredService<InnoClinicAppointmentContext>())
-            {
-                try
-                {
-                    appContext.Database.Migrate();
-                }
-                catch (Exception e)
-                {
-                    throw;
-                }
-            }
-        }
-
-        return webApp;
+        using var scope = webApp.Services.CreateScope();
+        using var appContext = scope.ServiceProvider.GetRequiredService<InnoClinicAppointmentContext>();
+        appContext.Database.Migrate();
     }
 }
