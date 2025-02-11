@@ -5,6 +5,8 @@ using InnoClinic.AppointmentApi.DataAccess.Repositories.AppointmentRepository;
 using InnoClinic.AppointmentApi.DataAccess.Repositories.ResultRepository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Hellang.Middleware.ProblemDetails;
+using InnoClinic.AppointmentApi.BL.Exception;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -51,6 +53,22 @@ builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
 builder.Services.AddScoped<IResultService, ResultService>();
 builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 
+builder.Services.AddProblemDetails(opt =>
+{
+    opt.ExceptionDetailsPropertyName = "Exception Details";
+    opt.IncludeExceptionDetails = (ctx, ex) => builder.Environment.IsDevelopment() || builder.Environment.IsStaging();
+    
+    opt.Map<CustomException>(exception => new CustomDetails
+    {
+        Title = exception.Title,
+        Detail = exception.Details,
+        Status = StatusCodes.Status500InternalServerError,
+        Type = exception.Type,
+        Instance = exception.Instance,
+        AdditionalInfo = exception.AdditionalInfo
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -59,6 +77,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseProblemDetails();
 
 app.UseHttpsRedirection();
 
