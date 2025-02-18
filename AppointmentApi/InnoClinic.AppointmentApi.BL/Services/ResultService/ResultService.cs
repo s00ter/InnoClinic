@@ -1,69 +1,84 @@
+using System.Collections.Frozen;
 using InnoClinic.AppointmentApi.BL.Dto.Result;
 using InnoClinic.AppointmentApi.BL.Mappers;
 using InnoClinic.AppointmentApi.DataAccess.Entity;
 using InnoClinic.AppointmentApi.DataAccess.Models;
-using InnoClinic.AppointmentApi.DataAccess.Repositories.ResultRepository;
+using InnoClinic.AppointmentApi.DataAccess.UnitOfWork;
 
 namespace InnoClinic.AppointmentApi.BL.Services.ResultService;
 
-public class ResultService(IResultRepository resultRepository) : IResultService
+public class ResultService(
+    IUnitOfWork unitOfWork
+    ) : IResultService
 {
-    public async Task<List<ShowResultResponse>> GetAllResults(QueryObject query)
+    public async Task<FrozenSet<ShowResultResponse>> GetAllResults(
+        QueryPaginationArguments queryPagination, 
+        CancellationToken cancellationToken)
     {
-        var doctors = await resultRepository.GetAllAsync(query);
-        var res = doctors.Select(x => x.MapShowResultResponse()).ToList();
+        var results = await unitOfWork.Results.GetAllAsync(queryPagination, cancellationToken);
+        var res = results.Select(x => x.MapShowResultResponse()).ToFrozenSet();
         return res;
     }
     
-    public async Task<ResultInfoResponse> GetResultInfo(string id)
+    public async Task<ResultInfoResponse> GetResultInfo(
+        Guid id, 
+        CancellationToken cancellationToken)
     {
-        var doctor = await resultRepository.GetByIdAsync(id);
-        if (doctor is null)
+        var result = await unitOfWork.Results.GetByIdAsync(id, cancellationToken);
+        if (result is null)
         {
-            throw new NullReferenceException("Result not found");
+            throw new InvalidOperationException("Result not found");
         }
-        return doctor.MapResultInfoResponse();
+        return result.MapResultInfoResponse();
     }
     
-    public async Task<Result> CreateResult(CreateResultRequest request)
+    public async Task CreateResult(
+        CreateResultRequest request, 
+        CancellationToken cancellationToken)
     {
-        var doctor = new Result
+        var result = new Result
         {
-            Id = Guid.NewGuid().ToString(),
+            Id = Guid.NewGuid(),
             Complaints = request.Complaints,
             Conclusion = request.Conclusion,
             Recomindations = request.Recomindations,
             AppointmentId = request.AppointmentId
         };
             
-        return await resultRepository.Add(doctor);
+        await unitOfWork.Results.AddAsync(result, cancellationToken);
+        await unitOfWork.SaveChangesAsync();
     }
     
-    public async Task<ShowResultResponse> UpdateResult(string id, UpdateResultRequest request)
+    public async Task UpdateResult(
+        Guid id, 
+        UpdateResultRequest request, 
+        CancellationToken cancellationToken)
     {
-        var dbDoctor = await resultRepository.GetByIdAsync(id);
-        if (dbDoctor == null)
+        var result = await unitOfWork.Results.GetByIdAsync(id, cancellationToken);
+        if (result == null)
         { 
-            throw new NullReferenceException("Result not found");
+            throw new InvalidOperationException("Result not found");
         }
         
-        dbDoctor.Complaints = request.Complaints;
-        dbDoctor.Conclusion = request.Conclusion;
-        dbDoctor.Recomindations = request.Recomindations;
-        dbDoctor.AppointmentId = request.AppointmentId;
+        result.Complaints = request.Complaints;
+        result.Conclusion = request.Conclusion;
+        result.Recomindations = request.Recomindations;
+        result.AppointmentId = request.AppointmentId;
         
-        var res = await resultRepository.Update(dbDoctor);
-
-        return res.MapShowResultResponse();
+        unitOfWork.Results.Update(result);
+        await unitOfWork.SaveChangesAsync();
     }
     
-    public async Task<Result?> DeleteResult(string id)
+    public async Task DeleteResult(
+        Guid id, 
+        CancellationToken cancellationToken)
     {
-        var dbDoctor = await resultRepository.Delete(id);
-        if (dbDoctor == null)
+        var result = await unitOfWork.Results.GetByIdAsync(id, cancellationToken);
+        if (result == null)
         {
-            throw new NullReferenceException("Result not found");
+            throw new InvalidOperationException("Result not found");
         }
-        return dbDoctor;
+        unitOfWork.Results.Delete(result);
+        await unitOfWork.SaveChangesAsync();
     }
 }

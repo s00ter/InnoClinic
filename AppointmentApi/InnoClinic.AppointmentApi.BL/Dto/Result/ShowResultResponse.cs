@@ -2,9 +2,9 @@ namespace InnoClinic.AppointmentApi.BL.Dto.Result;
 
 public class ShowResultResponse
 {
-    public string Id { get; set; }
-    public string Complaints { get; set; }
-    public string Conclusion { get; set; }
-    public string Recomindations { get; set; }
-    public string AppointmentId { get; set; }
+    public required Guid Id { get; init; }
+    public required string Complaints { get; init; }
+    public required string Conclusion { get; init; }
+    public required string Recomindations { get; init; }
+    public required Guid AppointmentId { get; init; }
 }

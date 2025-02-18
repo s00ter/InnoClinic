@@ -1,35 +1,50 @@
+using System.Collections.Frozen;
 using InnoClinic.AppointmentApi.BL.Dto.Appointment;
 using InnoClinic.AppointmentApi.BL.Mappers;
 using InnoClinic.AppointmentApi.DataAccess.Entity;
 using InnoClinic.AppointmentApi.DataAccess.Models;
-using InnoClinic.AppointmentApi.DataAccess.Repositories.AppointmentRepository;
+using InnoClinic.AppointmentApi.DataAccess.UnitOfWork;
 
 namespace InnoClinic.AppointmentApi.BL.Services.AppointmentService;
 
-public class AppointmentService(IAppointmentRepository appointmentRepository) : IAppointmentService
+public class AppointmentService(
+    IUnitOfWork unitOfWork
+    ) : IAppointmentService
 {
-    public async Task<List<ShowAppointmentResponse>> GetAllAppointments(QueryObject query)
+    public async Task<FrozenSet<ShowAppointmentResponse>> GetAllAppointments(
+        QueryPaginationArguments queryPagination,
+        CancellationToken cancellationToken)
     {
-        var doctors = await appointmentRepository.GetAllAsync(query);
-        var res = doctors.Select(x => x.MapShowAppointmentResponse()).ToList();
+        cancellationToken.ThrowIfCancellationRequested();
+        
+        var appointments = await unitOfWork.Appointments.GetAllAsync(queryPagination, cancellationToken);
+        var res = appointments.Select(x => x.MapShowAppointmentResponse()).ToFrozenSet();
         return res;
     }
     
-    public async Task<AppointmentInfoResponse> GetAppointmentInfo(string id)
+    public async Task<AppointmentInfoResponse> GetAppointmentInfo(
+        Guid id,
+        CancellationToken cancellationToken)
     {
-        var doctor = await appointmentRepository.GetByIdAsync(id);
-        if (doctor is null)
+        cancellationToken.ThrowIfCancellationRequested();
+        
+        var appointment = await unitOfWork.Appointments.GetByIdAsync(id, cancellationToken);
+        if (appointment is null)
         {
-            throw new NullReferenceException("Doctor not found");
+            throw new InvalidOperationException("Appointment not found");
         }
-        return doctor.MapAppointmentInfoResponse();
+        return appointment.MapAppointmentInfoResponse();
     }
     
-    public async Task<Appointment> CreateAppointment(CreateAppointmentRequest request)
+    public async Task CreateAppointment(
+        CreateAppointmentRequest request,
+        CancellationToken cancellationToken)
     {
-        var doctor = new Appointment
+        cancellationToken.ThrowIfCancellationRequested();
+        
+        var appointment = new Appointment
         {
-            Id = Guid.NewGuid().ToString(),
+            Id = Guid.NewGuid(),
             DoctorId = request.DoctorId,
             ServiceId = request.ServiceId,
             Date = request.Date,
@@ -37,35 +52,46 @@ public class AppointmentService(IAppointmentRepository appointmentRepository) : 
             IsApproved = request.IsApproved
         };
             
-        return await appointmentRepository.Add(doctor);
+        await unitOfWork.Appointments.AddAsync(appointment, cancellationToken);
+        await unitOfWork.SaveChangesAsync();
     }
     
-    public async Task<ShowAppointmentResponse> UpdateAppointment(string id, UpdateAppointmentRequest request)
+    public async Task UpdateAppointment(
+        Guid id, 
+        UpdateAppointmentRequest request, 
+        CancellationToken cancellationToken
+        )
     {
-        var dbDoctor = await appointmentRepository.GetByIdAsync(id);
-        if (dbDoctor == null)
+        cancellationToken.ThrowIfCancellationRequested();
+        
+        var appointment = await unitOfWork.Appointments.GetByIdAsync(id, cancellationToken);
+        if (appointment == null)
         { 
-            throw new NullReferenceException("Appointment not found");
+            throw new InvalidOperationException("Appointment not found");
         }
         
-        dbDoctor.DoctorId = request.DoctorId;
-        dbDoctor.ServiceId = request.ServiceId;
-        dbDoctor.Date = request.Date;
-        dbDoctor.Time = request.Time;
-        dbDoctor.IsApproved = request.IsApproved;
+        appointment.DoctorId = request.DoctorId;
+        appointment.ServiceId = request.ServiceId;
+        appointment.Date = request.Date;
+        appointment.Time = request.Time;
+        appointment.IsApproved = request.IsApproved;
         
-        var res = await appointmentRepository.Update(dbDoctor);
-
-        return res.MapShowAppointmentResponse();
+        unitOfWork.Appointments.Update(appointment);
+        await unitOfWork.SaveChangesAsync();
     }
     
-    public async Task<Appointment?> DeleteAppointment(string id)
+    public async Task DeleteAppointment(
+        Guid id, 
+        CancellationToken cancellationToken)
     {
-        var dbDoctor = await appointmentRepository.Delete(id);
-        if (dbDoctor == null)
+        cancellationToken.ThrowIfCancellationRequested();
+        
+        var appointment = await unitOfWork.Appointments.GetByIdAsync(id, cancellationToken);
+        if (appointment == null)
         {
-            throw new NullReferenceException("Appointment not found");
+            throw new InvalidOperationException("Appointment not found");
         }
-        return dbDoctor;
+        unitOfWork.Appointments.Delete(appointment);
+        await unitOfWork.SaveChangesAsync();
     }
 }

@@ -1,14 +1,14 @@
+using System.Collections.Frozen;
 using InnoClinic.AppointmentApi.BL.Dto.Result;
-using InnoClinic.AppointmentApi.DataAccess.Entity;
 using InnoClinic.AppointmentApi.DataAccess.Models;
 
 namespace InnoClinic.AppointmentApi.BL.Services.ResultService;
 
 public interface IResultService
 {
-    Task<List<ShowResultResponse>> GetAllResults(QueryObject query);
-    Task<ResultInfoResponse> GetResultInfo(string id);
-    Task<Result> CreateResult(CreateResultRequest request);
-    Task<ShowResultResponse> UpdateResult(string id, UpdateResultRequest request);
-    Task<Result?> DeleteResult(string id);
+    Task<FrozenSet<ShowResultResponse>> GetAllResults(QueryPaginationArguments queryPagination, CancellationToken cancellationToken = default);
+    Task<ResultInfoResponse> GetResultInfo(Guid id, CancellationToken cancellationToken = default);
+    Task CreateResult(CreateResultRequest request, CancellationToken cancellationToken = default);
+    Task UpdateResult(Guid id, UpdateResultRequest request, CancellationToken cancellationToken = default);
+    Task DeleteResult(Guid id, CancellationToken cancellationToken = default);
 }
