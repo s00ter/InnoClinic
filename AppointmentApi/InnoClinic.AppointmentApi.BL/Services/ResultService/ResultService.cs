@@ -32,7 +32,7 @@ public class ResultService(
         return result.MapResultInfoResponse();
     }
     
-    public async Task CreateResult(
+    public async Task<Result> CreateResult(
         CreateResultRequest request, 
         CancellationToken cancellationToken)
     {
@@ -47,6 +47,8 @@ public class ResultService(
             
         await unitOfWork.Results.AddAsync(result, cancellationToken);
         await unitOfWork.SaveChangesAsync();
+
+        return await unitOfWork.Results.GetByIdAsync(result.Id, cancellationToken);
     }
     
     public async Task UpdateResult(

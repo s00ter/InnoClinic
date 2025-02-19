@@ -30,8 +30,8 @@ public class AppointmentController(
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateAppointmentRequest request, CancellationToken cancellationToken)
     {
-        await appointmentService.CreateAppointment(request, cancellationToken);
-        return StatusCode(StatusCodes.Status201Created);
+        var res = await appointmentService.CreateAppointment(request, cancellationToken);
+        return CreatedAtAction(nameof(Get), new { id = res.Id }, res);
     }
     
     [HttpPut("{id:guid}")]

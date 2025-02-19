@@ -36,7 +36,7 @@ public class AppointmentService(
         return appointment.MapAppointmentInfoResponse();
     }
     
-    public async Task CreateAppointment(
+    public async Task<Appointment> CreateAppointment(
         CreateAppointmentRequest request,
         CancellationToken cancellationToken)
     {
@@ -54,6 +54,8 @@ public class AppointmentService(
             
         await unitOfWork.Appointments.AddAsync(appointment, cancellationToken);
         await unitOfWork.SaveChangesAsync();
+
+        return await unitOfWork.Appointments.GetByIdAsync(appointment.Id, cancellationToken);
     }
     
     public async Task UpdateAppointment(
