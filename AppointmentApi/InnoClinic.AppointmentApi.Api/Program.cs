@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using System.Text;
 using InnoClinic.AppointmentApi.DataAccess;
 using Microsoft.EntityFrameworkCore;
@@ -38,7 +39,7 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidAudience = builder.Configuration["Jwt:Audience"],
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SigningKey"])),
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Convert.ToBase64String(SHA256.HashData(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SigningKey"]))))),
         ValidateLifetime = true
     };
 });
