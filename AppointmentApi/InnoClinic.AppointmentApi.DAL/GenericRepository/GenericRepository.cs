@@ -10,7 +10,7 @@ public class GenericRepository<T>(
 {
     private readonly DbSet<T> _dbSet = context.Set<T>();
 
-    public async Task<IEnumerable<T>> GetAllAsync(
+    public async Task<IQueryable<T>> GetAllAsync(
         QueryPaginationArguments queryPagination, 
         CancellationToken cancellationToken)
     {
@@ -18,7 +18,7 @@ public class GenericRepository<T>(
 
         var skipNumber = (queryPagination.PageNumber - 1) * queryPagination.PageSize;
 
-        return await appointments.Skip(skipNumber).Take(queryPagination.PageSize).ToListAsync(cancellationToken);
+        return appointments.Skip(skipNumber).Take(queryPagination.PageSize);
     }
 
     public async Task<T> GetByIdAsync(Guid id, CancellationToken cancellationToken)
