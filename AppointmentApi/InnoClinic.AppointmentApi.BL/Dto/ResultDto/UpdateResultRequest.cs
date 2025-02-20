@@ -1,4 +1,4 @@
-namespace InnoClinic.AppointmentApi.BL.Dto.Result;
+namespace InnoClinic.AppointmentApi.BL.Dto.ResultDto;
 
 public class UpdateResultRequest
 {

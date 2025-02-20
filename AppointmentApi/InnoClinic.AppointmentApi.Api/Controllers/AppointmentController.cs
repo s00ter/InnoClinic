@@ -1,4 +1,4 @@
-using InnoClinic.AppointmentApi.BL.Dto.Appointment;
+using InnoClinic.AppointmentApi.BL.Dto.AppointmentDto;
 using InnoClinic.AppointmentApi.BL.Services.AppointmentService;
 using InnoClinic.AppointmentApi.DataAccess.Models;
 using Microsoft.AspNetCore.Authorization;

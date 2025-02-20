@@ -20,6 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\Shared\InnoClinic.Shared\InnoClinic.Shared.csproj" />
       <ProjectReference Include="..\InnoClinic.AppointmentApi.BL\InnoClinic.AppointmentApi.BL.csproj" />
       <ProjectReference Include="..\InnoClinic.AppointmentApi.DAL\InnoClinic.AppointmentApi.DAL.csproj" />
     </ItemGroup>

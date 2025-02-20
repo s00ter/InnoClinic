@@ -1,31 +1,31 @@
-using InnoClinic.AppointmentApi.BL.Dto.Result;
+using InnoClinic.AppointmentApi.BL.Dto.ResultDto;
 using InnoClinic.AppointmentApi.DataAccess.Entity;
 
 namespace InnoClinic.AppointmentApi.BL.Mappers;
 
 public static class ResultMapper
 {
-    public static ShowResultResponse MapShowResultResponse(this Result doctor)
+    public static ShowResultResponse MapShowResultResponse(this Result result)
     {
         return new ShowResultResponse
         {
-            Id = doctor.Id,
-            Complaints = doctor.Complaints,
-            Conclusion = doctor.Conclusion,
-            Recomindations = doctor.Recomindations,
-            AppointmentId = doctor.AppointmentId
+            Id = result.Id,
+            Complaints = result.Complaints,
+            Conclusion = result.Conclusion,
+            Recomindations = result.Recomindations,
+            AppointmentId = result.AppointmentId
         };
     }
     
-    public static ResultInfoResponse MapResultInfoResponse(this Result doctor)
+    public static ResultInfoResponse MapResultInfoResponse(this Result result)
     {
         return new ResultInfoResponse
         {
-            Id = doctor.Id,
-            Complaints = doctor.Complaints,
-            Conclusion = doctor.Conclusion,
-            Recomindations = doctor.Recomindations,
-            AppointmentId = doctor.AppointmentId
+            Id = result.Id,
+            Complaints = result.Complaints,
+            Conclusion = result.Conclusion,
+            Recomindations = result.Recomindations,
+            AppointmentId = result.AppointmentId
         };
     }
 }

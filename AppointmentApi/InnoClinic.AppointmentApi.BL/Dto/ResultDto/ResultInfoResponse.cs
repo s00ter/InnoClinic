@@ -1,6 +1,6 @@
-namespace InnoClinic.AppointmentApi.BL.Dto.Result;
+namespace InnoClinic.AppointmentApi.BL.Dto.ResultDto;
 
-public class ShowResultResponse
+public class ResultInfoResponse
 {
     public required Guid Id { get; init; }
     public required string Complaints { get; init; }

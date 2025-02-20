@@ -1,4 +1,4 @@
-using InnoClinic.AppointmentApi.BL.Constants;
+using InnoClinic.Shared.Constants;
 using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace InnoClinic.AppointmentApi.Api.Middlewares;

@@ -1,5 +1,5 @@
 using System.Collections.Frozen;
-using InnoClinic.AppointmentApi.BL.Dto.Result;
+using InnoClinic.AppointmentApi.BL.Dto.ResultDto;
 using InnoClinic.AppointmentApi.DataAccess.Entity;
 using InnoClinic.AppointmentApi.DataAccess.Models;
 
