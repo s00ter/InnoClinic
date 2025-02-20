@@ -1,4 +1,4 @@
-namespace InnoClinic.AppointmentApi.BL.Constants;
+namespace InnoClinic.Shared.Constants;
 
 public static class CustomClaimTypes
 {

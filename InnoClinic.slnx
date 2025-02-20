@@ -1,11 +1,18 @@
 ﻿<Solution>
-  <Folder Name="/AppointmentApi/" />
+  <Folder Name="/AppointmentApi/">
+    <Project Path="AppointmentApi\InnoClinic.AppointmentApi.Api\InnoClinic.AppointmentApi.Api.csproj" Type="Classic C#" />
+    <Project Path="AppointmentApi\InnoClinic.AppointmentApi.BL\InnoClinic.AppointmentApi.BL.csproj" Type="Classic C#" />
+    <Project Path="AppointmentApi\InnoClinic.AppointmentApi.DAL\InnoClinic.AppointmentApi.DAL.csproj" Type="Classic C#" />
+  </Folder>
   <Folder Name="/AuthorizationApi/" />
   <Folder Name="/DocumentsApi/" />
   <Folder Name="/GatewayApi/" />
   <Folder Name="/OfficesApi/" />
   <Folder Name="/ProfilesApi/" />
   <Folder Name="/ServicesApi/" />
+  <Folder Name="/Shared/">
+    <Project Path="Shared\InnoClinic.Shared\InnoClinic.Shared.csproj" Type="Classic C#" />
+  </Folder>
   <Folder Name="/Solution Items/">
     <File Path="docker-compose.yml" />
   </Folder>
