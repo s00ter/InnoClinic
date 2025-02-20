@@ -1,6 +1,11 @@
+using System.Security.Cryptography;
+using System.Text;
 using InnoClinic.AppointmentApi.BL.Services.AppointmentService;
 using InnoClinic.AppointmentApi.BL.Services.ResultService;
 using InnoClinic.AppointmentApi.DataAccess.UnitOfWork;
+using InnoClinic.Shared.Configurations;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace InnoClinic.AppointmentApi.Api.DependencyInjection;
@@ -55,6 +60,30 @@ public static class ServiceCollectionExtensions
             });
         });
         
+        return services;
+    }
+    
+    public static IServiceCollection AddJwtSettings(
+        this IServiceCollection services)
+    {
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters()
+            {
+                ValidateIssuer = true,
+                ValidIssuer = JwtConfiguration.Issuer,
+                ValidateAudience = true,
+                ValidAudience = JwtConfiguration.Audience,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Convert.ToBase64String(SHA256.HashData(Encoding.UTF8.GetBytes(JwtConfiguration.SigningKey))))),
+                ValidateLifetime = true
+            };
+        });
+
         return services;
     }
 }

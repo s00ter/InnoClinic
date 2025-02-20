@@ -1,21 +1,15 @@
-using System.Security.Cryptography;
-using System.Text;
 using InnoClinic.AppointmentApi.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Hellang.Middleware.ProblemDetails;
 using InnoClinic.AppointmentApi.Api.DependencyInjection;
 using InnoClinic.AppointmentApi.Api.Middlewares;
 using InnoClinic.AppointmentApi.BL.Exception;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSwagger();
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
@@ -25,31 +19,14 @@ builder.Services.AddDbContext<InnoClinicAppointmentContext>(options =>
 
 builder.Services.AddServices();
 builder.Services.AddRepositories();
-
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters()
-    {
-        ValidateIssuer = true,
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidateAudience = true,
-        ValidAudience = builder.Configuration["Jwt:Audience"],
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Convert.ToBase64String(SHA256.HashData(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SigningKey"]))))),
-        ValidateLifetime = true
-    };
-});
+builder.Services.AddJwtSettings();
 
 builder.Services.AddProblemDetails(opt =>
 {
     opt.ExceptionDetailsPropertyName = "Exception Details";
     opt.IncludeExceptionDetails = (ctx, ex) => builder.Environment.IsDevelopment() || builder.Environment.IsStaging();
     
-    opt.Map<CustomException>(exception => new ProblemDetails()
+    opt.Map<AppointmentServiceException>(exception => new ProblemDetails()
     {
         Title = exception.Title,
         Detail = exception.Details,
