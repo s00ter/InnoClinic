@@ -12,7 +12,6 @@ internal class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
         
         builder.Property(x => x.DoctorId).IsRequired();
         builder.Property(x => x.ServiceId).IsRequired();
-        builder.Property(x => x.Date).IsRequired();
-        builder.Property(x => x.Time).IsRequired();
+        builder.Property(x => x.DateTimeOffset).IsRequired();
     }
 }

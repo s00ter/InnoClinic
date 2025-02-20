@@ -1,33 +1,32 @@
-using InnoClinic.AppointmentApi.BL.Dto.Appointment;
+using InnoClinic.AppointmentApi.BL.Dto.AppointmentDto;
 using InnoClinic.AppointmentApi.DataAccess.Entity;
 
 namespace InnoClinic.AppointmentApi.BL.Mappers;
 
 public static class AppointmentMapper
 {
-    public static ShowAppointmentResponse MapShowAppointmentResponse(this Appointment doctor)
+    public static ShowAppointmentResponse MapShowAppointmentResponse(this Appointment appointment)
     {
         return new ShowAppointmentResponse
         {
-            Id = doctor.Id,
-            DoctorId = doctor.DoctorId,
-            ServiceId = doctor.ServiceId,
-            Date = doctor.Date,
-            Time = doctor.Time,
-            IsApproved = doctor.IsApproved
+            Id = appointment.Id,
+            DoctorId = appointment.DoctorId,
+            ServiceId = appointment.ServiceId,
+            DateTimeOffset = appointment.DateTimeOffset,
+            IsApproved = appointment.IsApproved
         };
     }
     
-    public static AppointmentInfoResponse MapAppointmentInfoResponse(this Appointment doctor)
+    public static AppointmentInfoResponse MapAppointmentInfoResponse(this Appointment appointment)
     {
         return new AppointmentInfoResponse
         {
-            Id = doctor.Id,
-            DoctorId = doctor.DoctorId,
-            ServiceId = doctor.ServiceId,
-            Date = doctor.Date,
-            Time = doctor.Time,
-            IsApproved = doctor.IsApproved
+            Id = appointment.Id,
+            DoctorId = appointment.DoctorId,
+            ServiceId = appointment.ServiceId,
+            DateTimeOffset = appointment.DateTimeOffset,
+            IsApproved = appointment.IsApproved,
+            Result = appointment.Result
         };
     }
 }
