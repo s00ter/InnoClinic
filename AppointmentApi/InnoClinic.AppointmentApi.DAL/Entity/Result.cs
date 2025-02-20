@@ -8,5 +8,5 @@ public class Result
     public string Recomindations { get; set; }
     public Guid AppointmentId { get; set; }
     
-    public Appointment Appointment { get; set; }
+    public Appointment? Appointment { get; set; }
 }

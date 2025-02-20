@@ -1,5 +1,5 @@
 using System.Collections.Frozen;
-using InnoClinic.AppointmentApi.BL.Dto.Result;
+using InnoClinic.AppointmentApi.BL.Dto.ResultDto;
 using InnoClinic.AppointmentApi.BL.Mappers;
 using InnoClinic.AppointmentApi.DataAccess.Entity;
 using InnoClinic.AppointmentApi.DataAccess.Models;
@@ -24,7 +24,11 @@ public class ResultService(
         Guid id, 
         CancellationToken cancellationToken)
     {
-        var result = await unitOfWork.Results.GetByIdAsync(id, cancellationToken);
+        var result = await unitOfWork.Results.GetByIdAsync(
+            id, 
+            cancellationToken, 
+            x=> x.Appointment);
+        
         if (result is null)
         {
             throw new InvalidOperationException("Result not found");
@@ -48,7 +52,8 @@ public class ResultService(
         await unitOfWork.Results.AddAsync(result, cancellationToken);
         await unitOfWork.SaveChangesAsync();
 
-        return await unitOfWork.Results.GetByIdAsync(result.Id, cancellationToken);
+        return await unitOfWork.Results.GetByIdAsync(result.Id, cancellationToken)
+               ?? throw new InvalidOperationException("Not found");
     }
     
     public async Task UpdateResult(

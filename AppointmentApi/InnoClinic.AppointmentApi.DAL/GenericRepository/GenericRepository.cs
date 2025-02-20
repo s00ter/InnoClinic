@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using InnoClinic.AppointmentApi.DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,19 +12,45 @@ public class GenericRepository<T>(
     private readonly DbSet<T> _dbSet = context.Set<T>();
 
     public async Task<IQueryable<T>> GetAllAsync(
-        QueryPaginationArguments queryPagination, 
-        CancellationToken cancellationToken)
+        QueryPaginationArguments queryPagination,
+        CancellationToken cancellationToken,
+        params Expression<Func<T, object>>[] includes
+        )
     {
-        var appointments = _dbSet.AsQueryable();
+        var res = _dbSet.AsNoTracking().AsQueryable();
+
+        res = includes.Aggregate(res, (current, include) => current.Include(include));
 
         var skipNumber = (queryPagination.PageNumber - 1) * queryPagination.PageSize;
 
-        return appointments.Skip(skipNumber).Take(queryPagination.PageSize);
+        return res.Skip(skipNumber).Take(queryPagination.PageSize);
     }
 
-    public async Task<T> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<T?> GetByIdAsync(
+        Guid id, 
+        CancellationToken cancellationToken,
+        params Expression<Func<T, object>>[] includes
+        )
     {
-        return await _dbSet.FindAsync(id, cancellationToken) ?? throw new InvalidOperationException();
+        var entityType = context.Model.FindEntityType(typeof(T));
+        var primaryKey = entityType?.FindPrimaryKey();
+
+        if (primaryKey == null)
+        {
+            throw new InvalidOperationException($"Entity {typeof(T).Name} does not have a primary key.");
+        }
+        
+        var query = _dbSet.AsQueryable();
+
+        query = includes.Aggregate(query, (current, include) => current.Include(include));
+
+        var parameter = Expression.Parameter(typeof(T), "x");
+        var keyProperty = Expression.Property(parameter, primaryKey.Properties.First().Name);
+        var equalsExpression = Expression.Equal(keyProperty, Expression.Constant(id));
+
+        var lambda = Expression.Lambda<Func<T, bool>>(equalsExpression, parameter);
+
+        return await query.FirstOrDefaultAsync(lambda, cancellationToken);
     }
 
     public async Task AddAsync(T entity, CancellationToken cancellationToken)

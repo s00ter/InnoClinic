@@ -1,5 +1,5 @@
 using System.Collections.Frozen;
-using InnoClinic.AppointmentApi.BL.Dto.Appointment;
+using InnoClinic.AppointmentApi.BL.Dto.AppointmentDto;
 using InnoClinic.AppointmentApi.BL.Mappers;
 using InnoClinic.AppointmentApi.DataAccess.Entity;
 using InnoClinic.AppointmentApi.DataAccess.Models;
@@ -17,7 +17,10 @@ public class AppointmentService(
     {
         cancellationToken.ThrowIfCancellationRequested();
         
-        var appointments = await unitOfWork.Appointments.GetAllAsync(queryPagination, cancellationToken);
+        var appointments = await unitOfWork.Appointments.GetAllAsync(
+            queryPagination, 
+            cancellationToken
+            );
         var res = appointments.Select(x => x.MapShowAppointmentResponse()).ToFrozenSet();
         return res;
     }
@@ -28,7 +31,11 @@ public class AppointmentService(
     {
         cancellationToken.ThrowIfCancellationRequested();
         
-        var appointment = await unitOfWork.Appointments.GetByIdAsync(id, cancellationToken);
+        var appointment = await unitOfWork.Appointments.GetByIdAsync(
+            id, 
+            cancellationToken, 
+            x=> x.Result);
+        
         if (appointment is null)
         {
             throw new InvalidOperationException("Appointment not found");
@@ -47,15 +54,15 @@ public class AppointmentService(
             Id = Guid.NewGuid(),
             DoctorId = request.DoctorId,
             ServiceId = request.ServiceId,
-            Date = request.Date,
-            Time = request.Time,
+            DateTimeOffset = request.DateTimeOffset,
             IsApproved = request.IsApproved
         };
             
         await unitOfWork.Appointments.AddAsync(appointment, cancellationToken);
         await unitOfWork.SaveChangesAsync();
 
-        return await unitOfWork.Appointments.GetByIdAsync(appointment.Id, cancellationToken);
+        return await unitOfWork.Appointments.GetByIdAsync(appointment.Id, cancellationToken) 
+               ?? throw new InvalidOperationException("Not found");
     }
     
     public async Task UpdateAppointment(
@@ -74,8 +81,7 @@ public class AppointmentService(
         
         appointment.DoctorId = request.DoctorId;
         appointment.ServiceId = request.ServiceId;
-        appointment.Date = request.Date;
-        appointment.Time = request.Time;
+        appointment.DateTimeOffset = request.DateTimeOffset;
         appointment.IsApproved = request.IsApproved;
         
         unitOfWork.Appointments.Update(appointment);
