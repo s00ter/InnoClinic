@@ -12,7 +12,7 @@ public static class ResultMapper
             Id = result.Id,
             Complaints = result.Complaints,
             Conclusion = result.Conclusion,
-            Recomindations = result.Recomindations,
+            Recomindations = result.Recommendations,
             AppointmentId = result.AppointmentId
         };
     }
@@ -24,7 +24,7 @@ public static class ResultMapper
             Id = result.Id,
             Complaints = result.Complaints,
             Conclusion = result.Conclusion,
-            Recomindations = result.Recomindations,
+            Recomindations = result.Recommendations,
             AppointmentId = result.AppointmentId
         };
     }

@@ -45,7 +45,7 @@ public class ResultService(
             Id = Guid.NewGuid(),
             Complaints = request.Complaints,
             Conclusion = request.Conclusion,
-            Recomindations = request.Recomindations,
+            Recommendations = request.Recommendations,
             AppointmentId = request.AppointmentId
         };
             
@@ -69,7 +69,7 @@ public class ResultService(
         
         result.Complaints = request.Complaints;
         result.Conclusion = request.Conclusion;
-        result.Recomindations = request.Recomindations;
+        result.Recommendations = request.Recommendations;
         result.AppointmentId = request.AppointmentId;
         
         unitOfWork.Results.Update(result);

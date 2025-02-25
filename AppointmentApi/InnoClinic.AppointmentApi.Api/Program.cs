@@ -1,9 +1,9 @@
+using FluentValidation;
 using InnoClinic.AppointmentApi.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Hellang.Middleware.ProblemDetails;
 using InnoClinic.AppointmentApi.Api.DependencyInjection;
-using InnoClinic.AppointmentApi.Api.Middlewares;
-using InnoClinic.AppointmentApi.BL.Exception;
+using InnoClinic.AppointmentApi.BL.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,6 +36,8 @@ builder.Services.AddProblemDetails(opt =>
     });
 });
 
+builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -53,8 +55,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
-app.UseMiddleware<ParseAuthTokenMiddleware>();
 
 await app.MigrateDatabase();
 

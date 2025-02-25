@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace InnoClinic.AppointmentApi.DataAccess.Migrations
 {
     [DbContext(typeof(InnoClinicAppointmentContext))]
-    [Migration("20250218102748_Initial")]
+    [Migration("20250225153542_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -31,8 +31,8 @@ namespace InnoClinic.AppointmentApi.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateOnly>("Date")
-                        .HasColumnType("date");
+                    b.Property<DateTimeOffset>("DateTimeOffset")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("DoctorId")
                         .HasColumnType("uuid");
@@ -42,9 +42,6 @@ namespace InnoClinic.AppointmentApi.DataAccess.Migrations
 
                     b.Property<Guid>("ServiceId")
                         .HasColumnType("uuid");
-
-                    b.Property<TimeOnly>("Time")
-                        .HasColumnType("time without time zone");
 
                     b.HasKey("Id");
 
@@ -68,7 +65,7 @@ namespace InnoClinic.AppointmentApi.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Recomindations")
+                    b.Property<string>("Recommendations")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -93,8 +90,7 @@ namespace InnoClinic.AppointmentApi.DataAccess.Migrations
 
             modelBuilder.Entity("InnoClinic.AppointmentApi.DataAccess.Entity.Appointment", b =>
                 {
-                    b.Navigation("Result")
-                        .IsRequired();
+                    b.Navigation("Result");
                 });
 #pragma warning restore 612, 618
         }

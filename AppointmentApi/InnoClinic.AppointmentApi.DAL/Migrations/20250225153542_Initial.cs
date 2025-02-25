@@ -18,8 +18,7 @@ namespace InnoClinic.AppointmentApi.DataAccess.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     DoctorId = table.Column<Guid>(type: "uuid", nullable: false),
                     ServiceId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Date = table.Column<DateOnly>(type: "date", nullable: false),
-                    Time = table.Column<TimeOnly>(type: "time without time zone", nullable: false),
+                    DateTimeOffset = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     IsApproved = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
@@ -34,7 +33,7 @@ namespace InnoClinic.AppointmentApi.DataAccess.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Complaints = table.Column<string>(type: "text", nullable: false),
                     Conclusion = table.Column<string>(type: "text", nullable: false),
-                    Recomindations = table.Column<string>(type: "text", nullable: false),
+                    Recommendations = table.Column<string>(type: "text", nullable: false),
                     AppointmentId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>

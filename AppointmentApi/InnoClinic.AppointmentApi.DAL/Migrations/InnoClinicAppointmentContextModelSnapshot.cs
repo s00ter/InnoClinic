@@ -62,7 +62,7 @@ namespace InnoClinic.AppointmentApi.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Recomindations")
+                    b.Property<string>("Recommendations")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -87,8 +87,7 @@ namespace InnoClinic.AppointmentApi.DataAccess.Migrations
 
             modelBuilder.Entity("InnoClinic.AppointmentApi.DataAccess.Entity.Appointment", b =>
                 {
-                    b.Navigation("Result")
-                        .IsRequired();
+                    b.Navigation("Result");
                 });
 #pragma warning restore 612, 618
         }

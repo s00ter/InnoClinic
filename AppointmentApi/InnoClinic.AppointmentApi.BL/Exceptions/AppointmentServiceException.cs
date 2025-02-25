@@ -1,6 +1,6 @@
-namespace InnoClinic.AppointmentApi.BL.Exception;
+namespace InnoClinic.AppointmentApi.BL.Exceptions;
 
-public class AppointmentServiceException : System.Exception
+public class AppointmentServiceException : Exception
 {
     public required string Title { get; init; }
     public required string Details { get; init; }
