@@ -1,6 +1,7 @@
 ﻿services:
   innoclinic.authorizationapi.api:
     image: innoclinic.authorizationapi.api
+    container_name: innoclinic.authorizationapi
     build:
       context: .
       dockerfile: AuthorizationApi/InnoClinic.AuthorizationApi.Api/Dockerfile
@@ -16,6 +17,7 @@
     
   innoclinic.serviceapi.api:
     image: innoclinic.serviceapi.api
+    container_name: innoclinic.serviceapi
     build:
       context: .
       dockerfile: ServiceApi/InnoClinic.ServiceApi.Api/Dockerfile
@@ -31,6 +33,7 @@
     
   innoclinic.profilesapi.api:
     image: innoclinic.profilesapi.api
+    container_name: innoclinic.profilesapi
     build:
       context: .
       dockerfile: ProfilesApi/InnoClinic.ProfilesApi.Api/Dockerfile
@@ -46,6 +49,7 @@
     
   innoclinic.appointmentapi.api:
     image: innoclinic.appointmentapi.api
+    container_name: innoclinic.appointmentapi
     build:
       context: .
       dockerfile: AppointmentApi/InnoClinic.AppointmentApi.Api/Dockerfile
@@ -61,6 +65,7 @@
     
   innoclinic.gatewayapi.api:
     image: innoclinic.gatewayapi.api
+    container_name: innoclinic.gatewayapi
     build:
       context: .
       dockerfile: GatewayApi/InnoClinic.GatewayApi.Api/Dockerfile
@@ -74,6 +79,7 @@
       
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver_db
     environment:
       SA_PASSWORD: "Password123!"
       ACCEPT_EULA: "Y"
@@ -94,7 +100,7 @@
       POSTGRES_DB: InnoClinicAppointments
       POSTGRES_HOST_AUTH_METHOD: trust
     ports:
-      - "5432:5432"
+      - "5438:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     networks:
