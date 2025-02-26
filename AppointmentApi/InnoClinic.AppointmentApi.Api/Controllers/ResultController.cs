@@ -1,4 +1,3 @@
-using FluentValidation;
 using InnoClinic.AppointmentApi.BL.Dto.ResultDto;
 using InnoClinic.AppointmentApi.BL.Services.ResultService;
 using InnoClinic.AppointmentApi.DataAccess.Models;
@@ -27,27 +26,15 @@ public class ResultController(IResultService resultService) : ControllerBase
     }
     
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateResultRequest request,IValidator<CreateResultRequest> validator, CancellationToken cancellationToken)
+    public async Task<IActionResult> Create([FromBody] CreateResultRequest request, CancellationToken cancellationToken)
     {
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
-        if (!validationResult.IsValid)
-        {
-            return ValidationProblem(new ValidationProblemDetails(validationResult.ToDictionary()));
-        }
-        
         var res = await resultService.CreateResult(request, cancellationToken);
         return CreatedAtAction(nameof(Get), new { id = res.Id }, res);
     }
     
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateResultRequest request,IValidator<UpdateResultRequest> validator, CancellationToken cancellationToken)
+    public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateResultRequest request, CancellationToken cancellationToken)
     {
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
-        if (!validationResult.IsValid)
-        {
-            return ValidationProblem(new ValidationProblemDetails(validationResult.ToDictionary()));
-        }
-        
         await resultService.UpdateResult(id, request, cancellationToken);
         return StatusCode(StatusCodes.Status204NoContent);
     }

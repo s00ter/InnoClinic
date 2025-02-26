@@ -1,14 +1,20 @@
 using System.Collections.Frozen;
+using FluentValidation;
+using Hellang.Middleware.ProblemDetails;
 using InnoClinic.AppointmentApi.BL.Dto.AppointmentDto;
 using InnoClinic.AppointmentApi.BL.Mappers;
 using InnoClinic.AppointmentApi.DataAccess.Entity;
 using InnoClinic.AppointmentApi.DataAccess.Models;
 using InnoClinic.AppointmentApi.DataAccess.UnitOfWork;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace InnoClinic.AppointmentApi.BL.Services.AppointmentService;
 
 public class AppointmentService(
-    IUnitOfWork unitOfWork
+    IUnitOfWork unitOfWork,
+    IServiceProvider serviceProvider
     ) : IAppointmentService
 {
     public async Task<FrozenSet<ShowAppointmentResponse>> GetAllAppointments(
@@ -49,6 +55,19 @@ public class AppointmentService(
     {
         cancellationToken.ThrowIfCancellationRequested();
         
+        var validator = serviceProvider.GetRequiredService<IValidator<CreateAppointmentRequest>>();
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        
+        if (!validationResult.IsValid)
+        {
+            var problemDetails = new ValidationProblemDetails(validationResult.ToDictionary())
+            {
+                Title = "Validation Failed",
+                Status = StatusCodes.Status400BadRequest
+            };
+            throw new ProblemDetailsException(problemDetails);
+        }
+        
         var appointment = new Appointment
         {
             Id = Guid.NewGuid(),
@@ -72,6 +91,19 @@ public class AppointmentService(
         )
     {
         cancellationToken.ThrowIfCancellationRequested();
+        
+        var validator = serviceProvider.GetRequiredService<IValidator<UpdateAppointmentRequest>>();
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        
+        if (!validationResult.IsValid)
+        {
+            var problemDetails = new ValidationProblemDetails(validationResult.ToDictionary())
+            {
+                Title = "Validation Failed",
+                Status = StatusCodes.Status400BadRequest
+            };
+            throw new ProblemDetailsException(problemDetails);
+        }
         
         var appointment = await unitOfWork.Appointments.GetByIdAsync(id, cancellationToken);
         if (appointment == null)
