@@ -1,4 +1,4 @@
-namespace InnoClinic.AppointmentApi.DataAccess.Models;
+namespace InnoClinic.Shared.Models;
 
 public class QueryPaginationArguments
 {

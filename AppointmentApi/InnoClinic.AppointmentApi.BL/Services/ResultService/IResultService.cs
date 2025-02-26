@@ -1,7 +1,7 @@
 using System.Collections.Frozen;
 using InnoClinic.AppointmentApi.BL.Dto.ResultDto;
 using InnoClinic.AppointmentApi.DataAccess.Entity;
-using InnoClinic.AppointmentApi.DataAccess.Models;
+using InnoClinic.Shared.Models;
 
 namespace InnoClinic.AppointmentApi.BL.Services.ResultService;
 

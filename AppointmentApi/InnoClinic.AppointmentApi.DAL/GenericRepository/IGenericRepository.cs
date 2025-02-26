@@ -1,5 +1,5 @@
 using System.Linq.Expressions;
-using InnoClinic.AppointmentApi.DataAccess.Models;
+using InnoClinic.Shared.Models;
 
 namespace InnoClinic.AppointmentApi.DataAccess.GenericRepository;
 
