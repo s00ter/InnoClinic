@@ -12,10 +12,4 @@ public class InnoClinicAuthContext(DbContextOptions<InnoClinicAuthContext> optio
         base.OnModelCreating(builder);
         builder.ApplyConfiguration(new RoleConfiguration());
     }
-    
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {/*
-        optionsBuilder.ConfigureWarnings(warnings =>
-            warnings.Ignore(RelationalEventId.PendingModelChangesWarning));*/
-    }
 }

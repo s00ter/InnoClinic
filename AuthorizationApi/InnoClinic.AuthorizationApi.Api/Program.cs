@@ -1,15 +1,20 @@
 using System.Security.Cryptography;
 using System.Text;
+using FluentValidation;
 using InnoClinic.Application.IService;
 using InnoClinic.Application.Models.Email;
 using InnoClinic.Application.Service;
 using InnoClinic.BusinessLogic.Entities;
 using InnoClinic.DataAccess;
+using InnoClinic.Shared.Configurations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Hellang.Middleware.ProblemDetails;
+using InnoClinic.Shared.Exceptions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +46,9 @@ builder.Services.AddSwaggerGen(option =>
     });
 });
 
+
+builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -53,6 +61,10 @@ builder.Services.AddDbContext<InnoClinicAuthContext>(options =>
 builder.Services.AddIdentity<User, IdentityRole>(options =>
     {
         options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequireDigit = false;
+        options.Password.RequireUppercase = false;
+        options.Password.RequireLowercase = false;
+        options.Password.RequiredLength = 1;
 
         options.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider;
         options.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultEmailProvider;
@@ -69,11 +81,11 @@ builder.Services.AddAuthentication(options =>
     options.TokenValidationParameters = new TokenValidationParameters()
     {
         ValidateIssuer = true,
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidIssuer = JwtConfiguration.Issuer,
         ValidateAudience = true,
-        ValidAudience = builder.Configuration["Jwt:Audience"],
+        ValidAudience = JwtConfiguration.Audience,
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Convert.ToBase64String(SHA256.HashData(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SigningKey"]))))),
+        IssuerSigningKey = new SymmetricSecurityKey(SHA256.HashData(Encoding.UTF8.GetBytes(JwtConfiguration.SigningKey))),
         ValidateLifetime = true
     };
 });
@@ -89,8 +101,26 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
 
-builder.Services.Configure<EmailConfiguration>(builder.Configuration.GetSection("EmailConfiguration"));
+var emailConfig = builder.Configuration.GetSection("EmailConfiguration")
+    .Get<EmailConfiguration>();
+builder.Services.AddSingleton(emailConfig);
+
+builder.Services.AddProblemDetails(opt =>
+{
+    opt.ExceptionDetailsPropertyName = "Exception Details";
+    opt.IncludeExceptionDetails = (ctx, ex) => builder.Environment.IsDevelopment() || builder.Environment.IsStaging();
+    
+    opt.Map<AppException>(exception => new ProblemDetails()
+    {
+        Title = exception.Title,
+        Detail = exception.Details,
+        Status = StatusCodes.Status500InternalServerError,
+        Type = exception.Type,
+        Instance = exception.Instance
+    });
+});
 
 var app = builder.Build();
 
@@ -101,6 +131,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseProblemDetails();
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
@@ -108,5 +140,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MigrateDatabase();
+await app.MigrateDatabase();
+
 app.Run();

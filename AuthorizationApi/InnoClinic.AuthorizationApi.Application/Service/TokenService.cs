@@ -4,15 +4,13 @@ using System.Security.Cryptography;
 using System.Text;
 using InnoClinic.Application.IService;
 using InnoClinic.BusinessLogic.Entities;
+using InnoClinic.Shared.Configurations;
 using InnoClinic.Shared.Constants;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 namespace InnoClinic.Application.Service;
 
-public class TokenService(
-    IConfiguration config
-) : ITokenService
+public class TokenService : ITokenService
 {
     public string CreateToken(User user, IList<string> roles)
     {
@@ -27,14 +25,8 @@ public class TokenService(
         {
             claims.Add(new Claim(ClaimTypes.Role, role));
         }
-
-        var a = Encoding.UTF8.GetBytes(config["Jwt:SigningKey"]);
-        var b = SHA256.HashData(a);
         
-        var c = Convert.ToBase64String(a);
-        var d = Convert.ToBase64String(b);
-        
-        var key = b;
+        var key = SHA256.HashData(Encoding.UTF8.GetBytes(JwtConfiguration.SigningKey));
         var secret = new SymmetricSecurityKey(key);
         var credentials = new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
         
@@ -43,8 +35,8 @@ public class TokenService(
             Subject = new ClaimsIdentity(claims),
             Expires = DateTime.Now.AddDays(7),
             SigningCredentials = credentials,
-            Issuer = config["JWT:Issuer"],
-            Audience = config["JWT:Audience"],
+            Issuer = JwtConfiguration.Issuer,
+            Audience = JwtConfiguration.Audience,
         };
         
         var tokenHandler = new JwtSecurityTokenHandler();
