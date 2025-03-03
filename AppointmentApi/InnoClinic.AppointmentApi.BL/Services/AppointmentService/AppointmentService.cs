@@ -40,12 +40,9 @@ public class AppointmentService(
         var appointment = await unitOfWork.Appointments.GetByIdAsync(
             id, 
             cancellationToken, 
-            x=> x.Result);
+            x=> x.Result) 
+                          ?? throw new ProblemDetailsException(new ProblemDetails() { Title = "Appointment not found" });
         
-        if (appointment is null)
-        {
-            throw new InvalidOperationException("Appointment not found");
-        }
         return appointment.MapAppointmentInfoResponse();
     }
     
@@ -81,7 +78,7 @@ public class AppointmentService(
         await unitOfWork.SaveChangesAsync();
 
         return await unitOfWork.Appointments.GetByIdAsync(appointment.Id, cancellationToken) 
-               ?? throw new InvalidOperationException("Not found");
+               ?? throw new ProblemDetailsException(new ProblemDetails() { Title = "Appointment not found" });
     }
     
     public async Task UpdateAppointment(
@@ -105,11 +102,8 @@ public class AppointmentService(
             throw new ProblemDetailsException(problemDetails);
         }
         
-        var appointment = await unitOfWork.Appointments.GetByIdAsync(id, cancellationToken);
-        if (appointment == null)
-        { 
-            throw new InvalidOperationException("Appointment not found");
-        }
+        var appointment = await unitOfWork.Appointments.GetByIdAsync(id, cancellationToken)
+            ?? throw new ProblemDetailsException(new ProblemDetails() { Title = "Appointment not found" });
         
         appointment.DoctorId = request.DoctorId;
         appointment.ServiceId = request.ServiceId;
@@ -126,11 +120,9 @@ public class AppointmentService(
     {
         cancellationToken.ThrowIfCancellationRequested();
         
-        var appointment = await unitOfWork.Appointments.GetByIdAsync(id, cancellationToken);
-        if (appointment == null)
-        {
-            throw new InvalidOperationException("Appointment not found");
-        }
+        var appointment = await unitOfWork.Appointments.GetByIdAsync(id, cancellationToken) 
+                          ?? throw new ProblemDetailsException(new ProblemDetails() { Title = "Appointment not found" });
+        
         unitOfWork.Appointments.Delete(appointment);
         await unitOfWork.SaveChangesAsync();
     }

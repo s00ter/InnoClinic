@@ -10,6 +10,9 @@ internal class ResultConfiguration : IEntityTypeConfiguration<Result>
     {
         builder.HasKey(x => x.Id);
         
+        builder.Property(x => x.Complaints).IsRequired();
+        builder.Property(x => x.Conclusion).IsRequired();
+        builder.Property(x => x.Recommendations).IsRequired();
         builder.Property(x => x.AppointmentId).IsRequired();
     }
 }

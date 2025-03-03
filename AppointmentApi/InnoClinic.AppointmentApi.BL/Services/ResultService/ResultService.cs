@@ -33,12 +33,10 @@ public class ResultService(
         var result = await unitOfWork.Results.GetByIdAsync(
             id, 
             cancellationToken, 
-            x=> x.Appointment);
+            x=> x.Appointment) 
+                     ?? throw new ProblemDetailsException(new ProblemDetails() { Title = "Result not found" });
         
-        if (result is null)
-        {
-            throw new InvalidOperationException("Result not found");
-        }
+        
         return result.MapResultInfoResponse();
     }
     
@@ -72,7 +70,7 @@ public class ResultService(
         await unitOfWork.SaveChangesAsync();
 
         return await unitOfWork.Results.GetByIdAsync(result.Id, cancellationToken)
-               ?? throw new InvalidOperationException("Not found");
+               ?? throw new ProblemDetailsException(new ProblemDetails() { Title = "Result not found" });
     }
     
     public async Task UpdateResult(
@@ -93,11 +91,8 @@ public class ResultService(
             throw new ProblemDetailsException(problemDetails);
         }
         
-        var result = await unitOfWork.Results.GetByIdAsync(id, cancellationToken);
-        if (result == null)
-        { 
-            throw new InvalidOperationException("Result not found");
-        }
+        var result = await unitOfWork.Results.GetByIdAsync(id, cancellationToken) 
+                     ?? throw new ProblemDetailsException(new ProblemDetails() { Title = "Result not found" });
         
         result.Complaints = request.Complaints;
         result.Conclusion = request.Conclusion;
@@ -112,11 +107,9 @@ public class ResultService(
         Guid id, 
         CancellationToken cancellationToken)
     {
-        var result = await unitOfWork.Results.GetByIdAsync(id, cancellationToken);
-        if (result == null)
-        {
-            throw new InvalidOperationException("Result not found");
-        }
+        var result = await unitOfWork.Results.GetByIdAsync(id, cancellationToken) 
+                     ?? throw new ProblemDetailsException(new ProblemDetails() { Title = "Result not found" });
+        
         unitOfWork.Results.Delete(result);
         await unitOfWork.SaveChangesAsync();
     }
