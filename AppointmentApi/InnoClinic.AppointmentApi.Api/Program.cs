@@ -39,7 +39,7 @@ builder.Services.AddProblemDetails(opt =>
     });
 });
 
-builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 

@@ -3,7 +3,7 @@ using InnoClinic.Application.Dto.Account;
 using InnoClinic.BusinessLogic.Entities;
 using Microsoft.AspNetCore.Identity;
 
-namespace InnoClinic.Authorization.Validators;
+namespace InnoClinic.Application.Validators;
 
 public class UserAuthenticationValidators : AbstractValidator<UserAuthenticationRequest>
 {

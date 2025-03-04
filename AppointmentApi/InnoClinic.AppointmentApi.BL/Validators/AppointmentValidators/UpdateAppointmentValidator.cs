@@ -1,7 +1,7 @@
 using FluentValidation;
 using InnoClinic.AppointmentApi.BL.Dto.AppointmentDto;
 
-namespace InnoClinic.AppointmentApi.Api.Validators.AppointmentValidators;
+namespace InnoClinic.AppointmentApi.BL.Validators.AppointmentValidators;
 
 public class UpdateAppointmentValidator : AbstractValidator<UpdateAppointmentRequest>
 {

@@ -3,24 +3,21 @@ using InnoClinic.Application.Dto.Account;
 using InnoClinic.BusinessLogic.Entities;
 using Microsoft.AspNetCore.Identity;
 
-namespace InnoClinic.Authorization.Validators;
+namespace InnoClinic.Application.Validators;
 
-public class ResetPasswordValidator : AbstractValidator<ResetPasswordRequest>
+public class UserRegistrationValidator : AbstractValidator<UserRegistrationRequest>
 {
-    public ResetPasswordValidator(UserManager<User> userManager)
+    public UserRegistrationValidator(UserManager<User> userManager)
     {
+        RuleFor(x => x.Email)
+            .NotEmpty().WithMessage("Email is required")
+            .EmailAddress().WithMessage("Invalid Email format");
+
         RuleFor(x => x.Password)
             .NotEmpty().WithMessage("Password is required")
             .MinimumLength(5).WithMessage("Password must be at least 5 characters");
         
         RuleFor(x => x.ConfirmPassword)
             .Equal(x => x.Password).WithMessage("Passwords do not match");
-
-        RuleFor(x => x.Email)
-            .NotEmpty().WithMessage("Email is required")
-            .EmailAddress().WithMessage("Invalid Email format");
-
-        RuleFor(x => x.Token)
-            .NotEmpty().WithMessage("Token is required");
     }
 }
