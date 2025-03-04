@@ -1,6 +1,5 @@
 using InnoClinic.Application.Dto.Account;
 using InnoClinic.Application.IService;
-using InnoClinic.Application.Models.Email;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InnoClinic.Authorization.Controllers;
