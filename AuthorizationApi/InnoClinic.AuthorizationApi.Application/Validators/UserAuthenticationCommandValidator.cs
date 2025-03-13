@@ -1,19 +1,17 @@
 using FluentValidation;
-using InnoClinic.Application.Dto.Account;
-using InnoClinic.BusinessLogic.Entities;
-using Microsoft.AspNetCore.Identity;
+using InnoClinic.Application.Commands;
 
 namespace InnoClinic.Application.Validators;
 
-public class UserAuthenticationValidators : AbstractValidator<UserAuthenticationRequest>
+public class UserAuthenticationCommandValidator : AbstractValidator<UserAuthenticationCommand>
 {
-    public UserAuthenticationValidators(UserManager<User> userManager)
+    public UserAuthenticationCommandValidator()
     {
-        RuleFor(x => x.Email)
+        RuleFor(x => x.Request.Email)
             .NotEmpty().WithMessage("Email is required")
             .EmailAddress().WithMessage("Invalid Email format");
 
-        RuleFor(x => x.Password)
+        RuleFor(x => x.Request.Password)
             .NotEmpty().WithMessage("Password is required")
             .MinimumLength(5).WithMessage("Password must be at least 5 characters");
     }

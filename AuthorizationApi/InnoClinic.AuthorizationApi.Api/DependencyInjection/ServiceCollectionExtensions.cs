@@ -19,7 +19,6 @@ public static class ServiceCollectionExtensions
     {
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<ITokenService, TokenService>();
-        services.AddScoped<IAccountService, AccountService>();
 
         return services;
     }

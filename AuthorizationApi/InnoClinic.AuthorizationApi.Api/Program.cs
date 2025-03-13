@@ -2,11 +2,11 @@ using FluentValidation;
 using InnoClinic.Application.Models.Email;
 using InnoClinic.DataAccess;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Hellang.Middleware.ProblemDetails;
+using InnoClinic.Application.Behaviors;
 using InnoClinic.Authorization.DependencyInjection;
-using InnoClinic.Shared.Exceptions;
+using InnoClinic.Authorization.Middlewares;
+using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +22,13 @@ builder.Services.AddServices();
 builder.Services.AddSwagger();
 builder.Services.AddJwtSettings();
 builder.Services.AddIdentitySettings();
+
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>),typeof(ValidationBehavior<,>));
+
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
+
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 builder.Services.AddDbContext<InnoClinicAuthContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("InnoClinicAuth")));
@@ -39,21 +46,6 @@ var emailConfig = builder.Configuration.GetSection("EmailConfiguration")
     .Get<EmailConfiguration>();
 builder.Services.AddSingleton(emailConfig);
 
-builder.Services.AddProblemDetails(opt =>
-{
-    opt.ExceptionDetailsPropertyName = "Exception Details";
-    opt.IncludeExceptionDetails = (ctx, ex) => builder.Environment.IsDevelopment() || builder.Environment.IsStaging();
-    
-    opt.Map<AppException>(exception => new ProblemDetails()
-    {
-        Title = exception.Title,
-        Detail = exception.Details,
-        Status = StatusCodes.Status500InternalServerError,
-        Type = exception.Type,
-        Instance = exception.Instance
-    });
-});
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -63,7 +55,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseProblemDetails();
+app.UseExceptionHandler(opt => { });
 
 app.UseHttpsRedirection();
 
