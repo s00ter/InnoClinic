@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Http;
 using MimeKit;
 
 namespace InnoClinic.Application.Models.Email;
@@ -8,13 +7,11 @@ public class Message
     public List<MailboxAddress> To { get; set; }
     public string Subject { get; set; }
     public string Content { get; set; }
-    public IFormFileCollection? Attachments { get; set; }
+    public List<EmailAttachment>? Attachments { get; set; }
     
-    public Message(string?[] to, string subject, string content, IFormFileCollection? attachments)
+    public Message(string?[] to, string subject, string content, List<EmailAttachment>? attachments)
     {
-        To = new List<MailboxAddress>();
-        
-        To.AddRange(to.Select(x => new MailboxAddress(String.Empty, x)));
+        To = to.Select(x => new MailboxAddress(string.Empty, x)).ToList();
         Subject = subject;
         Content = content;
         Attachments = attachments;

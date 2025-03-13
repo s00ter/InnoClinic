@@ -34,7 +34,7 @@ builder.Services.AddDbContext<InnoClinicAuthContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("InnoClinicAuth")));
 
 builder.Services.Configure<DataProtectionTokenProviderOptions>(opt =>
-    opt.TokenLifespan = TimeSpan.FromHours(2));
+    opt.TokenLifespan = TimeSpan.FromHours(builder.Configuration.GetValue<int>("TokenProviderOptions:TokenLifespanHours")));
 
 builder.Services.AddAuthorization(options =>
 {
@@ -42,9 +42,9 @@ builder.Services.AddAuthorization(options =>
         policy => policy.RequireRole("Admin"));
 });
 
-var emailConfig = builder.Configuration.GetSection("EmailConfiguration")
-    .Get<EmailConfiguration>();
-builder.Services.AddSingleton(emailConfig);
+builder.Services.Configure<EmailConfiguration>(
+    builder.Configuration.GetSection("EmailConfiguration")
+);
 
 var app = builder.Build();
 

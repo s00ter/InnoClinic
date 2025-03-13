@@ -1,12 +1,15 @@
 using InnoClinic.Application.IService;
 using InnoClinic.Application.Models.Email;
 using MailKit.Net.Smtp;
+using Microsoft.Extensions.Options;
 using MimeKit;
 
 namespace InnoClinic.Application.Service;
 
-public class EmailService(EmailConfiguration emailConfiguration) : IEmailService
+public class EmailService(IOptions<EmailConfiguration> options) : IEmailService
 {
+    private readonly EmailConfiguration _emailConfiguration = options.Value;
+
     public async Task SendEmail(Message message)
     {
         var emailMassage = CreateEmailMessage(message);
@@ -18,7 +21,7 @@ public class EmailService(EmailConfiguration emailConfiguration) : IEmailService
     {
         var emailMessage = new MimeMessage();
         
-        emailMessage.From.Add(new MailboxAddress(string.Empty,emailConfiguration.From));
+        emailMessage.From.Add(new MailboxAddress(string.Empty,_emailConfiguration.From));
         emailMessage.To.AddRange(message.To);
         emailMessage.Subject = message.Subject;
 
@@ -31,13 +34,7 @@ public class EmailService(EmailConfiguration emailConfiguration) : IEmailService
         {
             foreach (var attachment in message.Attachments)
             {
-                byte[] fileBytes;
-                using (var ms = new MemoryStream())
-                {
-                    attachment.CopyTo(ms);
-                    fileBytes = ms.ToArray();
-                }
-                bodyBuilder.Attachments.Add(attachment.FileName, fileBytes, ContentType.Parse(attachment.ContentType));
+                bodyBuilder.Attachments.Add(attachment.FileName, attachment.Content, ContentType.Parse(attachment.ContentType));
             }
         }
         
@@ -51,9 +48,9 @@ public class EmailService(EmailConfiguration emailConfiguration) : IEmailService
         using var client = new SmtpClient();
         try
         {
-            await client.ConnectAsync(emailConfiguration.SmtpServer, emailConfiguration.Port, true);
+            await client.ConnectAsync(_emailConfiguration.SmtpServer, _emailConfiguration.Port, true);
             client.AuthenticationMechanisms.Remove("XOAUTH2");
-            await client.AuthenticateAsync(emailConfiguration.UserName, emailConfiguration.Password);
+            await client.AuthenticateAsync(_emailConfiguration.UserName, _emailConfiguration.Password);
 
             await client.SendAsync(mailMessage);
         }

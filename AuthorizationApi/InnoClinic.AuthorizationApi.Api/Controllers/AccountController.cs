@@ -1,10 +1,7 @@
-using Hellang.Middleware.ProblemDetails;
 using InnoClinic.Application.Commands;
 using InnoClinic.Application.Dto.Account;
-using InnoClinic.Application.IService;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Exception = System.Exception;
 
 namespace InnoClinic.Authorization.Controllers;
 
@@ -18,7 +15,6 @@ public class AccountController(
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] UserRegistrationRequest request, CancellationToken cancellationToken = default)
     {
-        throw new NullReferenceException();
         var res = await sender.Send(new UserRegistrationCommand(request), cancellationToken);
         if (res)
         {
