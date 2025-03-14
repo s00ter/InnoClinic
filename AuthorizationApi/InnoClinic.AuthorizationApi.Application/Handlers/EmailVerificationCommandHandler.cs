@@ -10,9 +10,9 @@ namespace InnoClinic.Application.Handlers;
 public class EmailVerificationCommandHandler(
     UserManager<User> userManager
     ) 
-    : IRequestHandler<EmailVerificationCommand>
+    : IRequestHandler<EmailVerificationCommand,Unit>
 {
-    public async Task Handle(EmailVerificationCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(EmailVerificationCommand request, CancellationToken cancellationToken)
     {
         var user = await userManager.FindByEmailAsync(request.Request.Email)
                    ?? throw new ProblemDetailsException(new ProblemDetails() { Title = "Account does not exist" });
@@ -22,5 +22,7 @@ public class EmailVerificationCommandHandler(
         {
             throw new ProblemDetailsException(new ProblemDetails() { Title = "Invalid email verification" });
         }
+        
+        return Unit.Value;
     }
 }

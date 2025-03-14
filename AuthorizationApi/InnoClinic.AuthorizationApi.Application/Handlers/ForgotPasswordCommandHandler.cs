@@ -13,9 +13,9 @@ public class ForgotPasswordCommandHandler(
     UserManager<User> userManager,
     IEmailService emailService
     ) 
-    : IRequestHandler<ForgotPasswordCommand>
+    : IRequestHandler<ForgotPasswordCommand,Unit>
 {
-    public async Task Handle(ForgotPasswordCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(ForgotPasswordCommand request, CancellationToken cancellationToken)
     {
         var user  = await userManager.FindByEmailAsync(request.Request.Email)
                     ?? throw new ProblemDetailsException(new ProblemDetails() { Title = "Account does not exist" });
@@ -25,5 +25,7 @@ public class ForgotPasswordCommandHandler(
         var message = new Message([user.Email], "Reset password token", token, null);
         
         await emailService.SendEmail(message);
+        
+        return Unit.Value;
     }
 }

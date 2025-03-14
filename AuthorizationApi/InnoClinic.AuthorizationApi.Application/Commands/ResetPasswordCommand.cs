@@ -3,4 +3,4 @@ using MediatR;
 
 namespace InnoClinic.Application.Commands;
 
-public record ResetPasswordCommand(ResetPasswordRequest Request) : IRequest;
+public record ResetPasswordCommand(ResetPasswordRequest Request) : IRequest<Unit>;

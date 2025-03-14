@@ -3,4 +3,4 @@ using MediatR;
 
 namespace InnoClinic.Application.Commands;
 
-public record EmailVerificationCommand(EmailVerificationRequest Request) : IRequest;
+public record EmailVerificationCommand(EmailVerificationRequest Request) : IRequest<Unit>;

@@ -10,9 +10,9 @@ namespace InnoClinic.Application.Handlers;
 public class ResetPasswordCommandHandler(
     UserManager<User> userManager
     ) 
-    : IRequestHandler<ResetPasswordCommand>
+    : IRequestHandler<ResetPasswordCommand,Unit>
 {
-    public async Task Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
     {
         var user = await userManager.FindByEmailAsync(request.Request.Email)
                    ?? throw new ProblemDetailsException(new ProblemDetails() { Title = "Account does not exist" });
@@ -22,5 +22,7 @@ public class ResetPasswordCommandHandler(
         {
             throw new ProblemDetailsException(new ProblemDetails() { Title = "Reset password failed" });
         }
+        
+        return Unit.Value;
     }
 }
