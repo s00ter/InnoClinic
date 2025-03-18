@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace InnoClinic.Authorization.Controllers;
 
-[Route("api/account")]
+[Route("api/accounts")]
 [ApiController]
 public class AccountController(
     ISender sender
@@ -33,8 +33,10 @@ public class AccountController(
     [HttpPost("authenticate")]
     public async Task<IActionResult> Authenticate([FromBody] UserAuthenticationRequest request, CancellationToken cancellationToken = default)
     {
-        var res = await sender.Send(new UserAuthenticationCommand(request), cancellationToken);
-        return Ok(res);
+        var token = await sender.Send(new UserAuthenticationCommand(request), cancellationToken);
+        HttpContext.Response.Cookies.Append("cookies",token);
+        
+        return Ok(token);
     }
 
     [HttpPost("forgot-password")]

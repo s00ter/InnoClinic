@@ -8,7 +8,7 @@ namespace InnoClinic.AppointmentApi.Api.Controllers;
 
 [ApiController]
 [Authorize]
-[Route("api/appointment")]
+[Route("api/appointments")]
 public class AppointmentController(
     IAppointmentService appointmentService
     ) : ControllerBase

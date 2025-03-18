@@ -76,6 +76,15 @@ public static class ServiceCollectionExtensions
                 IssuerSigningKey = new SymmetricSecurityKey(SHA256.HashData(Encoding.UTF8.GetBytes(JwtConfiguration.SigningKey))),
                 ValidateLifetime = true
             };
+
+            options.Events = new JwtBearerEvents
+            {
+                OnMessageReceived = context =>
+                {
+                    context.Token = context.Request.Query["cookies"];
+                    return Task.CompletedTask;
+                }
+            };
         });
 
         return services;

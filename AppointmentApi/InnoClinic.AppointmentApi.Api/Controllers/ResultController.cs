@@ -8,7 +8,7 @@ namespace InnoClinic.AppointmentApi.Api.Controllers;
 
 [ApiController]
 [Authorize]
-[Route("api/result")]
+[Route("api/results")]
 public class ResultController(IResultService resultService) : ControllerBase
 {
     [HttpGet]
