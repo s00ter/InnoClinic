@@ -29,4 +29,10 @@
       <ProjectReference Include="..\InnoClinic.AuthorizationApi.Infrastructure\InnoClinic.AuthorizationApi.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Include="..\..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
+    </ItemGroup>
+
 </Project>

@@ -15,38 +15,6 @@
       - innoclinicnetwork
     restart: on-failure 
     
-  innoclinic.serviceapi.api:
-    image: innoclinic.serviceapi.api
-    container_name: innoclinic.serviceapi
-    build:
-      context: .
-      dockerfile: ServiceApi/InnoClinic.ServiceApi.Api/Dockerfile
-    ports:
-      - "5091:8080"
-    depends_on:
-      - sqlserver
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-    networks:
-      - innoclinicnetwork
-    restart: on-failure
-    
-  innoclinic.profilesapi.api:
-    image: innoclinic.profilesapi.api
-    container_name: innoclinic.profilesapi
-    build:
-      context: .
-      dockerfile: ProfilesApi/InnoClinic.ProfilesApi.Api/Dockerfile
-    ports:
-      - "5086:8080"
-    depends_on:
-      - sqlserver
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-    networks:
-      - innoclinicnetwork
-    restart: on-failure
-    
   innoclinic.appointmentapi.api:
     image: innoclinic.appointmentapi.api
     container_name: innoclinic.appointmentapi

@@ -3,30 +3,22 @@ using InnoClinic.Application.Models.Email;
 using InnoClinic.DataAccess;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using InnoClinic.Application.Behaviors;
 using InnoClinic.Authorization.DependencyInjection;
 using InnoClinic.Authorization.Middlewares;
-using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddHttpContextAccessor();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
 builder.Services.AddServices();
-builder.Services.AddSwagger();
-builder.Services.AddJwtSettings();
+builder.Services.AddSwaggerSettings();
 builder.Services.AddIdentitySettings();
+builder.Services.AddJwtSettings();
+builder.Services.AddMediatrSettings();
 
 builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
-
-builder.Services.AddTransient(typeof(IPipelineBehavior<,>),typeof(ValidationBehavior<,>));
-
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
@@ -37,15 +29,7 @@ builder.Services.AddDbContext<InnoClinicAuthContext>(options =>
 builder.Services.Configure<DataProtectionTokenProviderOptions>(opt =>
     opt.TokenLifespan = TimeSpan.FromHours(builder.Configuration.GetValue<int>("TokenProviderOptions:TokenLifespanHours")));
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("OnlyAdminUsers",
-        policy => policy.RequireRole("Admin"));
-});
-
-builder.Services.Configure<EmailConfiguration>(
-    builder.Configuration.GetSection("EmailConfiguration")
-);
+builder.Services.Configure<EmailConfiguration>(builder.Configuration.GetSection("EmailConfiguration"));
 
 var app = builder.Build();
 
@@ -57,8 +41,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseExceptionHandler(opt => { });
-
-app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();

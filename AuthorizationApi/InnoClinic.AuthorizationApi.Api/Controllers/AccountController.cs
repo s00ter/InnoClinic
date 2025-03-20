@@ -1,6 +1,7 @@
 using InnoClinic.Application.Commands;
 using InnoClinic.Application.Dto.Account;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InnoClinic.Authorization.Controllers;
@@ -39,6 +40,7 @@ public class AccountController(
         return Ok(token);
     }
 
+    [Authorize]
     [HttpPost("forgot-password")]
     public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request, CancellationToken cancellationToken = default)
     {

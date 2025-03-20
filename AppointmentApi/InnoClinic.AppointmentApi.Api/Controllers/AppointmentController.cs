@@ -14,6 +14,7 @@ public class AppointmentController(
     ) : ControllerBase
 {
     [HttpGet]
+    [Authorize]
     public async Task<IActionResult> Get([FromQuery] QueryPaginationArguments queryPagination, CancellationToken cancellationToken)
     {
         var res = await appointmentService.GetAllAppointments(queryPagination, cancellationToken);

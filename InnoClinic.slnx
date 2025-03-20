@@ -11,7 +11,9 @@
     <Project Path="AuthorizationApi\InnoClinic.AuthorizationApi.Infrastructure\InnoClinic.AuthorizationApi.Infrastructure.csproj" Type="Classic C#" />
   </Folder>
   <Folder Name="/DocumentsApi/" />
-  <Folder Name="/GatewayApi/" />
+  <Folder Name="/GatewayApi/">
+    <Project Path="GatewayApi\InnoClinic.GatewayApi.Api\InnoClinic.GatewayApi.Api.csproj" Type="Classic C#" />
+  </Folder>
   <Folder Name="/OfficesApi/" />
   <Folder Name="/ProfilesApi/" />
   <Folder Name="/ServicesApi/" />

@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using System.Text;
+using InnoClinic.Application.Behaviors;
 using InnoClinic.Application.IService;
 using InnoClinic.Application.Service;
 using InnoClinic.BusinessLogic.Entities;
@@ -23,7 +24,7 @@ public static class ServiceCollectionExtensions
         return services;
     }
     
-    public static IServiceCollection AddSwagger(
+    public static IServiceCollection AddSwaggerSettings(
         this IServiceCollection services)
     {
         services.AddSwaggerGen(option =>
@@ -81,12 +82,12 @@ public static class ServiceCollectionExtensions
             {
                 OnMessageReceived = context =>
                 {
-                    context.Token = context.Request.Query["cookies"];
+                    context.Token = context.Request.Cookies["cookies"];
                     return Task.CompletedTask;
                 }
             };
         });
-
+        
         return services;
     }
     
@@ -106,6 +107,18 @@ public static class ServiceCollectionExtensions
             })
             .AddEntityFrameworkStores<InnoClinicAuthContext>()
             .AddDefaultTokenProviders();
+
+        return services;
+    }
+    
+    public static IServiceCollection AddMediatrSettings(
+        this IServiceCollection services)
+    {
+        services.AddMediatR(cfg =>
+        {
+            cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
+            cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
+        });
 
         return services;
     }

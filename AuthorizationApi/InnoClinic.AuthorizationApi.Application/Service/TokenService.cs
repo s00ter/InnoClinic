@@ -17,13 +17,13 @@ public class TokenService : ITokenService
         var claims = new List<Claim>
         {
             new(CustomClaimTypes.UserId, user.Id),
-            new(JwtRegisteredClaimNames.Email, user.Email),
+            new(CustomClaimTypes.Email, user.Email),
             new(CustomClaimTypes.Username, user.UserName),
         };
 
         foreach (var role in roles)
         {
-            claims.Add(new Claim(ClaimTypes.Role, role));
+            claims.Add(new Claim(CustomClaimTypes.Role, role));
         }
         
         var key = SHA256.HashData(Encoding.UTF8.GetBytes(JwtConfiguration.SigningKey));
