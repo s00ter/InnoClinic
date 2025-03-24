@@ -2,14 +2,11 @@ using System.Text.Json.Serialization;
 using FluentValidation;
 using InnoClinic.AppointmentApi.DataAccess;
 using Microsoft.EntityFrameworkCore;
-using Hellang.Middleware.ProblemDetails;
 using InnoClinic.AppointmentApi.Api.DependencyInjection;
-using InnoClinic.Shared.Exceptions;
-using Microsoft.AspNetCore.Mvc;
+using InnoClinic.Shared.DependencyInjection;
+using InnoClinic.Shared.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddSwagger();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -23,23 +20,12 @@ builder.Services.AddDbContext<InnoClinicAppointmentContext>(options =>
 builder.Services.AddServices();
 builder.Services.AddRepositories();
 builder.Services.AddJwtSettings();
-
-builder.Services.AddProblemDetails(opt =>
-{
-    opt.ExceptionDetailsPropertyName = "Exception Details";
-    opt.IncludeExceptionDetails = (ctx, ex) => builder.Environment.IsDevelopment() || builder.Environment.IsStaging();
-    
-    opt.Map<AppException>(exception => new ProblemDetails()
-    {
-        Title = exception.Title,
-        Detail = exception.Details,
-        Status = StatusCodes.Status500InternalServerError,
-        Type = exception.Type,
-        Instance = exception.Instance
-    });
-});
+builder.Services.AddPoliciesSettings();
 
 builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 var app = builder.Build();
 
@@ -50,9 +36,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseProblemDetails();
-
-app.UseHttpsRedirection();
+app.UseExceptionHandler(opt => { });
 
 app.UseAuthentication();
 app.UseAuthorization();

@@ -1,4 +1,4 @@
-namespace InnoClinic.Application.Exceptions;
+namespace InnoClinic.Shared.Exceptions;
 
 public class ValidationAppException : Exception
 {

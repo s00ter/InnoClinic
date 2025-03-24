@@ -1,5 +1,5 @@
 using FluentValidation;
-using InnoClinic.Application.Exceptions;
+using InnoClinic.Shared.Exceptions;
 using MediatR;
 
 namespace InnoClinic.Application.Behaviors;

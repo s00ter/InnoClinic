@@ -4,7 +4,8 @@ using InnoClinic.DataAccess;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using InnoClinic.Authorization.DependencyInjection;
-using InnoClinic.Authorization.Middlewares;
+using InnoClinic.Shared.DependencyInjection;
+using InnoClinic.Shared.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,9 +14,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
 builder.Services.AddServices();
-builder.Services.AddSwaggerSettings();
 builder.Services.AddIdentitySettings();
 builder.Services.AddJwtSettings();
+builder.Services.AddPoliciesSettings();
 builder.Services.AddMediatrSettings();
 
 builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());

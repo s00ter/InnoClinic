@@ -1,5 +1,7 @@
 using InnoClinic.AppointmentApi.BL.Dto.AppointmentDto;
 using InnoClinic.AppointmentApi.BL.Services.AppointmentService;
+using InnoClinic.Shared;
+using InnoClinic.Shared.Constants;
 using InnoClinic.Shared.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,14 +9,14 @@ using Microsoft.AspNetCore.Mvc;
 namespace InnoClinic.AppointmentApi.Api.Controllers;
 
 [ApiController]
-[Authorize]
+[Authorize(Policy = "OnlyForMembers")]
 [Route("api/appointments")]
 public class AppointmentController(
     IAppointmentService appointmentService
     ) : ControllerBase
 {
     [HttpGet]
-    [Authorize]
+    [HasPermission(Permissions.Read)]
     public async Task<IActionResult> Get([FromQuery] QueryPaginationArguments queryPagination, CancellationToken cancellationToken)
     {
         var res = await appointmentService.GetAllAppointments(queryPagination, cancellationToken);
@@ -43,6 +45,7 @@ public class AppointmentController(
     }
     
     [HttpDelete("{id:guid}")]
+    [HasPermission(Permissions.Delete)]
     public async Task<IActionResult> Delete([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         await appointmentService.DeleteAppointment(id, cancellationToken);

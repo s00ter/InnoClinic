@@ -1,5 +1,7 @@
 using InnoClinic.Application.Commands;
 using InnoClinic.Application.Dto.Account;
+using InnoClinic.Shared;
+using InnoClinic.Shared.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -39,9 +41,9 @@ public class AccountController(
         
         return Ok(token);
     }
-
-    [Authorize]
+    
     [HttpPost("forgot-password")]
+    [Authorize]
     public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request, CancellationToken cancellationToken = default)
     {
         await sender.Send(new ForgotPasswordCommand(request), cancellationToken);
@@ -49,6 +51,7 @@ public class AccountController(
     }
 
     [HttpPost("reset-password")]
+    [Authorize]
     public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request, CancellationToken cancellationToken = default)
     {
         await sender.Send(new ResetPasswordCommand(request), cancellationToken);

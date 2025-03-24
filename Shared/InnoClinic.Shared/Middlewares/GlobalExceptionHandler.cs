@@ -1,7 +1,8 @@
-using InnoClinic.Application.Exceptions;
+using InnoClinic.Shared.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http;
 
-namespace InnoClinic.Authorization.Middlewares;
+namespace InnoClinic.Shared.Middlewares;
 
 public class GlobalExceptionHandler(IProblemDetailsService problemDetailsService) : IExceptionHandler
 {

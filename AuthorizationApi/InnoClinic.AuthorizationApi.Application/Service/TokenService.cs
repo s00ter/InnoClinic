@@ -20,11 +20,21 @@ public class TokenService : ITokenService
             new(CustomClaimTypes.Email, user.Email),
             new(CustomClaimTypes.Username, user.UserName),
         };
+        
+        var permissionsSet = new HashSet<string>();
 
         foreach (var role in roles)
         {
             claims.Add(new Claim(CustomClaimTypes.Role, role));
+        
+            var permissions = GetPermissionsForRole(role);
+            foreach (var permission in permissions)
+            {
+                permissionsSet.Add(permission);
+            }
         }
+        
+        claims.AddRange(permissionsSet.Select(p => new Claim(CustomClaimTypes.Permission, p)));
         
         var key = SHA256.HashData(Encoding.UTF8.GetBytes(JwtConfiguration.SigningKey));
         var secret = new SymmetricSecurityKey(key);
@@ -44,5 +54,35 @@ public class TokenService : ITokenService
         var token = tokenHandler.CreateToken(tokenDescriptor);
         
         return tokenHandler.WriteToken(token);
+    }
+    
+    private List<string> GetPermissionsForRole(string role)
+    {
+        return role switch
+        {
+            RoleConstants.Admin =>
+            [
+                Permissions.Read,
+                Permissions.Delete,
+                Permissions.Update
+            ],
+            RoleConstants.Doctor =>
+            [
+                Permissions.Read,
+                Permissions.Delete,
+                Permissions.Update
+            ],
+            RoleConstants.Patient =>
+            [
+                Permissions.Read,
+                Permissions.Delete,
+                Permissions.Update
+            ],
+            RoleConstants.User =>
+            [
+                Permissions.Read,
+            ],
+            _ => []
+        };
     }
 }
