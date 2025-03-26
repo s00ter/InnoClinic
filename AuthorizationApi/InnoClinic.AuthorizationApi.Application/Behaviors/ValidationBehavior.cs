@@ -24,9 +24,8 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
             .GroupBy(x => x.PropertyName)
             .ToDictionary(g => g.Key, g => g.Select(e => e.ErrorMessage).Distinct().ToArray());
         
-        if (errorDictionary.Any())
-            throw new ValidationAppException(errorDictionary);
-        
-        return await next();
+        return errorDictionary.Any() 
+            ? throw new ValidationAppException(errorDictionary) 
+            : await next();
     }
 }
