@@ -1,0 +1,138 @@
+{
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:5050"
+  },
+  "Routes": [
+    {
+      "UpstreamPathTemplate": "/gateway/appointments",
+      "UpstreamHttpMethod": ["Get"],
+      "DownstreamPathTemplate": "/api/appointments",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "innoclinic.appointmentapi.api",
+          "Port": 8080
+        }
+      ],
+      "RateLimitOptions": {
+        "EnableRateLimiting": true,
+        "Period": "10s",
+        "Limit": 3,
+        "PeriodTimespan": 10
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/appointments",
+      "UpstreamHttpMethod": ["Post"],
+      "DownstreamPathTemplate": "/api/appointments",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "innoclinic.appointmentapi.api",
+          "Port": 8080
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/appointments/{id}",
+      "UpstreamHttpMethod": ["Get","Put","Delete"],
+      "DownstreamPathTemplate": "/api/appointments/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "innoclinic.appointmentapi.api",
+          "Port": 8080
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/results",
+      "UpstreamHttpMethod": ["Get","Post"],
+      "DownstreamPathTemplate": "/api/results",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "innoclinic.appointmentapi.api",
+          "Port": 8080
+        }
+      ],
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 3,
+        "DurationOfBreak": 2000,
+        "TimeoutValue": 5000
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/results/{id}",
+      "UpstreamHttpMethod": ["Get","Put","Delete"],
+      "DownstreamPathTemplate": "/api/results/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "innoclinic.appointmentapi.api",
+          "Port": 8080
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/accounts/register",
+      "UpstreamHttpMethod": ["Post"],
+      "DownstreamPathTemplate": "/api/accounts/register",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "innoclinic.authorizationapi.api",
+          "Port": 8080
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/accounts/email-verification",
+      "UpstreamHttpMethod": ["Post"],
+      "DownstreamPathTemplate": "/api/accounts/email-verification",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "innoclinic.authorizationapi.api",
+          "Port": 8080
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/accounts/authenticate",
+      "UpstreamHttpMethod": ["Post"],
+      "DownstreamPathTemplate": "/api/accounts/authenticate",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "innoclinic.authorizationapi.api",
+          "Port": 8080
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/accounts/forgot-password",
+      "UpstreamHttpMethod": ["Post"],
+      "DownstreamPathTemplate": "/api/accounts/forgot-password",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "innoclinic.authorizationapi.api",
+          "Port": 8080
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/accounts/reset-password",
+      "UpstreamHttpMethod": ["Post"],
+      "DownstreamPathTemplate": "/api/accounts/reset-password",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "innoclinic.authorizationapi.api",
+          "Port": 8080
+        }
+      ]
+    }
+  ]
+}

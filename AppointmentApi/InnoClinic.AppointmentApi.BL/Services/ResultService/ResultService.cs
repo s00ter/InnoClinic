@@ -1,0 +1,87 @@
+using System.Collections.Frozen;
+using InnoClinic.AppointmentApi.BL.Dto.ResultDto;
+using InnoClinic.AppointmentApi.BL.Mappers;
+using InnoClinic.AppointmentApi.DataAccess.Entity;
+using InnoClinic.AppointmentApi.DataAccess.UnitOfWork;
+using InnoClinic.Shared.Models;
+
+namespace InnoClinic.AppointmentApi.BL.Services.ResultService;
+
+public class ResultService(
+    IUnitOfWork unitOfWork
+    ) : IResultService
+{
+    public async Task<FrozenSet<ShowResultResponse>> GetAllResults(
+        QueryPaginationArguments queryPagination, 
+        CancellationToken cancellationToken)
+    {
+        var results = await unitOfWork.Results.GetAllAsync(queryPagination, cancellationToken);
+        var res = results.Select(x => x.MapShowResultResponse()).ToFrozenSet();
+        return res;
+    }
+    
+    public async Task<ResultInfoResponse> GetResultInfo(
+        Guid id, 
+        CancellationToken cancellationToken)
+    {
+        var result = await unitOfWork.Results.GetByIdAsync(
+            id, 
+            cancellationToken, 
+            x=> x.Appointment) 
+                     ?? throw new Exception("Result not found");
+        
+        
+        return result.MapResultInfoResponse();
+    }
+    
+    public async Task<Result> CreateResult(
+        CreateResultRequest request, 
+        CancellationToken cancellationToken)
+    {
+        var result = new Result
+        {
+            Id = Guid.NewGuid(),
+            Complaints = request.Complaints,
+            Conclusion = request.Conclusion,
+            Recommendations = request.Recommendations,
+            AppointmentId = request.AppointmentId
+        };
+
+        if (unitOfWork.Appointments.GetByIdAsync(result.AppointmentId, cancellationToken).Result == null)
+            throw new Exception("Appointment not found");
+
+        await unitOfWork.Results.AddAsync(result, cancellationToken);
+        await unitOfWork.SaveChangesAsync();
+
+        return await unitOfWork.Results.GetByIdAsync(result.Id, cancellationToken)
+               ?? throw new Exception("Result not found");
+    }
+    
+    public async Task UpdateResult(
+        Guid id, 
+        UpdateResultRequest request, 
+        CancellationToken cancellationToken)
+    {
+        var result = await unitOfWork.Results.GetByIdAsync(id, cancellationToken) 
+                     ?? throw new Exception("Result not found");
+        
+        result.Complaints = request.Complaints;
+        result.Conclusion = request.Conclusion;
+        result.Recommendations = request.Recommendations;
+        result.AppointmentId = request.AppointmentId;
+        
+        unitOfWork.Results.Update(result);
+        await unitOfWork.SaveChangesAsync();
+    }
+    
+    public async Task DeleteResult(
+        Guid id, 
+        CancellationToken cancellationToken)
+    {
+        var result = await unitOfWork.Results.GetByIdAsync(id, cancellationToken) 
+                     ?? throw new Exception("Result not found");
+        
+        unitOfWork.Results.Delete(result);
+        await unitOfWork.SaveChangesAsync();
+    }
+}
