@@ -1,7 +1,5 @@
 using InnoClinic.Application.Commands;
 using InnoClinic.Application.Dto.Account;
-using InnoClinic.Shared;
-using InnoClinic.Shared.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

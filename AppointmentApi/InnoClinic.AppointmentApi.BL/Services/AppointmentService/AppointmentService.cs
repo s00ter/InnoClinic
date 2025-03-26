@@ -1,20 +1,14 @@
 using System.Collections.Frozen;
-using FluentValidation;
-using Hellang.Middleware.ProblemDetails;
 using InnoClinic.AppointmentApi.BL.Dto.AppointmentDto;
 using InnoClinic.AppointmentApi.BL.Mappers;
 using InnoClinic.AppointmentApi.DataAccess.Entity;
 using InnoClinic.AppointmentApi.DataAccess.UnitOfWork;
 using InnoClinic.Shared.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace InnoClinic.AppointmentApi.BL.Services.AppointmentService;
 
 public class AppointmentService(
-    IUnitOfWork unitOfWork,
-    IServiceProvider serviceProvider
+    IUnitOfWork unitOfWork
     ) : IAppointmentService
 {
     public async Task<FrozenSet<ShowAppointmentResponse>> GetAllAppointments(
@@ -36,12 +30,12 @@ public class AppointmentService(
         CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
-        
+
         var appointment = await unitOfWork.Appointments.GetByIdAsync(
-            id, 
-            cancellationToken, 
-            x=> x.Result) 
-                          ?? throw new ProblemDetailsException(new ProblemDetails() { Title = "Appointment not found" });
+                              id,
+                              cancellationToken,
+                              x => x.Result)
+                          ?? throw new Exception("Appointment not found");
         
         return appointment.MapAppointmentInfoResponse();
     }
@@ -51,19 +45,6 @@ public class AppointmentService(
         CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
-        
-        var validator = serviceProvider.GetRequiredService<IValidator<CreateAppointmentRequest>>();
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
-        
-        if (!validationResult.IsValid)
-        {
-            var problemDetails = new ValidationProblemDetails(validationResult.ToDictionary())
-            {
-                Title = "Validation Failed",
-                Status = StatusCodes.Status400BadRequest
-            };
-            throw new ProblemDetailsException(problemDetails);
-        }
         
         var appointment = new Appointment
         {
@@ -78,7 +59,7 @@ public class AppointmentService(
         await unitOfWork.SaveChangesAsync();
 
         return await unitOfWork.Appointments.GetByIdAsync(appointment.Id, cancellationToken) 
-               ?? throw new ProblemDetailsException(new ProblemDetails() { Title = "Appointment not found" });
+               ?? throw new Exception("Appointment not found");
     }
     
     public async Task UpdateAppointment(
@@ -89,21 +70,8 @@ public class AppointmentService(
     {
         cancellationToken.ThrowIfCancellationRequested();
         
-        var validator = serviceProvider.GetRequiredService<IValidator<UpdateAppointmentRequest>>();
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
-        
-        if (!validationResult.IsValid)
-        {
-            var problemDetails = new ValidationProblemDetails(validationResult.ToDictionary())
-            {
-                Title = "Validation Failed",
-                Status = StatusCodes.Status400BadRequest
-            };
-            throw new ProblemDetailsException(problemDetails);
-        }
-        
         var appointment = await unitOfWork.Appointments.GetByIdAsync(id, cancellationToken)
-            ?? throw new ProblemDetailsException(new ProblemDetails() { Title = "Appointment not found" });
+            ?? throw new Exception("Appointment not found");
         
         appointment.DoctorId = request.DoctorId;
         appointment.ServiceId = request.ServiceId;
@@ -121,7 +89,7 @@ public class AppointmentService(
         cancellationToken.ThrowIfCancellationRequested();
         
         var appointment = await unitOfWork.Appointments.GetByIdAsync(id, cancellationToken) 
-                          ?? throw new ProblemDetailsException(new ProblemDetails() { Title = "Appointment not found" });
+                          ?? throw new Exception("Appointment not found");
         
         unitOfWork.Appointments.Delete(appointment);
         await unitOfWork.SaveChangesAsync();

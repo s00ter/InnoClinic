@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using FluentValidation;
 using InnoClinic.AppointmentApi.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using InnoClinic.AppointmentApi.Api.DependencyInjection;
@@ -21,8 +20,7 @@ builder.Services.AddServices();
 builder.Services.AddRepositories();
 builder.Services.AddJwtSettings();
 builder.Services.AddPoliciesSettings();
-
-builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddValidatorsSettings();
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
@@ -40,6 +38,8 @@ app.UseExceptionHandler(opt => { });
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseMiddleware<ValidationMiddleware>();
 
 app.MapControllers();
 

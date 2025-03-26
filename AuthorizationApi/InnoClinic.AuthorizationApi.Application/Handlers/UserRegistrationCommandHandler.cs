@@ -1,4 +1,3 @@
-using Hellang.Middleware.ProblemDetails;
 using InnoClinic.Application.Commands;
 using InnoClinic.Application.IService;
 using InnoClinic.Application.Models.Email;
@@ -6,7 +5,6 @@ using InnoClinic.BusinessLogic.Entities;
 using InnoClinic.Shared.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 
 namespace InnoClinic.Application.Handlers;
 
@@ -29,25 +27,21 @@ public class UserRegistrationCommandHandler(
         var user = await userManager.FindByEmailAsync(appUser.Email);
         if (user != null)
         {
-            throw new ProblemDetailsException(new ProblemDetails() { Title = "This Email is already in use." });
+            throw new Exception("This Email is already in use.");
         }
         
         var createResult = await userManager.CreateAsync(appUser, request.Request.Password);
         if (!createResult.Succeeded)
         {
-            var errors = createResult.Errors.Select(e => e.Description).ToList();
-            var problemDetails = new ProblemDetails { Title = "Account creation failed" };
-            problemDetails.Extensions.Add("errors", errors);
-            throw new ProblemDetailsException(problemDetails);
+            var errors = string.Join("; ", createResult.Errors.Select(e => e.Description));
+            throw new Exception($"Account creation failed: {errors}");
         }
         
         var roleResult = await userManager.AddToRoleAsync(appUser, RoleConstants.User);
         if (!roleResult.Succeeded)
         {
-            var errors = createResult.Errors.Select(e => e.Description).ToList();
-            var problemDetails = new ProblemDetails { Title = "Add role to account failed" };
-            problemDetails.Extensions.Add("errors", errors);
-            throw new ProblemDetailsException(problemDetails);
+            var errors = string.Join("; ", createResult.Errors.Select(e => e.Description));
+            throw new Exception($"Add role to account failed: {errors}");
         }
         
         var token = await userManager.GenerateEmailConfirmationTokenAsync(appUser);

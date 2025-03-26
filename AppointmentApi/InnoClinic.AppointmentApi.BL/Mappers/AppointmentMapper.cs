@@ -24,7 +24,7 @@ public static class AppointmentMapper
             Id = appointment.Id,
             DoctorId = appointment.DoctorId,
             ServiceId = appointment.ServiceId,
-            DateTimeOffset = appointment.DateTimeOffset,
+            AppointmentDate = appointment.DateTimeOffset,
             IsApproved = appointment.IsApproved,
             Result = appointment.Result
         };

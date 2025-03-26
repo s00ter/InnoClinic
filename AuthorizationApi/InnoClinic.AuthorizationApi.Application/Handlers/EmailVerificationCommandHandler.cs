@@ -1,9 +1,7 @@
-using Hellang.Middleware.ProblemDetails;
 using InnoClinic.Application.Commands;
 using InnoClinic.BusinessLogic.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 
 namespace InnoClinic.Application.Handlers;
 
@@ -15,12 +13,12 @@ public class EmailVerificationCommandHandler(
     public async Task<Unit> Handle(EmailVerificationCommand request, CancellationToken cancellationToken)
     {
         var user = await userManager.FindByEmailAsync(request.Request.Email)
-                   ?? throw new ProblemDetailsException(new ProblemDetails() { Title = "Account does not exist" });
+                   ?? throw new Exception("Account does not exist");
         
         var isEmailVerified = await userManager.ConfirmEmailAsync(user, request.Request.Token);
         if (!isEmailVerified.Succeeded)
         {
-            throw new ProblemDetailsException(new ProblemDetails() { Title = "Invalid email verification" });
+            throw new Exception("Invalid email verification");
         }
         
         return Unit.Value;

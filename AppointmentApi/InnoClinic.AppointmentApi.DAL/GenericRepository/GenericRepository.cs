@@ -1,7 +1,5 @@
 using System.Linq.Expressions;
-using Hellang.Middleware.ProblemDetails;
 using InnoClinic.Shared.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace InnoClinic.AppointmentApi.DataAccess.GenericRepository;
@@ -36,10 +34,7 @@ public class GenericRepository<T>(
     {
         var entityType = context.Model.FindEntityType(typeof(T));
         var primaryKey = entityType?.FindPrimaryKey()
-            ?? throw new ProblemDetailsException(new ProblemDetails()
-            {
-                Title = $"Entity {typeof(T).Name} does not have a primary key."
-            });
+            ?? throw new Exception($"Entity {typeof(T).Name} does not have a primary key.");
         
         var query = _dbSet.AsQueryable();
 

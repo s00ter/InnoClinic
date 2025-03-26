@@ -2,6 +2,7 @@ using InnoClinic.AppointmentApi.BL.Dto.AppointmentDto;
 using InnoClinic.AppointmentApi.BL.Services.AppointmentService;
 using InnoClinic.Shared;
 using InnoClinic.Shared.Constants;
+using InnoClinic.Shared.Middlewares;
 using InnoClinic.Shared.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +32,7 @@ public class AppointmentController(
     }
     
     [HttpPost]
+    [TargetRequestType(typeof(CreateAppointmentRequest))]
     public async Task<IActionResult> Create([FromBody] CreateAppointmentRequest request, CancellationToken cancellationToken)
     {
         var res = await appointmentService.CreateAppointment(request, cancellationToken);
@@ -38,6 +40,7 @@ public class AppointmentController(
     }
     
     [HttpPut("{id:guid}")]
+    [TargetRequestType(typeof(UpdateAppointmentRequest))]
     public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateAppointmentRequest request, CancellationToken cancellationToken)
     {
         await appointmentService.UpdateAppointment(id, request, cancellationToken);

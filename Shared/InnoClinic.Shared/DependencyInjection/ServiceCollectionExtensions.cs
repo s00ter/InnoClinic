@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using InnoClinic.Shared.Configurations;
+using InnoClinic.Shared.Constants;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -15,11 +16,7 @@ public static class ServiceCollectionExtensions
         services.AddAuthorization(options =>
             {
                 options.AddPolicy("OnlyForMembers", policy =>
-                    policy.RequireAssertion(context =>
-                        context.User.HasClaim(c =>
-                            c.Type == "Admin" ||
-                            c.Type == "Doctor" ||
-                            c.Type == "Patient")));
+                    policy.RequireRole(RoleConstants.Admin, RoleConstants.Doctor, RoleConstants.Patient));
             });
 
         return services;

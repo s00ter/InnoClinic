@@ -2,6 +2,7 @@ using InnoClinic.AppointmentApi.BL.Dto.ResultDto;
 using InnoClinic.AppointmentApi.BL.Services.ResultService;
 using InnoClinic.Shared;
 using InnoClinic.Shared.Constants;
+using InnoClinic.Shared.Middlewares;
 using InnoClinic.Shared.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,7 @@ public class ResultController(IResultService resultService) : ControllerBase
     }
     
     [HttpPost]
+    [TargetRequestType(typeof(CreateResultRequest))]
     public async Task<IActionResult> Create([FromBody] CreateResultRequest request, CancellationToken cancellationToken)
     {
         var res = await resultService.CreateResult(request, cancellationToken);
@@ -36,6 +38,7 @@ public class ResultController(IResultService resultService) : ControllerBase
     }
     
     [HttpPut("{id:guid}")]
+    [TargetRequestType(typeof(UpdateResultRequest))]
     public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateResultRequest request, CancellationToken cancellationToken)
     {
         await resultService.UpdateResult(id, request, cancellationToken);

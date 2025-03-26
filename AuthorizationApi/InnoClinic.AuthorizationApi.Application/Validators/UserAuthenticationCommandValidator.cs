@@ -9,10 +9,12 @@ public class UserAuthenticationCommandValidator : AbstractValidator<UserAuthenti
     {
         RuleFor(x => x.Request.Email)
             .NotEmpty().WithMessage("Email is required")
-            .EmailAddress().WithMessage("Invalid Email format");
+            .EmailAddress().WithMessage("Invalid Email format")
+            .OverridePropertyName("Email");
 
         RuleFor(x => x.Request.Password)
             .NotEmpty().WithMessage("Password is required")
-            .MinimumLength(5).WithMessage("Password must be at least 5 characters");
+            .MinimumLength(5).WithMessage("Password must be at least 5 characters")
+            .OverridePropertyName("Password");
     }
 }
