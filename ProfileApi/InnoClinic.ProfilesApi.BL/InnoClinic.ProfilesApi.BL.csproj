@@ -8,10 +8,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\Shared\InnoClinic.Shared\InnoClinic.Shared.csproj" />
       <ProjectReference Include="..\InnoClinic.ProfilesApi.DAL\InnoClinic.ProfilesApi.DAL.csproj" />
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0-preview1" />
       <PackageReference Include="Ignore" Version="0.2.1" />
     </ItemGroup>
 

@@ -1,24 +1,28 @@
 using InnoClinic.Prof.DataAccess;
 using InnoClinic.ProfilesApi.DependencyInjection;
 using InnoClinic.Shared.DependencyInjection;
+using InnoClinic.Shared.Middlewares;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
-builder.Services.AddServicesSettings();
-builder.Services.AddRepositoriesSettings();
-
-builder.Services.AddPoliciesSettings();
-builder.Services.AddJwtSettings();
-
 builder.Services.AddDbContext<InnoClinicProfContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("InnoClinicProfile")));
+
+builder.Services.AddServicesSettings();
+builder.Services.AddRepositoriesSettings();
+builder.Services.AddValidatorsSettings();
+
+builder.Services.AddJwtSettings();
+builder.Services.AddPoliciesSettings();
+
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 var app = builder.Build();
 
@@ -29,10 +33,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseExceptionHandler(opt => { });
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseMiddleware<ValidationMiddleware>();
 
 app.MapControllers();
 

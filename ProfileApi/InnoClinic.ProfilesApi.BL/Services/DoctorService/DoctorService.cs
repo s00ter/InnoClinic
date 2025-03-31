@@ -1,13 +1,18 @@
+using System.Security.Claims;
 using InnoClinic.Prof.BusinessLogic.Dto.Doctor;
 using InnoClinic.Prof.BusinessLogic.Mappers;
 using InnoClinic.Prof.DataAccess.Entities;
 using InnoClinic.Prof.DataAccess.Models;
 using InnoClinic.Prof.DataAccess.Repositories.DoctorRepository;
+using InnoClinic.Shared.Constants;
+using InnoClinic.Shared.Extensions;
+using Microsoft.AspNetCore.Http;
 
 namespace InnoClinic.Prof.BusinessLogic.Services.DoctorService;
 
 public class DoctorService(
-    IDoctorRepository doctorRepository
+    IDoctorRepository doctorRepository,
+    ICurrentUserInfo currentUserInfo
     ) : IDoctorService
 {
     public async Task<List<ShowDoctorResponse>> GetAllDoctors(QueryObject query)
@@ -19,20 +24,20 @@ public class DoctorService(
     
     public async Task<DoctorInfoResponse> GetDoctorInfo(Guid id)
     {
-        var doctor = await doctorRepository.GetByIdAsync(id);
-        if (doctor is null)
-        {
-            throw new NullReferenceException("Doctor not found");
-        }
+        var doctor = await doctorRepository.GetByIdAsync(id) 
+                     ?? throw new Exception("Doctor not found");
+        
         return doctor.MapDoctorInfoDto();
     }
     
     public async Task<Doctor> CreateDoctor(RegistrationDoctorRequest request)
     {
+        var userId = Guid.Parse(currentUserInfo.GetUserId());
+        
         var doctor = new Doctor
         {
             Id = Guid.NewGuid(),
-            UserId = Guid.NewGuid(),
+            UserId = userId,
             FirstName = request.FirstName,
             LastName = request.LastName,
             MiddleName = request.MiddleName,
@@ -48,11 +53,8 @@ public class DoctorService(
     
     public async Task<ShowDoctorResponse> UpdateDoctor(Guid id, UpdateDoctorRequest request)
     {
-        var dbDoctor = await doctorRepository.GetByIdAsync(id);
-        if (dbDoctor == null)
-        { 
-            throw new NullReferenceException("Doctor not found");
-        }
+        var dbDoctor = await doctorRepository.GetByIdAsync(id) ?? 
+                       throw new Exception("Doctor not found");
         
         dbDoctor.OfficeId = request.OfficeId;
         dbDoctor.FirstName = request.FirstName;
@@ -67,11 +69,9 @@ public class DoctorService(
     
     public async Task<Doctor?> DeleteDoctor(Guid id)
     {
-        var dbDoctor = await doctorRepository.Delete(id);
-        if (dbDoctor == null)
-        {
-            throw new NullReferenceException("Doctor not found");
-        }
+        var dbDoctor = await doctorRepository.Delete(id) ?? 
+                       throw new Exception("Doctor not found");
+        
         return dbDoctor;
     }
 }

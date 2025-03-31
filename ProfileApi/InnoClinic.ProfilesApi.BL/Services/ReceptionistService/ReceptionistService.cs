@@ -3,10 +3,14 @@ using InnoClinic.Prof.BusinessLogic.Mappers;
 using InnoClinic.Prof.DataAccess.Entities;
 using InnoClinic.Prof.DataAccess.Models;
 using InnoClinic.Prof.DataAccess.Repositories.ReceptionistRepository;
+using InnoClinic.Shared.Extensions;
 
 namespace InnoClinic.Prof.BusinessLogic.Services.ReceptionistService;
 
-public class ReceptionistService(IReceptionistRepository receptionistRepository) : IReceptionistService
+public class ReceptionistService(
+    IReceptionistRepository receptionistRepository,
+    ICurrentUserInfo currentUserInfo
+    ) : IReceptionistService
 {
     public async Task<List<ShowReceptionistResponse>> GetAllReceptionists(QueryObject query)
     {
@@ -17,23 +21,23 @@ public class ReceptionistService(IReceptionistRepository receptionistRepository)
     
     public async Task<ReceptionistInfoResponse> GetReceptionistInfo(Guid id)
     {
-        var patient = await receptionistRepository.GetByIdAsync(id);
-        if (patient is null)
-        {
-            throw new NullReferenceException("Receptionist not found");
-        }
+        var patient = await receptionistRepository.GetByIdAsync(id) 
+                      ?? throw new Exception("Receptionist not found");
+        
         return patient.MapReceptionistInfoDto();
     }
     
     public async Task<Receptionist> CreateReceptionist(RegistrationReceptionistRequest request)
     {
+        var userId = Guid.Parse(currentUserInfo.GetUserId());
+        
         var patient = new Receptionist
         {
             Id = Guid.NewGuid(),
             FirstName = request.FirstName,
             LastName = request.LastName,
             MiddleName = request.MiddleName,
-            AccountId = request.AccountId,
+            AccountId = userId,
             OfficeId = request.OfficeId
         };
             
@@ -42,16 +46,12 @@ public class ReceptionistService(IReceptionistRepository receptionistRepository)
     
     public async Task<ShowReceptionistResponse> UpdateReceptionist(Guid id, UpdateReceptionistRequest request)
     {
-        var patient = await receptionistRepository.GetByIdAsync(id);
-        if (patient == null)
-        { 
-            throw new NullReferenceException("Receptionist not found");
-        }
+        var patient = await receptionistRepository.GetByIdAsync(id) 
+                      ?? throw new Exception("Receptionist not found");
         
         patient.FirstName = request.FirstName;
         patient.LastName = request.LastName;
         patient.MiddleName = request.MiddleName;
-        patient.AccountId = request.AccountId;
         patient.OfficeId = request.OfficeId;
         
         var res = await receptionistRepository.Update(patient);
@@ -61,11 +61,9 @@ public class ReceptionistService(IReceptionistRepository receptionistRepository)
     
     public async Task<Receptionist?> DeleteReceptionist(Guid id)
     {
-        var res = await receptionistRepository.Delete(id);
-        if (res == null)
-        {
-            throw new NullReferenceException("Receptionist not found");
-        }
+        var res = await receptionistRepository.Delete(id) 
+                  ?? throw new NullReferenceException("Receptionist not found");
+        
         return res;
     }
 }

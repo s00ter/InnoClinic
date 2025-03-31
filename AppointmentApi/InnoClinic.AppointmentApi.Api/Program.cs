@@ -18,9 +18,10 @@ builder.Services.AddDbContext<InnoClinicAppointmentContext>(options =>
 
 builder.Services.AddServices();
 builder.Services.AddRepositories();
+builder.Services.AddValidatorsSettings();
+
 builder.Services.AddJwtSettings();
 builder.Services.AddPoliciesSettings();
-builder.Services.AddValidatorsSettings();
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();

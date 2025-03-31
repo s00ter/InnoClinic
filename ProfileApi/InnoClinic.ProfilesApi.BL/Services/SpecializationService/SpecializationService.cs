@@ -19,11 +19,9 @@ public class SpecializationService(
     
     public async Task<SpecializationInfoResponse> GetSpecializationInfo(Guid id)
     {
-        var specialization = await specializationRepository.GetByIdAsync(id);
-        if (specialization is null)
-        {
-            throw new NullReferenceException("Specialization not found");
-        }
+        var specialization = await specializationRepository.GetByIdAsync(id) 
+                             ?? throw new Exception("Specialization not found");
+        
         return specialization.MapSpecializationInfoDto();
     }
     
@@ -41,11 +39,8 @@ public class SpecializationService(
     
     public async Task<ShowSpecializationResponse> UpdateSpecialization(Guid id, UpdateSpecializationRequest request)
     {
-        var specialization = await specializationRepository.GetByIdAsync(id);
-        if (specialization == null)
-        { 
-            throw new NullReferenceException("Specialization not found");
-        }
+        var specialization = await specializationRepository.GetByIdAsync(id) 
+                             ?? throw new Exception("Specialization not found");
         
         specialization.Name = request.Name;
         specialization.IsActive = request.IsActive;
@@ -57,11 +52,9 @@ public class SpecializationService(
     
     public async Task<Specialization?> DeleteSpecialization(Guid id)
     {
-        var res = await specializationRepository.Delete(id);
-        if (res == null)
-        {
-            throw new NullReferenceException("Specialization not found");
-        }
+        var res = await specializationRepository.Delete(id) 
+                  ?? throw new Exception("Specialization not found");
+        
         return res;
     }
 }
