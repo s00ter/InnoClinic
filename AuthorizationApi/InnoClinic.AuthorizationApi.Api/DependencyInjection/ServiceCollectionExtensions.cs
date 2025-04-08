@@ -3,6 +3,7 @@ using InnoClinic.Application.IService;
 using InnoClinic.Application.Service;
 using InnoClinic.BusinessLogic.Entities;
 using InnoClinic.DataAccess;
+using InnoClinic.Shared.Extensions;
 using Microsoft.AspNetCore.Identity;
 
 namespace InnoClinic.Authorization.DependencyInjection;
@@ -14,7 +15,8 @@ public static class ServiceCollectionExtensions
     {
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<ITokenService, TokenService>();
-
+        
+        services.AddScoped<ICurrentUserInfo, CurrentUserInfo>();
         return services;
     }
     

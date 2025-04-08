@@ -3,4 +3,4 @@ using MediatR;
 
 namespace InnoClinic.Application.Commands;
 
-public record UserAuthenticationCommand(UserAuthenticationRequest Request) : IRequest<TokenResponse>;
+public record RefreshAccessTokenCommand(RefreshTokenRequest Request) : IRequest<string>;

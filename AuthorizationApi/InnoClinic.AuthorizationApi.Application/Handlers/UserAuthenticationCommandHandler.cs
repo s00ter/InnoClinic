@@ -1,4 +1,5 @@
 using InnoClinic.Application.Commands;
+using InnoClinic.Application.Dto.Account;
 using InnoClinic.Application.IService;
 using InnoClinic.BusinessLogic.Entities;
 using MediatR;
@@ -10,9 +11,9 @@ public class UserAuthenticationCommandHandler(
     UserManager<User> userManager,
     ITokenService tokenService
     ) 
-    : IRequestHandler<UserAuthenticationCommand, string>
+    : IRequestHandler<UserAuthenticationCommand, TokenResponse>
 {
-    public async Task<string> Handle(UserAuthenticationCommand request, CancellationToken cancellationToken)
+    public async Task<TokenResponse> Handle(UserAuthenticationCommand request, CancellationToken cancellationToken)
     {
         var user = await userManager.FindByEmailAsync(request.Request.Email)
                    ?? throw new Exception("Account does not exist");
@@ -39,8 +40,18 @@ public class UserAuthenticationCommandHandler(
         await userManager.ResetAccessFailedCountAsync(user);
 
         var roles = await userManager.GetRolesAsync(user);
-        var token = tokenService.CreateToken(user, roles);
+        
+        var tokenDto = new TokenResponse
+        {
+            AccessToken = tokenService.CreateToken(user, roles),
+            RefreshToken = tokenService.CreateRefreshToken()
+        };
+        
+        user.RefreshToken = tokenDto.RefreshToken;
+        user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
+        
+        await userManager.UpdateAsync(user);
 
-        return token;
+        return tokenDto;
     }
 }

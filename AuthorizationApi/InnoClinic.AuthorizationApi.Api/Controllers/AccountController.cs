@@ -34,10 +34,10 @@ public class AccountController(
     [HttpPost("authenticate")]
     public async Task<IActionResult> Authenticate([FromBody] UserAuthenticationRequest request, CancellationToken cancellationToken = default)
     {
-        var token = await sender.Send(new UserAuthenticationCommand(request), cancellationToken);
-        HttpContext.Response.Cookies.Append("cookies",token);
+        var response = await sender.Send(new UserAuthenticationCommand(request), cancellationToken);
+        HttpContext.Response.Cookies.Append("cookies",response.AccessToken);
         
-        return Ok(token);
+        return Ok(response);
     }
     
     [HttpPost("forgot-password")]
@@ -54,5 +54,14 @@ public class AccountController(
     {
         await sender.Send(new ResetPasswordCommand(request), cancellationToken);
         return Ok(new { Message = "Password change successfully" });
+    }
+    
+    [HttpPost("refresh-access-token")]
+    public async Task<IActionResult> RefreshAccessToken([FromBody] RefreshTokenRequest request , CancellationToken cancellationToken = default)
+    {
+        var response = await sender.Send(new RefreshAccessTokenCommand(request), cancellationToken);
+        HttpContext.Response.Cookies.Append("cookies",response);
+        
+        return Ok(new { Message = "Token change successfully" });
     }
 }

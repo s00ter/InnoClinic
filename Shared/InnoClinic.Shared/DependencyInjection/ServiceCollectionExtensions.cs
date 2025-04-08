@@ -39,7 +39,8 @@ public static class ServiceCollectionExtensions
                 ValidAudience = JwtConfiguration.Audience,
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(SHA256.HashData(Encoding.UTF8.GetBytes(JwtConfiguration.SigningKey))),
-                ValidateLifetime = true
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero
             };
 
             options.Events = new JwtBearerEvents
