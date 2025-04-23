@@ -18,8 +18,6 @@ public class UserRegistrationCommandHandler(
     {
         var appUser = new User
         {
-            FirstName = request.Request.FirstName,
-            LastName = request.Request.LastName,
             UserName = request.Request.Email,
             Email = request.Request.Email,
         };

@@ -6,4 +6,5 @@ public static class RoleConstants
     public const string User = nameof(User);
     public const string Doctor = nameof(Doctor);
     public const string Patient = nameof(Patient);
+    public const string Receptionist = nameof(Receptionist);
 }

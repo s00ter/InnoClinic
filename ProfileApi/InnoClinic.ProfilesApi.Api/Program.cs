@@ -2,6 +2,7 @@ using InnoClinic.Prof.DataAccess;
 using InnoClinic.ProfilesApi.DependencyInjection;
 using InnoClinic.Shared.DependencyInjection;
 using InnoClinic.Shared.Middlewares;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +21,14 @@ builder.Services.AddValidatorsSettings();
 
 builder.Services.AddJwtSettings();
 builder.Services.AddPoliciesSettings();
+
+builder.Services.AddMassTransit(x =>
+{
+    x.UsingRabbitMq((ctx, cfg) =>
+    {
+        cfg.Host("rabbitmq://localhost");
+    });
+});
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();

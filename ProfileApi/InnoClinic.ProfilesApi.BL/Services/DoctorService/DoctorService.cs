@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using InnoClinic.Prof.BusinessLogic.Dto.Doctor;
 using InnoClinic.Prof.BusinessLogic.Mappers;
 using InnoClinic.Prof.DataAccess.Entities;
@@ -6,13 +5,15 @@ using InnoClinic.Prof.DataAccess.Models;
 using InnoClinic.Prof.DataAccess.Repositories.DoctorRepository;
 using InnoClinic.Shared.Constants;
 using InnoClinic.Shared.Extensions;
-using Microsoft.AspNetCore.Http;
+using InnoClinic.Shared.IventTypes;
+using MassTransit;
 
 namespace InnoClinic.Prof.BusinessLogic.Services.DoctorService;
 
 public class DoctorService(
     IDoctorRepository doctorRepository,
-    ICurrentUserInfo currentUserInfo
+    ICurrentUserInfo currentUserInfo,
+    IPublishEndpoint publishEndpoint
     ) : IDoctorService
 {
     public async Task<List<ShowDoctorResponse>> GetAllDoctors(QueryObject query)
@@ -47,8 +48,15 @@ public class DoctorService(
             CareerStartYear = request.CareerStartYear,
             Status = request.Status
         };
-            
-        return await doctorRepository.Add(doctor);
+        var res = await doctorRepository.Add(doctor);
+        
+        await publishEndpoint.Publish<IDoctorCreated>(new
+        {
+            UserId = res.UserId,
+            Role = RoleConstants.Doctor
+        });
+        
+        return res;
     }
     
     public async Task<ShowDoctorResponse> UpdateDoctor(Guid id, UpdateDoctorRequest request)
@@ -63,7 +71,7 @@ public class DoctorService(
         dbDoctor.SpecializationId = request.SpecializationId;
         
         var res = await doctorRepository.Update(dbDoctor);
-
+        
         return res.MapShowDoctorDto();
     }
     
