@@ -1,3 +1,4 @@
+using Dapper;
 using InnoClinic.Prof.DataAccess.Entities;
 using InnoClinic.Prof.DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
@@ -5,14 +6,16 @@ using Microsoft.EntityFrameworkCore;
 namespace InnoClinic.Prof.DataAccess.Repositories.SpecializationRepository;
 
 public class SpecializationRepository(
-    InnoClinicProfContext context
+    InnoClinicProfContext context,
+    DapperContext dapperContext
     ) : ISpecializationRepository
 {
     public async Task<Specialization> Add(Specialization specialization)
     {
-        await context.Specializations.AddAsync(specialization);
-        await context.SaveChangesAsync();
-        return specialization;
+        var query = "INSERT INTO Specializations (Id, Name, IsActive) VALUES (@Id, @Name, @IsActive)";
+        using var connection = dapperContext.CreateConnection();
+        await connection.ExecuteAsync(query, specialization);
+        return await GetByIdAsync(specialization.Id);
     }
 
     public async Task<Specialization> Update(Specialization specialization)
@@ -28,22 +31,19 @@ public class SpecializationRepository(
         return context.SaveChangesAsync();
     }
 
-    public async Task<Specialization?> Delete(Guid id)
+    public async Task<Specialization> Delete(Guid id)
     {
-        var res = await context.Specializations.FirstOrDefaultAsync(x => x.Id == id);
-        if (res == null)
-        {
-            return null;
-        }
+        var res = await context.Specializations.FirstOrDefaultAsync(x => x.Id == id)
+            ?? throw new Exception("Specialization not found");
         context.Specializations.Remove(res);
         await context.SaveChangesAsync();
         return res;
     }
     
-    public async Task<Specialization?> GetByIdAsync(Guid id)
+    public async Task<Specialization> GetByIdAsync(Guid id)
     {
-        var res =  await context.Specializations
-            .FirstOrDefaultAsync(x => x.Id == id);
+        var res =  await context.Specializations.FirstOrDefaultAsync(x => x.Id == id)
+            ?? throw new Exception("Specialization not found");
         return res;
     }
     

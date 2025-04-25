@@ -11,6 +11,7 @@ using InnoClinic.Prof.BusinessLogic.Validators.DoctorValidators;
 using InnoClinic.Prof.BusinessLogic.Validators.PatientValidators;
 using InnoClinic.Prof.BusinessLogic.Validators.ReceptionistValidators;
 using InnoClinic.Prof.BusinessLogic.Validators.SpecializationValidators;
+using InnoClinic.Prof.DataAccess;
 using InnoClinic.Prof.DataAccess.Repositories.DoctorRepository;
 using InnoClinic.Prof.DataAccess.Repositories.PatientRepository;
 using InnoClinic.Prof.DataAccess.Repositories.ReceptionistRepository;
@@ -30,6 +31,8 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ISpecializationService, SpecializationService>();
         
         services.AddScoped<ICurrentUserInfo, CurrentUserInfo>();
+        
+        services.AddSingleton<DapperContext>();
 
         return services;
     }
