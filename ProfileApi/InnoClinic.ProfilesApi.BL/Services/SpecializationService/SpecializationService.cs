@@ -1,8 +1,9 @@
+using System.Collections.Frozen;
 using InnoClinic.Prof.BusinessLogic.Dto.Specialization;
 using InnoClinic.Prof.BusinessLogic.Mappers;
 using InnoClinic.Prof.DataAccess.Entities;
-using InnoClinic.Prof.DataAccess.Models;
 using InnoClinic.Prof.DataAccess.Repositories.SpecializationRepository;
+using InnoClinic.Shared.Models;
 
 namespace InnoClinic.Prof.BusinessLogic.Services.SpecializationService;
 
@@ -10,17 +11,16 @@ public class SpecializationService(
     ISpecializationRepository specializationRepository
     ) : ISpecializationService
 {
-    public async Task<List<ShowSpecializationResponse>> GetAllSpecializations(QueryObject query)
+    public async Task<FrozenSet<ShowSpecializationResponse>> GetAllSpecializations(QueryPaginationArguments queryPagination)
     {
-        var specializations = await specializationRepository.GetAllAsync(query);
-        var res = specializations.Select(x => x.MapShowSpecializationDto()).ToList();
+        var specializations = await specializationRepository.GetAllAsync(queryPagination);
+        var res = specializations.Select(x => x.MapShowSpecializationDto()).ToFrozenSet();
         return res;
     }
     
     public async Task<SpecializationInfoResponse> GetSpecializationInfo(Guid id)
     {
-        var specialization = await specializationRepository.GetByIdAsync(id) 
-                             ?? throw new Exception("Specialization not found");
+        var specialization = await specializationRepository.GetByIdAsync(id);
         
         return specialization.MapSpecializationInfoDto();
     }
@@ -39,8 +39,7 @@ public class SpecializationService(
     
     public async Task<ShowSpecializationResponse> UpdateSpecialization(Guid id, UpdateSpecializationRequest request)
     {
-        var specialization = await specializationRepository.GetByIdAsync(id) 
-                             ?? throw new Exception("Specialization not found");
+        var specialization = await specializationRepository.GetByIdAsync(id);
         
         specialization.Name = request.Name;
         specialization.IsActive = request.IsActive;
@@ -50,10 +49,9 @@ public class SpecializationService(
         return res.MapShowSpecializationDto();
     }
     
-    public async Task<Specialization?> DeleteSpecialization(Guid id)
+    public async Task<Specialization> DeleteSpecialization(Guid id)
     {
-        var res = await specializationRepository.Delete(id) 
-                  ?? throw new Exception("Specialization not found");
+        var res = await specializationRepository.Delete(id);
         
         return res;
     }

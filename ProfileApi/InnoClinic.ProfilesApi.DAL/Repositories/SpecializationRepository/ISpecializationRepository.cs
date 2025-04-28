@@ -1,5 +1,5 @@
 using InnoClinic.Prof.DataAccess.Entities;
-using InnoClinic.Prof.DataAccess.Models;
+using InnoClinic.Shared.Models;
 
 namespace InnoClinic.Prof.DataAccess.Repositories.SpecializationRepository;
 
@@ -10,5 +10,5 @@ public interface ISpecializationRepository
     Task UpdateRange(List<Specialization> specializations);
     Task<Specialization> Delete(Guid id);
     Task<Specialization> GetByIdAsync(Guid id);
-    Task<List<Specialization>> GetAllAsync(QueryObject query);
+    Task<List<Specialization>> GetAllAsync(QueryPaginationArguments queryPagination);
 }

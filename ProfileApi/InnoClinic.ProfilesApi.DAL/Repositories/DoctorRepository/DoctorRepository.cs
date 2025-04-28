@@ -1,5 +1,5 @@
 using InnoClinic.Prof.DataAccess.Entities;
-using InnoClinic.Prof.DataAccess.Models;
+using InnoClinic.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace InnoClinic.Prof.DataAccess.Repositories.DoctorRepository;
@@ -45,41 +45,12 @@ public class DoctorRepository(InnoClinicProfContext context) : IDoctorRepository
         return res;
     }
     
-    public async Task<List<Doctor>> GetAllAsync(QueryObject query)
+    public async Task<List<Doctor>> GetAllAsync(QueryPaginationArguments queryPagination)
     {
         var doctors = context.Doctors.AsQueryable();
         
-        if (!string.IsNullOrWhiteSpace(query.ByName))
-        {
-            doctors = doctors.Where(x => (x.FirstName + x.MiddleName + x.LastName).Contains(query.ByName));
-        }
-        
-        if (query.SortByOffice.HasValue)
-        {
-            if (query.SortByOffice.Value)
-            {
-                doctors = doctors.OrderBy(x => x.OfficeId);
-            }
-            else
-            {
-                doctors = doctors.OrderByDescending(x => x.OfficeId);
-            }
-        }
-        
-        if (query.SortBySpecialization.HasValue)
-        {
-            if (query.SortBySpecialization.Value)
-            {
-                doctors = doctors.OrderBy(x => x.SpecializationId);
-            }
-            else
-            {
-                doctors = doctors.OrderByDescending(x => x.SpecializationId);
-            }
-        }
-        
-        var skipNumber = (query.PageNumber - 1) * query.PageSize;
-        
-        return await Queryable.Take(Queryable.Skip(doctors, skipNumber), query.PageSize).ToListAsync();
+        var skipNumber = (queryPagination.PageNumber - 1) * queryPagination.PageSize;
+
+        return doctors.Skip(skipNumber).Take(queryPagination.PageSize).ToList();
     }
 }

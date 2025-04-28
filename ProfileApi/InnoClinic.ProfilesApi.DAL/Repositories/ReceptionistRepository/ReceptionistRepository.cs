@@ -1,5 +1,5 @@
 using InnoClinic.Prof.DataAccess.Entities;
-using InnoClinic.Prof.DataAccess.Models;
+using InnoClinic.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace InnoClinic.Prof.DataAccess.Repositories.ReceptionistRepository;
@@ -28,11 +28,8 @@ public class ReceptionistRepository(InnoClinicProfContext context) : IReceptioni
 
     public async Task<Receptionist?> Delete(Guid id)
     {
-        var res = await context.Receptionists.FirstOrDefaultAsync(x => x.Id == id);
-        if (res == null)
-        {
-            return null;
-        }
+        var res = await context.Receptionists.FirstOrDefaultAsync(x => x.Id == id)
+            ?? throw new Exception("Receptionist not found");;
         context.Receptionists.Remove(res);
         await context.SaveChangesAsync();
         return res;
@@ -40,22 +37,17 @@ public class ReceptionistRepository(InnoClinicProfContext context) : IReceptioni
     
     public async Task<Receptionist?> GetByIdAsync(Guid id)
     {
-        var res =  await context.Receptionists
-            .FirstOrDefaultAsync(x => x.Id == id);
+        var res =  await context.Receptionists.FirstOrDefaultAsync(x => x.Id == id)
+            ?? throw new Exception("Receptionist not found");
         return res;
     }
     
-    public async Task<List<Receptionist>> GetAllAsync(QueryObject query)
+    public async Task<List<Receptionist>> GetAllAsync(QueryPaginationArguments queryPagination)
     {
-        var doctors = context.Receptionists.AsQueryable();
+        var receptionists = context.Receptionists.AsQueryable();
         
-        if (!string.IsNullOrWhiteSpace(query.ByName))
-        {
-            doctors = doctors.Where(x => (x.FirstName + x.MiddleName + x.LastName).Contains(query.ByName));
-        }
-        
-        var skipNumber = (query.PageNumber - 1) * query.PageSize;
-        
-        return await Queryable.Take(Queryable.Skip(doctors, skipNumber), query.PageSize).ToListAsync();
+        var skipNumber = (queryPagination.PageNumber - 1) * queryPagination.PageSize;
+
+        return receptionists.Skip(skipNumber).Take(queryPagination.PageSize).ToList();
     }
 }

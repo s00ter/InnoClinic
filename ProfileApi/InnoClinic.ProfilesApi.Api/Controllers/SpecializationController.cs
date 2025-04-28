@@ -1,6 +1,6 @@
 using InnoClinic.Prof.BusinessLogic.Dto.Specialization;
 using InnoClinic.Prof.BusinessLogic.Services.SpecializationService;
-using InnoClinic.Prof.DataAccess.Models;
+using InnoClinic.Shared.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,9 +14,9 @@ public class SpecializationController(
     ) : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> Get([FromQuery] QueryObject query)
+    public async Task<IActionResult> Get([FromQuery] QueryPaginationArguments queryPagination)
     {
-        var res = await specializationService.GetAllSpecializations(query);
+        var res = await specializationService.GetAllSpecializations(queryPagination);
         return Ok(res);
     }
     

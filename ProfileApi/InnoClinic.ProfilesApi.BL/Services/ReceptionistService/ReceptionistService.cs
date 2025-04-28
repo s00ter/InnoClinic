@@ -1,9 +1,10 @@
+using System.Collections.Frozen;
 using InnoClinic.Prof.BusinessLogic.Dto.Receptionist;
 using InnoClinic.Prof.BusinessLogic.Mappers;
 using InnoClinic.Prof.DataAccess.Entities;
-using InnoClinic.Prof.DataAccess.Models;
 using InnoClinic.Prof.DataAccess.Repositories.ReceptionistRepository;
 using InnoClinic.Shared.Extensions;
+using InnoClinic.Shared.Models;
 
 namespace InnoClinic.Prof.BusinessLogic.Services.ReceptionistService;
 
@@ -12,17 +13,16 @@ public class ReceptionistService(
     ICurrentUserInfo currentUserInfo
     ) : IReceptionistService
 {
-    public async Task<List<ShowReceptionistResponse>> GetAllReceptionists(QueryObject query)
+    public async Task<FrozenSet<ShowReceptionistResponse>> GetAllReceptionists(QueryPaginationArguments queryPagination)
     {
-        var patients = await receptionistRepository.GetAllAsync(query);
-        var res = patients.Select(x => x.MapShowReceptionistDto()).ToList();
+        var patients = await receptionistRepository.GetAllAsync(queryPagination);
+        var res = patients.Select(x => x.MapShowReceptionistDto()).ToFrozenSet();
         return res;
     }
     
     public async Task<ReceptionistInfoResponse> GetReceptionistInfo(Guid id)
     {
-        var patient = await receptionistRepository.GetByIdAsync(id) 
-                      ?? throw new Exception("Receptionist not found");
+        var patient = await receptionistRepository.GetByIdAsync(id);
         
         return patient.MapReceptionistInfoDto();
     }

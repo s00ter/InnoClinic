@@ -1,11 +1,12 @@
+using System.Collections.Frozen;
 using InnoClinic.Prof.BusinessLogic.Dto.Doctor;
 using InnoClinic.Prof.BusinessLogic.Mappers;
 using InnoClinic.Prof.DataAccess.Entities;
-using InnoClinic.Prof.DataAccess.Models;
 using InnoClinic.Prof.DataAccess.Repositories.DoctorRepository;
 using InnoClinic.Shared.Constants;
 using InnoClinic.Shared.Extensions;
 using InnoClinic.Shared.IventTypes;
+using InnoClinic.Shared.Models;
 using MassTransit;
 
 namespace InnoClinic.Prof.BusinessLogic.Services.DoctorService;
@@ -16,10 +17,10 @@ public class DoctorService(
     IPublishEndpoint publishEndpoint
     ) : IDoctorService
 {
-    public async Task<List<ShowDoctorResponse>> GetAllDoctors(QueryObject query)
+    public async Task<FrozenSet<ShowDoctorResponse>> GetAllDoctors(QueryPaginationArguments queryPagination)
     {
-        var doctors = await doctorRepository.GetAllAsync(query);
-        var res = doctors.Select(x => x.MapShowDoctorDto()).ToList();
+        var doctors = await doctorRepository.GetAllAsync(queryPagination);
+        var res = doctors.Select(x => x.MapShowDoctorDto()).ToFrozenSet();
         return res;
     }
     

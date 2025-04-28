@@ -1,6 +1,6 @@
 using InnoClinic.Prof.BusinessLogic.Dto.Receptionist;
 using InnoClinic.Prof.BusinessLogic.Services.ReceptionistService;
-using InnoClinic.Prof.DataAccess.Models;
+using InnoClinic.Shared.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,9 +14,9 @@ public class ReceptionistController(
     ) : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> Get([FromQuery] QueryObject query)
+    public async Task<IActionResult> Get([FromQuery] QueryPaginationArguments queryPagination)
     {
-        var res = await receptionistService.GetAllReceptionists(query);
+        var res = await receptionistService.GetAllReceptionists(queryPagination);
         return Ok(res);
     }
     

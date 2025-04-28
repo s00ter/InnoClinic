@@ -47,7 +47,7 @@ public static class ServiceCollectionExtensions
             {
                 OnMessageReceived = context =>
                 {
-                    context.Token = context.Request.Cookies["cookies"];
+                    context.Token = context.Request.Cookies["Tung-tung-tung-sahur-cookies"];
                     return Task.CompletedTask;
                 }
             };

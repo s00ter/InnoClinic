@@ -1,5 +1,5 @@
 using InnoClinic.Prof.DataAccess.Entities;
-using InnoClinic.Prof.DataAccess.Models;
+using InnoClinic.Shared.Models;
 
 namespace InnoClinic.Prof.DataAccess.Repositories.DoctorRepository;
 
@@ -10,5 +10,5 @@ public interface IDoctorRepository
     Task UpdateRange(List<Doctor> products);
     Task<Doctor?> Delete(Guid id);
     Task<Doctor?> GetByIdAsync(Guid id);
-    Task<List<Doctor>> GetAllAsync(QueryObject query);
+    Task<List<Doctor>> GetAllAsync(QueryPaginationArguments queryPagination);
 }

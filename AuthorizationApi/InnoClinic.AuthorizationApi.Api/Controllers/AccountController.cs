@@ -35,9 +35,16 @@ public class AccountController(
     public async Task<IActionResult> Authenticate([FromBody] UserAuthenticationRequest request, CancellationToken cancellationToken = default)
     {
         var response = await sender.Send(new UserAuthenticationCommand(request), cancellationToken);
-        HttpContext.Response.Cookies.Append("cookies",response.AccessToken);
         
-        return Ok(response);
+        var cookieOptions = new CookieOptions
+        {
+            Expires = DateTimeOffset.Now.AddDays(1),
+            HttpOnly = true
+        };
+        
+        HttpContext.Response.Cookies.Append("Tung-tung-tung-sahur-cookies", response.AccessToken, cookieOptions);
+        
+        return Ok(new { Message = "Succeed authentication" });
     }
     
     [HttpPost("forgot-password")]
@@ -56,11 +63,18 @@ public class AccountController(
         return Ok(new { Message = "Password change successfully" });
     }
     
-    [HttpPost("refresh-access-token")]
+    [HttpPost("token")]
     public async Task<IActionResult> RefreshAccessToken([FromBody] RefreshTokenRequest request , CancellationToken cancellationToken = default)
     {
         var response = await sender.Send(new RefreshAccessTokenCommand(request), cancellationToken);
-        HttpContext.Response.Cookies.Append("cookies",response);
+        
+        var cookieOptions = new CookieOptions
+        {
+            Expires = DateTimeOffset.Now.AddDays(1),
+            HttpOnly = true
+        };
+        
+        HttpContext.Response.Cookies.Append("Tung-tung-tung-sahur-cookies", response, cookieOptions);
         
         return Ok(new { Message = "Token change successfully" });
     }

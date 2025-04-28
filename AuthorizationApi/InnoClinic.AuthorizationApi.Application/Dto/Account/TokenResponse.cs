@@ -2,6 +2,6 @@ namespace InnoClinic.Application.Dto.Account;
 
 public class TokenResponse
 {
-    public string? AccessToken { get; init; }
-    public string? RefreshToken { get; init; }
+    public string AccessToken { get; init; }
+    public string RefreshToken { get; init; }
 }

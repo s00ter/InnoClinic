@@ -1,6 +1,6 @@
 using Dapper;
 using InnoClinic.Prof.DataAccess.Entities;
-using InnoClinic.Prof.DataAccess.Models;
+using InnoClinic.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace InnoClinic.Prof.DataAccess.Repositories.SpecializationRepository;
@@ -47,17 +47,12 @@ public class SpecializationRepository(
         return res;
     }
     
-    public async Task<List<Specialization>> GetAllAsync(QueryObject query)
+    public async Task<List<Specialization>> GetAllAsync(QueryPaginationArguments queryPagination)
     {
         var specializations = context.Specializations.AsQueryable();
         
-        if (!string.IsNullOrWhiteSpace(query.ByName))
-        {
-            specializations = specializations.Where(x => x.Name.Contains(query.ByName));
-        }
-        
-        var skipNumber = (query.PageNumber - 1) * query.PageSize;
-        
-        return await Queryable.Take(Queryable.Skip(specializations, skipNumber), query.PageSize).ToListAsync();
+        var skipNumber = (queryPagination.PageNumber - 1) * queryPagination.PageSize;
+
+        return specializations.Skip(skipNumber).Take(queryPagination.PageSize).ToList();
     }
 }

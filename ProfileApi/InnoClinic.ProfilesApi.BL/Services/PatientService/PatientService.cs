@@ -1,9 +1,10 @@
+using System.Collections.Frozen;
 using InnoClinic.Prof.BusinessLogic.Dto.Patient;
 using InnoClinic.Prof.BusinessLogic.Mappers;
 using InnoClinic.Prof.DataAccess.Entities;
-using InnoClinic.Prof.DataAccess.Models;
 using InnoClinic.Prof.DataAccess.Repositories.PatientRepository;
 using InnoClinic.Shared.Extensions;
+using InnoClinic.Shared.Models;
 
 namespace InnoClinic.Prof.BusinessLogic.Services.PatientService;
 
@@ -12,17 +13,16 @@ public class PatientService(
     ICurrentUserInfo currentUserInfo
     ) : IPatientService
 {
-    public async Task<List<ShowPatientResponse>> GetAllPatients(QueryObject query)
+    public async Task<FrozenSet<ShowPatientResponse>> GetAllPatients(QueryPaginationArguments queryPagination)
     {
-        var patients = await patientRepository.GetAllAsync(query);
-        var res = patients.Select(x => x.MapShowPatientDto()).ToList();
+        var patients = await patientRepository.GetAllAsync(queryPagination);
+        var res = patients.Select(x => x.MapShowPatientDto()).ToFrozenSet();
         return res;
     }
     
     public async Task<PatientInfoResponse> GetPatientInfo(Guid id)
     {
-        var patient = await patientRepository.GetByIdAsync(id) 
-                      ?? throw new Exception("Patient not found");
+        var patient = await patientRepository.GetByIdAsync(id);
         
         return patient.MapPatientInfoDto();
     }
@@ -47,8 +47,7 @@ public class PatientService(
     
     public async Task<ShowPatientResponse> UpdatePatient(Guid id, UpdatePatientRequest request)
     {
-        var patient = await patientRepository.GetByIdAsync(id) 
-                      ?? throw new Exception("Patient not found");
+        var patient = await patientRepository.GetByIdAsync(id);
         
         patient.FirstName = request.FirstName;
         patient.LastName = request.LastName;
@@ -61,10 +60,9 @@ public class PatientService(
         return res.MapShowPatientDto();
     }
     
-    public async Task<Patient?> DeletePatient(Guid id)
+    public async Task<Patient> DeletePatient(Guid id)
     {
-        var res = await patientRepository.Delete(id) 
-                  ?? throw new Exception("Patient not found");
+        var res = await patientRepository.Delete(id);
         
         return res;
     }

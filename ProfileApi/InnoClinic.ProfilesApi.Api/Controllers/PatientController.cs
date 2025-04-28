@@ -1,6 +1,6 @@
 using InnoClinic.Prof.BusinessLogic.Dto.Patient;
 using InnoClinic.Prof.BusinessLogic.Services.PatientService;
-using InnoClinic.Prof.DataAccess.Models;
+using InnoClinic.Shared.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,9 +14,9 @@ public class PatientController(
     ) : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> Get([FromQuery] QueryObject query)
+    public async Task<IActionResult> Get([FromQuery] QueryPaginationArguments queryPagination)
     {
-        var res = await patientService.GetAllPatients(query);
+        var res = await patientService.GetAllPatients(queryPagination);
         return Ok(res);
     }
     
