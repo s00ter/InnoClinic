@@ -1,6 +1,6 @@
-using InnoClinic.Application.Dto.Account;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace InnoClinic.Application.Commands;
 
-public record RefreshAccessTokenCommand(RefreshTokenRequest Request) : IRequest<string>;
+public record RefreshAccessTokenCommand(HttpContext Context) : IRequest<Unit>;

@@ -7,15 +7,13 @@ namespace InnoClinic.Application;
 
 public class DoctorCreatedConsumer(
     UserManager<User> userManager
-    ) : IConsumer<IDoctorCreated>
+    ) : IConsumer<DoctorCreated>
 {
-    public async Task Consume(ConsumeContext<IDoctorCreated> context)
+    public async Task Consume(ConsumeContext<DoctorCreated> context)
     {
         var user = await userManager.FindByIdAsync(context.Message.UserId.ToString())
             ?? throw new Exception("User not found");
         
         await userManager.AddToRoleAsync(user, context.Message.Role);
-        
-        await Task.CompletedTask;
     }
 }

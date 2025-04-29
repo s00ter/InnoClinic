@@ -3,4 +3,4 @@ using MediatR;
 
 namespace InnoClinic.Application.Commands;
 
-public record UserRegistrationCommand(UserRegistrationRequest Request) : IRequest<bool>;
+public record UserRegistrationCommand(UserRegistrationRequest Request) : IRequest<Unit>;

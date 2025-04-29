@@ -1,13 +1,9 @@
 using FluentValidation;
-using InnoClinic.Application;
-using InnoClinic.Application.Models.Email;
 using InnoClinic.DataAccess;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using InnoClinic.Authorization.DependencyInjection;
 using InnoClinic.Shared.DependencyInjection;
 using InnoClinic.Shared.Middlewares;
-using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,24 +13,12 @@ builder.Services.AddControllers();
 
 builder.Services.AddServices();
 builder.Services.AddIdentitySettings();
+builder.Services.AddMediatrSettings();
+builder.Services.AddOptionsSettings(builder.Configuration);
+builder.Services.AddMassTransitSettings();
+
 builder.Services.AddJwtSettings();
 builder.Services.AddPoliciesSettings();
-builder.Services.AddMediatrSettings();
-
-builder.Services.AddMassTransit(x =>
-{
-    x.AddConsumer<DoctorCreatedConsumer>();
-
-    x.UsingRabbitMq((ctx, cfg) =>
-    {
-        cfg.Host("rabbitmq://localhost");
-
-        cfg.ReceiveEndpoint("doctor-created-queue", e =>
-        {
-            e.ConfigureConsumer<DoctorCreatedConsumer>(ctx);
-        });
-    });
-});
 
 builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -43,11 +27,6 @@ builder.Services.AddProblemDetails();
 
 builder.Services.AddDbContext<InnoClinicAuthContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("InnoClinicAuth")));
-
-builder.Services.Configure<DataProtectionTokenProviderOptions>(opt =>
-    opt.TokenLifespan = TimeSpan.FromHours(builder.Configuration.GetValue<int>("TokenProviderOptions:TokenLifespanHours")));
-
-builder.Services.Configure<EmailConfiguration>(builder.Configuration.GetSection("EmailConfiguration"));
 
 var app = builder.Build();
 

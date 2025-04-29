@@ -47,12 +47,12 @@ public static class ServiceCollectionExtensions
             {
                 OnMessageReceived = context =>
                 {
-                    context.Token = context.Request.Cookies["Tung-tung-tung-sahur-cookies"];
+                    context.Token = context.Request.Cookies["Tung-tung-tung-Sahur-Access-token"];
                     return Task.CompletedTask;
                 }
             };
         });
-        
+
         return services;
     }
 }

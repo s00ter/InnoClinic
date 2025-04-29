@@ -16,12 +16,8 @@ public class AccountController(
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] UserRegistrationRequest request, CancellationToken cancellationToken = default)
     {
-        var res = await sender.Send(new UserRegistrationCommand(request), cancellationToken);
-        if (res)
-        {
-            return Ok(new { Message = "Email confirmation token sent successfully" });
-        }
-        return BadRequest(res);
+        await sender.Send(new UserRegistrationCommand(request), cancellationToken);
+        return Ok(new { Message = "Email confirmation token sent successfully" });
     }
     
     [HttpPost("email-verification")]
@@ -34,16 +30,7 @@ public class AccountController(
     [HttpPost("authenticate")]
     public async Task<IActionResult> Authenticate([FromBody] UserAuthenticationRequest request, CancellationToken cancellationToken = default)
     {
-        var response = await sender.Send(new UserAuthenticationCommand(request), cancellationToken);
-        
-        var cookieOptions = new CookieOptions
-        {
-            Expires = DateTimeOffset.Now.AddDays(1),
-            HttpOnly = true
-        };
-        
-        HttpContext.Response.Cookies.Append("Tung-tung-tung-sahur-cookies", response.AccessToken, cookieOptions);
-        
+        await sender.Send(new UserAuthenticationCommand(request, HttpContext), cancellationToken);
         return Ok(new { Message = "Succeed authentication" });
     }
     
@@ -64,18 +51,9 @@ public class AccountController(
     }
     
     [HttpPost("token")]
-    public async Task<IActionResult> RefreshAccessToken([FromBody] RefreshTokenRequest request , CancellationToken cancellationToken = default)
+    public async Task<IActionResult> RefreshAccessToken(CancellationToken cancellationToken = default)
     {
-        var response = await sender.Send(new RefreshAccessTokenCommand(request), cancellationToken);
-        
-        var cookieOptions = new CookieOptions
-        {
-            Expires = DateTimeOffset.Now.AddDays(1),
-            HttpOnly = true
-        };
-        
-        HttpContext.Response.Cookies.Append("Tung-tung-tung-sahur-cookies", response, cookieOptions);
-        
+        await sender.Send(new RefreshAccessTokenCommand(HttpContext), cancellationToken);
         return Ok(new { Message = "Token change successfully" });
     }
 }

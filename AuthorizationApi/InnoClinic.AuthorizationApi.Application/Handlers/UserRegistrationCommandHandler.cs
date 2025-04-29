@@ -12,9 +12,9 @@ public class UserRegistrationCommandHandler(
     UserManager<User> userManager,
     IEmailService emailService
     ) 
-    : IRequestHandler<UserRegistrationCommand, bool>
+    : IRequestHandler<UserRegistrationCommand, Unit>
 {
-    public async Task<bool> Handle(UserRegistrationCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(UserRegistrationCommand request, CancellationToken cancellationToken)
     {
         var appUser = new User
         {
@@ -48,6 +48,6 @@ public class UserRegistrationCommandHandler(
         
         await emailService.SendEmail(message);
 
-        return true;
+        return Unit.Value;
     }
 }
