@@ -7,9 +7,14 @@ namespace InnoClinic.Prof.BusinessLogic.Services.SpecializationService;
 
 public interface ISpecializationService
 {
-    Task<FrozenSet<ShowSpecializationResponse>> GetAllSpecializations(QueryPaginationArguments queryPagination);
-    Task<SpecializationInfoResponse> GetSpecializationInfo(Guid id);
-    Task<Specialization> CreateSpecialization(CreateSpecializationRequest request);
-    Task<ShowSpecializationResponse> UpdateSpecialization(Guid id, UpdateSpecializationRequest request);
-    Task<Specialization> DeleteSpecialization(Guid id);
+    Task<FrozenSet<ShowSpecializationResponse>> GetAllSpecializations(QueryPaginationArguments queryPagination, 
+        CancellationToken cancellationToken = default);
+    Task<SpecializationInfoResponse> GetSpecializationInfo(Guid id, 
+        CancellationToken cancellationToken = default);
+    Task<Specialization> CreateSpecialization(CreateSpecializationRequest request, 
+        CancellationToken cancellationToken = default);
+    Task<ShowSpecializationResponse> UpdateSpecialization(Guid id, UpdateSpecializationRequest request, 
+        CancellationToken cancellationToken = default);
+    Task DeleteSpecialization(Guid id, 
+        CancellationToken cancellationToken = default);
 }

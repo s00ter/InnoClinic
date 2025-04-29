@@ -11,21 +11,21 @@ public class SpecializationService(
     ISpecializationRepository specializationRepository
     ) : ISpecializationService
 {
-    public async Task<FrozenSet<ShowSpecializationResponse>> GetAllSpecializations(QueryPaginationArguments queryPagination)
+    public async Task<FrozenSet<ShowSpecializationResponse>> GetAllSpecializations(QueryPaginationArguments queryPagination, CancellationToken cancellationToken)
     {
         var specializations = await specializationRepository.GetAllAsync(queryPagination);
         var res = specializations.Select(x => x.MapShowSpecializationDto()).ToFrozenSet();
         return res;
     }
     
-    public async Task<SpecializationInfoResponse> GetSpecializationInfo(Guid id)
+    public async Task<SpecializationInfoResponse> GetSpecializationInfo(Guid id, CancellationToken cancellationToken)
     {
         var specialization = await specializationRepository.GetByIdAsync(id);
         
         return specialization.MapSpecializationInfoDto();
     }
     
-    public async Task<Specialization> CreateSpecialization(CreateSpecializationRequest request)
+    public async Task<Specialization> CreateSpecialization(CreateSpecializationRequest request, CancellationToken cancellationToken)
     {
         var specialization = new Specialization
         {
@@ -37,7 +37,7 @@ public class SpecializationService(
         return await specializationRepository.Add(specialization);
     }
     
-    public async Task<ShowSpecializationResponse> UpdateSpecialization(Guid id, UpdateSpecializationRequest request)
+    public async Task<ShowSpecializationResponse> UpdateSpecialization(Guid id, UpdateSpecializationRequest request, CancellationToken cancellationToken)
     {
         var specialization = await specializationRepository.GetByIdAsync(id);
         
@@ -49,10 +49,8 @@ public class SpecializationService(
         return res.MapShowSpecializationDto();
     }
     
-    public async Task<Specialization> DeleteSpecialization(Guid id)
+    public async Task DeleteSpecialization(Guid id, CancellationToken cancellationToken)
     {
-        var res = await specializationRepository.Delete(id);
-        
-        return res;
+        await specializationRepository.Delete(id);
     }
 }

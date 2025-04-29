@@ -5,10 +5,14 @@ namespace InnoClinic.Prof.DataAccess.Repositories.ReceptionistRepository;
 
 public interface IReceptionistRepository
 {
-    Task<Receptionist> Add(Receptionist patient);
-    Task<Receptionist> Update(Receptionist patients);
-    Task UpdateRange(List<Receptionist> patients);
-    Task<Receptionist?> Delete(Guid id);
-    Task<Receptionist?> GetByIdAsync(Guid id);
-    Task<List<Receptionist>> GetAllAsync(QueryPaginationArguments queryPagination);
+    Task<Receptionist> Add(Receptionist patient, 
+        CancellationToken cancellationToken = default);
+    Task<Receptionist> Update(Receptionist patients, 
+        CancellationToken cancellationToken = default);
+    Task<Receptionist> Delete(Guid id, 
+        CancellationToken cancellationToken = default);
+    Task<Receptionist> GetByIdAsync(Guid id, 
+        CancellationToken cancellationToken = default);
+    Task<List<Receptionist>> GetAllAsync(QueryPaginationArguments queryPagination, 
+        CancellationToken cancellationToken = default);
 }

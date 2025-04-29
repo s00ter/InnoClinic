@@ -3,8 +3,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace InnoClinic.Prof.DataAccess;
 
-public class InnoClinicProfContext(DbContextOptions<InnoClinicProfContext> options) : DbContext(options)
+public class InnoClinicProfContext : DbContext
 {
+    public InnoClinicProfContext(DbContextOptions<InnoClinicProfContext> options) : base(options)
+    {
+    }
+    
     public DbSet<Doctor> Doctors { get; private set; }
     public DbSet<Patient> Patients { get; private set; }
     public DbSet<Specialization> Specializations { get; private set; }

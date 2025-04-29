@@ -14,37 +14,37 @@ public class SpecializationController(
     ) : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> Get([FromQuery] QueryPaginationArguments queryPagination)
+    public async Task<IActionResult> Get([FromQuery] QueryPaginationArguments queryPagination, CancellationToken cancellationToken)
     {
-        var res = await specializationService.GetAllSpecializations(queryPagination);
+        var res = await specializationService.GetAllSpecializations(queryPagination, cancellationToken);
         return Ok(res);
     }
     
     [HttpGet("{id:guid}")]
-    public async Task<IActionResult> Get([FromRoute] Guid id)
+    public async Task<IActionResult> Get([FromRoute] Guid id, CancellationToken cancellationToken)
     {
-        var res = await specializationService.GetSpecializationInfo(id);
+        var res = await specializationService.GetSpecializationInfo(id, cancellationToken);
         return Ok(res);
     }
     
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateSpecializationRequest request)
+    public async Task<IActionResult> Create([FromBody] CreateSpecializationRequest request, CancellationToken cancellationToken)
     {
-        var res = await specializationService.CreateSpecialization(request);
-        return Ok(res);
+        var res = await specializationService.CreateSpecialization(request, cancellationToken);
+        return CreatedAtAction(nameof(Get), new { id = res.Id }, res);
     }
     
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateSpecializationRequest request)
+    public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateSpecializationRequest request, CancellationToken cancellationToken)
     {
-        var res = await specializationService.UpdateSpecialization(id, request);
-        return Ok(res);
+        await specializationService.UpdateSpecialization(id, request, cancellationToken);
+        return StatusCode(StatusCodes.Status204NoContent);
     }
     
     [HttpDelete("{id:guid}")]
-    public async Task<IActionResult> Delete([FromRoute] Guid id)
+    public async Task<IActionResult> Delete([FromRoute] Guid id, CancellationToken cancellationToken)
     {
-        var res = await specializationService.DeleteSpecialization(id);
-        return Ok(res);
+        await specializationService.DeleteSpecialization(id, cancellationToken);
+        return StatusCode(StatusCodes.Status204NoContent);
     }
 }

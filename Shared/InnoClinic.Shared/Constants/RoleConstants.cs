@@ -2,9 +2,9 @@ namespace InnoClinic.Shared.Constants;
 
 public static class RoleConstants
 {
-    public const string Admin = nameof(Admin);
-    public const string User = nameof(User);
-    public const string Doctor = nameof(Doctor);
-    public const string Patient = nameof(Patient);
-    public const string Receptionist = nameof(Receptionist);
+    public const string Admin = "Admin";
+    public const string User = "User";
+    public const string Doctor = "Doctor";
+    public const string Patient = "Patient";
+    public const string Receptionist = "Receptionist";
 }

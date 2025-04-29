@@ -31,20 +31,20 @@ public class ReceptionistController(
     public async Task<IActionResult> Create([FromBody] RegistrationReceptionistRequest request)
     {
         var res = await receptionistService.CreateReceptionist(request);
-        return Ok(res);
+        return CreatedAtAction(nameof(Get), new { id = res.Id }, res);
     }
     
     [HttpPut("{id:guid}")]
     public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateReceptionistRequest request)
     {
-        var res = await receptionistService.UpdateReceptionist(id, request);
-        return Ok(res);
+        await receptionistService.UpdateReceptionist(id, request);
+        return StatusCode(StatusCodes.Status204NoContent);
     }
     
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> Delete([FromRoute] Guid id)
     {
-        var res = await receptionistService.DeleteReceptionist(id);
-        return Ok(res);
+        await receptionistService.DeleteReceptionist(id);
+        return StatusCode(StatusCodes.Status204NoContent);
     }
 }

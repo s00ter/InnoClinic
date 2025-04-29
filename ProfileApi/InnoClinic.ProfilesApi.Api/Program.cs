@@ -1,3 +1,5 @@
+using FluentValidation;
+using InnoClinic.Prof.BusinessLogic.Validators.DoctorValidators;
 using InnoClinic.Prof.DataAccess;
 using InnoClinic.ProfilesApi.DependencyInjection;
 using InnoClinic.Shared.DependencyInjection;
@@ -10,14 +12,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddControllers();
+
+builder.Services.AddValidatorsFromAssemblyContaining<RegistrationDoctorValidator>();
 
 builder.Services.AddDbContext<InnoClinicProfContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("InnoClinicProfile")));
 
 builder.Services.AddServicesSettings();
 builder.Services.AddRepositoriesSettings();
-builder.Services.AddValidatorsSettings();
+builder.Services.AddControllersSettings();
 
 builder.Services.AddJwtSettings();
 builder.Services.AddPoliciesSettings();
@@ -46,8 +49,6 @@ app.UseExceptionHandler(opt => { });
 
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.UseMiddleware<ValidationMiddleware>();
 
 app.MapControllers();
 

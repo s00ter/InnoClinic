@@ -1,11 +1,10 @@
-using FluentValidation;
-using InnoClinic.AppointmentApi.BL.Dto.AppointmentDto;
-using InnoClinic.AppointmentApi.BL.Dto.ResultDto;
+using System.Text.Json.Serialization;
 using InnoClinic.AppointmentApi.BL.Services.AppointmentService;
 using InnoClinic.AppointmentApi.BL.Services.ResultService;
-using InnoClinic.AppointmentApi.BL.Validators.AppointmentValidators;
-using InnoClinic.AppointmentApi.BL.Validators.ResultValidators;
 using InnoClinic.AppointmentApi.DataAccess.UnitOfWork;
+using InnoClinic.Shared.Filters;
+using DateTimeOffsetConverter = InnoClinic.Shared.Extensions.DateTimeOffsetConverter;
+using GuidConverter = InnoClinic.Shared.Extensions.GuidConverter;
 
 namespace InnoClinic.AppointmentApi.Api.DependencyInjection;
 
@@ -28,14 +27,21 @@ public static class ServiceCollectionExtensions
         return services;
     }
     
-    public static IServiceCollection AddValidatorsSettings(
+    public static IServiceCollection AddControllerSettings(
         this IServiceCollection services)
     {
-        services.AddScoped<IValidator<CreateAppointmentRequest>, CreateAppointmentValidator>();
-        services.AddScoped<IValidator<UpdateAppointmentRequest>, UpdateAppointmentValidator>();
-        
-        services.AddScoped<IValidator<CreateResultRequest>, CreateResultValidator>();
-        services.AddScoped<IValidator<UpdateResultRequest>, UpdateResultValidator>();
+        services.AddControllers(options =>
+            {
+                options.Filters.Add<GlobalValidationFilter>();
+            })
+            .AddJsonOptions(x =>
+            {
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                
+                x.JsonSerializerOptions.Converters.Add(new DateTimeOffsetConverter());
+                x.JsonSerializerOptions.Converters.Add(new GuidConverter());
+            });
+                
 
         return services;
     }

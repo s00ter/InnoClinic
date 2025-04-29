@@ -31,20 +31,20 @@ public class PatientController(
     public async Task<IActionResult> Create([FromBody] RegistrationPatientRequest request)
     {
         var res = await patientService.CreatePatient(request);
-        return Ok(res);
+        return CreatedAtAction(nameof(Get), new { id = res.Id }, res);
     }
     
     [HttpPut("{id:guid}")]
     public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdatePatientRequest request)
     {
         var res = await patientService.UpdatePatient(id, request);
-        return Ok(res);
+        return StatusCode(StatusCodes.Status204NoContent);
     }
     
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> Delete([FromRoute] Guid id)
     {
         var res = await patientService.DeletePatient(id);
-        return Ok(res);
+        return StatusCode(StatusCodes.Status204NoContent);
     }
 }

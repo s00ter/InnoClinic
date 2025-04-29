@@ -7,9 +7,14 @@ namespace InnoClinic.Prof.BusinessLogic.Services.ReceptionistService;
 
 public interface IReceptionistService
 {
-    Task<FrozenSet<ShowReceptionistResponse>> GetAllReceptionists(QueryPaginationArguments queryPagination);
-    Task<ReceptionistInfoResponse> GetReceptionistInfo(Guid id);
-    Task<Receptionist> CreateReceptionist(RegistrationReceptionistRequest request);
-    Task<ShowReceptionistResponse> UpdateReceptionist(Guid id, UpdateReceptionistRequest request);
-    Task<Receptionist?> DeleteReceptionist(Guid id);
+    Task<FrozenSet<ShowReceptionistResponse>> GetAllReceptionists(QueryPaginationArguments queryPagination, 
+        CancellationToken cancellationToken = default);
+    Task<ReceptionistInfoResponse> GetReceptionistInfo(Guid id, 
+        CancellationToken cancellationToken = default);
+    Task<Receptionist> CreateReceptionist(RegistrationReceptionistRequest request, 
+        CancellationToken cancellationToken = default);
+    Task<ShowReceptionistResponse> UpdateReceptionist(Guid id, UpdateReceptionistRequest request, 
+        CancellationToken cancellationToken = default);
+    Task<Receptionist?> DeleteReceptionist(Guid id, 
+        CancellationToken cancellationToken = default);
 }

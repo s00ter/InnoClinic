@@ -13,21 +13,21 @@ public class PatientService(
     ICurrentUserInfo currentUserInfo
     ) : IPatientService
 {
-    public async Task<FrozenSet<ShowPatientResponse>> GetAllPatients(QueryPaginationArguments queryPagination)
+    public async Task<FrozenSet<ShowPatientResponse>> GetAllPatients(QueryPaginationArguments queryPagination, CancellationToken cancellationToken)
     {
-        var patients = await patientRepository.GetAllAsync(queryPagination);
+        var patients = await patientRepository.GetAllAsync(queryPagination, cancellationToken);
         var res = patients.Select(x => x.MapShowPatientDto()).ToFrozenSet();
         return res;
     }
     
-    public async Task<PatientInfoResponse> GetPatientInfo(Guid id)
+    public async Task<PatientInfoResponse> GetPatientInfo(Guid id, CancellationToken cancellationToken)
     {
-        var patient = await patientRepository.GetByIdAsync(id);
+        var patient = await patientRepository.GetByIdAsync(id, cancellationToken);
         
         return patient.MapPatientInfoDto();
     }
     
-    public async Task<Patient> CreatePatient(RegistrationPatientRequest request)
+    public async Task<Patient> CreatePatient(RegistrationPatientRequest request, CancellationToken cancellationToken)
     {
         var userId = Guid.Parse(currentUserInfo.GetUserId());
         
@@ -42,12 +42,12 @@ public class PatientService(
             DateOfBirth = request.DateOfBirth
         };
             
-        return await patientRepository.Add(patient);
+        return await patientRepository.Add(patient, cancellationToken);
     }
     
-    public async Task<ShowPatientResponse> UpdatePatient(Guid id, UpdatePatientRequest request)
+    public async Task<ShowPatientResponse> UpdatePatient(Guid id, UpdatePatientRequest request, CancellationToken cancellationToken)
     {
-        var patient = await patientRepository.GetByIdAsync(id);
+        var patient = await patientRepository.GetByIdAsync(id, cancellationToken);
         
         patient.FirstName = request.FirstName;
         patient.LastName = request.LastName;
@@ -55,14 +55,14 @@ public class PatientService(
         patient.IsLinkedToAccount = request.isLinkedToAccount;
         patient.DateOfBirth = request.DateOfBirth;
         
-        var res = await patientRepository.Update(patient);
+        var res = await patientRepository.Update(patient, cancellationToken);
 
         return res.MapShowPatientDto();
     }
     
-    public async Task<Patient> DeletePatient(Guid id)
+    public async Task<Patient> DeletePatient(Guid id, CancellationToken cancellationToken)
     {
-        var res = await patientRepository.Delete(id);
+        var res = await patientRepository.Delete(id, cancellationToken);
         
         return res;
     }

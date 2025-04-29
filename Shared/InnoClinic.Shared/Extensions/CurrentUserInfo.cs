@@ -8,6 +8,7 @@ public class CurrentUserInfo(IHttpContextAccessor httpContextAccessor) : ICurren
 {
     public string GetUserId()
     {
-        return httpContextAccessor?.HttpContext?.User.FindFirstValue(CustomClaimTypes.UserId) ?? throw new ArgumentException("Unable to retrieve user id");
+        return httpContextAccessor?.HttpContext?.User.FindFirstValue(CustomClaimTypes.UserId) 
+               ?? throw new ArgumentException("Unable to retrieve user id");
     }
 }

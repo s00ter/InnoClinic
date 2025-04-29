@@ -1,58 +1,63 @@
 using Dapper;
 using InnoClinic.Prof.DataAccess.Entities;
 using InnoClinic.Shared.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace InnoClinic.Prof.DataAccess.Repositories.SpecializationRepository;
 
 public class SpecializationRepository(
-    InnoClinicProfContext context,
     DapperContext dapperContext
     ) : ISpecializationRepository
 {
-    public async Task<Specialization> Add(Specialization specialization)
+    public async Task<Specialization> Add(Specialization specialization, CancellationToken cancellationToken)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+        
         var query = "INSERT INTO Specializations (Id, Name, IsActive) VALUES (@Id, @Name, @IsActive)";
         using var connection = dapperContext.CreateConnection();
         await connection.ExecuteAsync(query, specialization);
-        return await GetByIdAsync(specialization.Id);
+        return await GetByIdAsync(specialization.Id, cancellationToken);
     }
 
-    public async Task<Specialization> Update(Specialization specialization)
+    public async Task<Specialization> Update(Specialization specialization, CancellationToken cancellationToken)
     {
-        context.Specializations.Update(specialization);
-        await context.SaveChangesAsync();
-        return specialization;
+        cancellationToken.ThrowIfCancellationRequested();
+        
+        var query = "UPDATE Specializations SET Name = @Name, IsActive = @IsActive WHERE Id = @Id";
+        using var connection = dapperContext.CreateConnection();
+        await connection.ExecuteAsync(query, specialization);
+        return await GetByIdAsync(specialization.Id, cancellationToken);
     }
 
-    public Task UpdateRange(List<Specialization> specializations)
+    public async Task Delete(Guid id, CancellationToken cancellationToken)
     {
-        context.Specializations.UpdateRange(specializations);
-        return context.SaveChangesAsync();
-    }
-
-    public async Task<Specialization> Delete(Guid id)
-    {
-        var res = await context.Specializations.FirstOrDefaultAsync(x => x.Id == id)
-            ?? throw new Exception("Specialization not found");
-        context.Specializations.Remove(res);
-        await context.SaveChangesAsync();
-        return res;
+        cancellationToken.ThrowIfCancellationRequested();
+        
+        var query = "DELETE FROM Specializations WHERE Id = @Id";
+        using var connection = dapperContext.CreateConnection();
+        await connection.ExecuteAsync(query, new { Id = id });
     }
     
-    public async Task<Specialization> GetByIdAsync(Guid id)
+    public async Task<Specialization> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var res =  await context.Specializations.FirstOrDefaultAsync(x => x.Id == id)
-            ?? throw new Exception("Specialization not found");
-        return res;
+        cancellationToken.ThrowIfCancellationRequested();
+        
+        var query = "SELECT * FROM Specializations WHERE Id = @Id";
+        using var connection = dapperContext.CreateConnection();
+        return await connection.QueryFirstOrDefaultAsync<Specialization>(query, new { Id = id })
+               ?? throw new Exception("Specialization not found");
     }
     
-    public async Task<List<Specialization>> GetAllAsync(QueryPaginationArguments queryPagination)
+    public async Task<List<Specialization>> GetAllAsync(QueryPaginationArguments queryPagination, CancellationToken cancellationToken)
     {
-        var specializations = context.Specializations.AsQueryable();
+        cancellationToken.ThrowIfCancellationRequested();
         
         var skipNumber = (queryPagination.PageNumber - 1) * queryPagination.PageSize;
-
-        return specializations.Skip(skipNumber).Take(queryPagination.PageSize).ToList();
+        
+        var query = "SELECT * FROM Specializations";
+        using var connection = dapperContext.CreateConnection();
+        return connection.QueryAsync<Specialization>(query).Result
+            .Skip(skipNumber)
+            .Take(queryPagination.PageSize)
+            .ToList();;
     }
 }

@@ -13,21 +13,21 @@ public class ReceptionistService(
     ICurrentUserInfo currentUserInfo
     ) : IReceptionistService
 {
-    public async Task<FrozenSet<ShowReceptionistResponse>> GetAllReceptionists(QueryPaginationArguments queryPagination)
+    public async Task<FrozenSet<ShowReceptionistResponse>> GetAllReceptionists(QueryPaginationArguments queryPagination, CancellationToken cancellationToken)
     {
-        var patients = await receptionistRepository.GetAllAsync(queryPagination);
+        var patients = await receptionistRepository.GetAllAsync(queryPagination, cancellationToken);
         var res = patients.Select(x => x.MapShowReceptionistDto()).ToFrozenSet();
         return res;
     }
     
-    public async Task<ReceptionistInfoResponse> GetReceptionistInfo(Guid id)
+    public async Task<ReceptionistInfoResponse> GetReceptionistInfo(Guid id, CancellationToken cancellationToken)
     {
-        var patient = await receptionistRepository.GetByIdAsync(id);
+        var patient = await receptionistRepository.GetByIdAsync(id, cancellationToken);
         
         return patient.MapReceptionistInfoDto();
     }
     
-    public async Task<Receptionist> CreateReceptionist(RegistrationReceptionistRequest request)
+    public async Task<Receptionist> CreateReceptionist(RegistrationReceptionistRequest request, CancellationToken cancellationToken)
     {
         var userId = Guid.Parse(currentUserInfo.GetUserId());
         
@@ -41,28 +41,26 @@ public class ReceptionistService(
             OfficeId = request.OfficeId
         };
             
-        return await receptionistRepository.Add(patient);
+        return await receptionistRepository.Add(patient, cancellationToken);
     }
     
-    public async Task<ShowReceptionistResponse> UpdateReceptionist(Guid id, UpdateReceptionistRequest request)
+    public async Task<ShowReceptionistResponse> UpdateReceptionist(Guid id, UpdateReceptionistRequest request, CancellationToken cancellationToken)
     {
-        var patient = await receptionistRepository.GetByIdAsync(id) 
-                      ?? throw new Exception("Receptionist not found");
+        var patient = await receptionistRepository.GetByIdAsync(id, cancellationToken);
         
         patient.FirstName = request.FirstName;
         patient.LastName = request.LastName;
         patient.MiddleName = request.MiddleName;
         patient.OfficeId = request.OfficeId;
         
-        var res = await receptionistRepository.Update(patient);
+        var res = await receptionistRepository.Update(patient, cancellationToken);
 
         return res.MapShowReceptionistDto();
     }
     
-    public async Task<Receptionist?> DeleteReceptionist(Guid id)
+    public async Task<Receptionist?> DeleteReceptionist(Guid id, CancellationToken cancellationToken)
     {
-        var res = await receptionistRepository.Delete(id) 
-                  ?? throw new NullReferenceException("Receptionist not found");
+        var res = await receptionistRepository.Delete(id, cancellationToken);
         
         return res;
     }

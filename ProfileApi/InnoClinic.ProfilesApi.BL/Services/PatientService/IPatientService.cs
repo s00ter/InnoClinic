@@ -7,9 +7,14 @@ namespace InnoClinic.Prof.BusinessLogic.Services.PatientService;
 
 public interface IPatientService
 {
-    Task<FrozenSet<ShowPatientResponse>> GetAllPatients(QueryPaginationArguments queryPagination);
-    Task<PatientInfoResponse> GetPatientInfo(Guid id);
-    Task<Patient> CreatePatient(RegistrationPatientRequest request);
-    Task<ShowPatientResponse> UpdatePatient(Guid id, UpdatePatientRequest request);
-    Task<Patient> DeletePatient(Guid id);
+    Task<FrozenSet<ShowPatientResponse>> GetAllPatients(QueryPaginationArguments queryPagination, 
+        CancellationToken cancellationToken = default);
+    Task<PatientInfoResponse> GetPatientInfo(Guid id, 
+        CancellationToken cancellationToken = default);
+    Task<Patient> CreatePatient(RegistrationPatientRequest request, 
+        CancellationToken cancellationToken = default);
+    Task<ShowPatientResponse> UpdatePatient(Guid id, UpdatePatientRequest request, 
+        CancellationToken cancellationToken = default);
+    Task<Patient> DeletePatient(Guid id, 
+        CancellationToken cancellationToken = default);
 }

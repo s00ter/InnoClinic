@@ -17,22 +17,21 @@ public class DoctorService(
     IPublishEndpoint publishEndpoint
     ) : IDoctorService
 {
-    public async Task<FrozenSet<ShowDoctorResponse>> GetAllDoctors(QueryPaginationArguments queryPagination)
+    public async Task<FrozenSet<ShowDoctorResponse>> GetAllDoctors(QueryPaginationArguments queryPagination, CancellationToken cancellationToken)
     {
-        var doctors = await doctorRepository.GetAllAsync(queryPagination);
+        var doctors = await doctorRepository.GetAllAsync(queryPagination, cancellationToken);
         var res = doctors.Select(x => x.MapShowDoctorDto()).ToFrozenSet();
         return res;
     }
     
-    public async Task<DoctorInfoResponse> GetDoctorInfo(Guid id)
+    public async Task<DoctorInfoResponse> GetDoctorInfo(Guid id, CancellationToken cancellationToken)
     {
-        var doctor = await doctorRepository.GetByIdAsync(id) 
-                     ?? throw new Exception("Doctor not found");
+        var doctor = await doctorRepository.GetByIdAsync(id, cancellationToken);
         
         return doctor.MapDoctorInfoDto();
     }
     
-    public async Task<Doctor> CreateDoctor(RegistrationDoctorRequest request)
+    public async Task<Doctor> CreateDoctor(RegistrationDoctorRequest request, CancellationToken cancellationToken)
     {
         var userId = Guid.Parse(currentUserInfo.GetUserId());
         
@@ -43,27 +42,26 @@ public class DoctorService(
             FirstName = request.FirstName,
             LastName = request.LastName,
             MiddleName = request.MiddleName,
-            DateOfBirth = request.DateOfBirth,
+            DateOfBirth = request.DateOfBirth.Value,
             SpecializationId = request.SpecializationId,
             OfficeId = request.OfficeId,
-            CareerStartYear = request.CareerStartYear,
+            CareerStartYear = request.CareerStartYear.Value,
             Status = request.Status
         };
-        var res = await doctorRepository.Add(doctor);
+        var res = await doctorRepository.Add(doctor, cancellationToken);
         
-        await publishEndpoint.Publish<IDoctorCreated>(new
+        await publishEndpoint.Publish<DoctorCreated>(new
         {
             UserId = res.UserId,
             Role = RoleConstants.Doctor
-        });
+        }, cancellationToken);
         
         return res;
     }
     
-    public async Task<ShowDoctorResponse> UpdateDoctor(Guid id, UpdateDoctorRequest request)
+    public async Task<ShowDoctorResponse> UpdateDoctor(Guid id, UpdateDoctorRequest request, CancellationToken cancellationToken)
     {
-        var dbDoctor = await doctorRepository.GetByIdAsync(id) ?? 
-                       throw new Exception("Doctor not found");
+        var dbDoctor = await doctorRepository.GetByIdAsync(id, cancellationToken);
         
         dbDoctor.OfficeId = request.OfficeId;
         dbDoctor.FirstName = request.FirstName;
@@ -71,15 +69,14 @@ public class DoctorService(
         dbDoctor.MiddleName = request.MiddleName;
         dbDoctor.SpecializationId = request.SpecializationId;
         
-        var res = await doctorRepository.Update(dbDoctor);
+        var res = await doctorRepository.Update(dbDoctor, cancellationToken);
         
         return res.MapShowDoctorDto();
     }
     
-    public async Task<Doctor?> DeleteDoctor(Guid id)
+    public async Task<Doctor> DeleteDoctor(Guid id, CancellationToken cancellationToken)
     {
-        var dbDoctor = await doctorRepository.Delete(id) ?? 
-                       throw new Exception("Doctor not found");
+        var dbDoctor = await doctorRepository.Delete(id, cancellationToken);
         
         return dbDoctor;
     }
