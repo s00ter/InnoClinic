@@ -1,5 +1,6 @@
 using InnoClinic.Application.Commands;
 using InnoClinic.Application.Dto.Account;
+using InnoClinic.Shared.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -30,7 +31,28 @@ public class AccountController(
     [HttpPost("authenticate")]
     public async Task<IActionResult> Authenticate([FromBody] UserAuthenticationRequest request, CancellationToken cancellationToken = default)
     {
-        await sender.Send(new UserAuthenticationCommand(request, HttpContext), cancellationToken);
+        var res = await sender.Send(new UserAuthenticationCommand(request), cancellationToken);
+        
+        HttpContext.Response.Cookies.Append(TokenConstants.AccessToken, res.AccessToken, 
+            new CookieOptions
+            {
+                Expires = DateTimeOffset.Now.AddHours(8),
+                HttpOnly = true,
+                IsEssential = true,
+                Secure = true,
+                SameSite = SameSiteMode.None
+            });
+        
+        HttpContext.Response.Cookies.Append(TokenConstants.RefreshToken, res.RefreshToken, 
+            new CookieOptions
+            {
+                Expires = DateTimeOffset.Now.AddDays(7),
+                HttpOnly = true,
+                IsEssential = true,
+                Secure = true,
+                SameSite = SameSiteMode.None
+            });
+        
         return Ok(new { Message = "Succeed authentication" });
     }
     
@@ -53,7 +75,25 @@ public class AccountController(
     [HttpPost("token")]
     public async Task<IActionResult> RefreshAccessToken(CancellationToken cancellationToken = default)
     {
-        await sender.Send(new RefreshAccessTokenCommand(HttpContext), cancellationToken);
+        HttpContext.Request.Cookies.TryGetValue(TokenConstants.RefreshToken ,out var refreshToken);
+        
+        var tokenDto = new TokenResponse
+        {
+            RefreshToken = refreshToken
+        };
+        
+        var res = await sender.Send(new RefreshAccessTokenCommand(tokenDto), cancellationToken);
+        
+        HttpContext.Response.Cookies.Append(TokenConstants.AccessToken, res.AccessToken, 
+            new CookieOptions
+            {
+                Expires = DateTimeOffset.Now.AddHours(8),
+                HttpOnly = true,
+                IsEssential = true,
+                Secure = true,
+                SameSite = SameSiteMode.None
+            });
+        
         return Ok(new { Message = "Token change successfully" });
     }
 }

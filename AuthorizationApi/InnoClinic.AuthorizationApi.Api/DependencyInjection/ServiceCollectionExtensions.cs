@@ -88,7 +88,6 @@ public static class ServiceCollectionExtensions
         services.Configure<EmailConfiguration>(configuration.GetSection("EmailConfiguration"));
         services.Configure<MassTransitConfiguration>(configuration.GetSection("MassTransitConfiguration"));
         services.Configure<RabbitMqConfiguration>(configuration.GetSection("RabbitMqConfiguration"));
-        services.Configure<TokenConfiguration>(configuration.GetSection("TokenConfiguration"));
         
         services.Configure<DataProtectionTokenProviderOptions>(opt =>
             opt.TokenLifespan = TimeSpan.FromHours(configuration.GetValue<int>("TokenProviderOptions:TokenLifespanHours")));
