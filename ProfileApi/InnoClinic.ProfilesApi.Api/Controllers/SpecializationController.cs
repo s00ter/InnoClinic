@@ -8,7 +8,7 @@ namespace InnoClinic.ProfilesApi.Controllers;
 
 [ApiController]
 [Authorize(Policy = "OnlyForMembers")]
-[Route("api/specialization")]
+[Route("api/specializations")]
 public class SpecializationController(
     ISpecializationService specializationService
     ) : ControllerBase
