@@ -8,7 +8,6 @@ using InnoClinic.Prof.DataAccess.Repositories.PatientRepository;
 using InnoClinic.Prof.DataAccess.Repositories.ReceptionistRepository;
 using InnoClinic.Prof.DataAccess.Repositories.SpecializationRepository;
 using InnoClinic.Shared.Extensions;
-using InnoClinic.Shared.Filters;
 
 namespace InnoClinic.ProfilesApi.DependencyInjection;
 

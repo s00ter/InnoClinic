@@ -1,12 +1,8 @@
 using FluentValidation;
 using InnoClinic.Office.Api.DependencyInjection;
 using InnoClinic.Office.BusinessLogic.Validators;
-using InnoClinic.Office.DataAccess;
-using InnoClinic.Office.DataAccess.Models;
 using InnoClinic.Shared.DependencyInjection;
 using InnoClinic.Shared.Middlewares;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,12 +14,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddDbContext<InnoClinicOffContext>((serviceProvider, options) =>
-{
-    var settings = serviceProvider.GetRequiredService<IOptions<MongoDbSettings>>().Value;
-    options.UseMongoDB(settings.AtlasURI ?? "", settings.DatabaseName ?? "");
-});
-
+builder.Services.AddDbSettings();
 builder.Services.AddRepositoriesSettings();
 builder.Services.AddServicesSettings();
 builder.Services.AddOptionsSettings(builder.Configuration);

@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using InnoClinic.Office.BusinessLogic.Dto.Office;
 using InnoClinic.Shared.Models;
 
@@ -5,14 +6,14 @@ namespace InnoClinic.Office.BusinessLogic.Services.OfficeService;
 
 public interface IOfficeService
 {
-    Task<List<ShowOfficeResponse>> GetAllOffices(QueryPaginationArguments query, 
+    Task<FrozenSet<ShowOfficeResponse>> GetAllOfficesAsync(QueryPaginationArguments query, 
         CancellationToken cancellationToken = default);
-    Task<OfficeInfoResponse> GetOfficeInfo(string id, 
+    Task<OfficeInfoResponse> GetOfficeInfoAsync(string id, 
         CancellationToken cancellationToken = default);
-    Task<OfficeResponse> CreateOffice(CreateOfficeRequest request, 
+    Task<OfficeResponse> CreateOfficeAsync(CreateOfficeRequest request, 
         CancellationToken cancellationToken = default);
-    Task UpdateOffice(string id, UpdateOfficeRequest request, 
+    Task UpdateOfficeAsync(string id, UpdateOfficeRequest request, 
         CancellationToken cancellationToken = default);
-    Task DeleteOffice(string id, 
+    Task DeleteOfficeAsync(string id, 
         CancellationToken cancellationToken = default);
 }

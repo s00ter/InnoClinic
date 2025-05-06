@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using InnoClinic.Office.BusinessLogic.Dto.Office;
 using InnoClinic.Office.BusinessLogic.Mappers;
 using InnoClinic.Office.DataAccess.Repositories.OfficeRepository;
@@ -9,15 +10,15 @@ public class OfficeService(
     IOfficeRepository officeRepository
     ) : IOfficeService
 {
-    public async Task<List<ShowOfficeResponse>> GetAllOffices(QueryPaginationArguments query, 
+    public async Task<FrozenSet<ShowOfficeResponse>> GetAllOfficesAsync(QueryPaginationArguments query, 
         CancellationToken cancellationToken)
     {
         var offices = await officeRepository.GetAllAsync(query, cancellationToken);
-        var res = offices.Select(x => x.MapShowOfficeDto()).ToList();
+        var res = offices.Select(x => x.MapShowOfficeDto()).ToFrozenSet();
         return res;
     }
     
-    public async Task<OfficeInfoResponse> GetOfficeInfo(string id, 
+    public async Task<OfficeInfoResponse> GetOfficeInfoAsync(string id, 
         CancellationToken cancellationToken)
     {
         var patient = await officeRepository.GetByIdAsync(id, cancellationToken);
@@ -25,7 +26,7 @@ public class OfficeService(
         return patient.MapOfficeInfoDto();
     }
     
-    public async Task<OfficeResponse> CreateOffice(CreateOfficeRequest request, 
+    public async Task<OfficeResponse> CreateOfficeAsync(CreateOfficeRequest request, 
         CancellationToken cancellationToken)
     {
         var office = new DataAccess.Entities.Office
@@ -41,7 +42,7 @@ public class OfficeService(
         return res.MapOfficeDto();
     }
     
-    public async Task UpdateOffice(string id, UpdateOfficeRequest request, 
+    public async Task UpdateOfficeAsync(string id, UpdateOfficeRequest request, 
         CancellationToken cancellationToken)
     {
         var office = await officeRepository.GetByIdAsync(id, cancellationToken);
@@ -54,7 +55,7 @@ public class OfficeService(
         await officeRepository.Update(office, cancellationToken);
     }
     
-    public async Task DeleteOffice(string id, 
+    public async Task DeleteOfficeAsync(string id, 
         CancellationToken cancellationToken)
     {
         await officeRepository.Delete(id, cancellationToken);

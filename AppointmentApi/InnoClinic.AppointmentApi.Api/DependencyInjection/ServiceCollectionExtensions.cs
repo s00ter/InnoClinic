@@ -1,10 +1,6 @@
-using System.Text.Json.Serialization;
 using InnoClinic.AppointmentApi.BL.Services.AppointmentService;
 using InnoClinic.AppointmentApi.BL.Services.ResultService;
 using InnoClinic.AppointmentApi.DataAccess.UnitOfWork;
-using InnoClinic.Shared.Filters;
-using DateTimeOffsetConverter = InnoClinic.Shared.Extensions.DateTimeOffsetConverter;
-using GuidConverter = InnoClinic.Shared.Extensions.GuidConverter;
 
 namespace InnoClinic.AppointmentApi.Api.DependencyInjection;
 
