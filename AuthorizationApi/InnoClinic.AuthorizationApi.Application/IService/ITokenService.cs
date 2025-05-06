@@ -5,4 +5,5 @@ namespace InnoClinic.Application.IService;
 public interface ITokenService
 {
     string CreateToken(User user, IList<string> roles);
+    string CreateRefreshToken();
 }

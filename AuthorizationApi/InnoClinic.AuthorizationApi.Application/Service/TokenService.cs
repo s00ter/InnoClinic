@@ -55,7 +55,12 @@ public class TokenService : ITokenService
         
         return tokenHandler.WriteToken(token);
     }
-    
+
+    public string CreateRefreshToken()
+    {
+        return Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
+    }
+
     private List<string> GetPermissionsForRole(string role)
     {
         return role switch

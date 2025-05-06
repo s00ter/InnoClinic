@@ -1,4 +1,4 @@
-namespace InnoClinic.Application.Models.Email;
+namespace InnoClinic.Application.Options;
 
 public class EmailConfiguration
 {

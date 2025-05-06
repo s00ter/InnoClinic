@@ -1,5 +1,6 @@
 using InnoClinic.Application.Commands;
 using InnoClinic.Application.Dto.Account;
+using InnoClinic.Shared.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,12 +17,8 @@ public class AccountController(
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] UserRegistrationRequest request, CancellationToken cancellationToken = default)
     {
-        var res = await sender.Send(new UserRegistrationCommand(request), cancellationToken);
-        if (res)
-        {
-            return Ok(new { Message = "Email confirmation token sent successfully" });
-        }
-        return BadRequest(res);
+        await sender.Send(new UserRegistrationCommand(request), cancellationToken);
+        return Ok(new { Message = "Email confirmation token sent successfully" });
     }
     
     [HttpPost("email-verification")]
@@ -34,10 +31,29 @@ public class AccountController(
     [HttpPost("authenticate")]
     public async Task<IActionResult> Authenticate([FromBody] UserAuthenticationRequest request, CancellationToken cancellationToken = default)
     {
-        var token = await sender.Send(new UserAuthenticationCommand(request), cancellationToken);
-        HttpContext.Response.Cookies.Append("cookies",token);
+        var res = await sender.Send(new UserAuthenticationCommand(request), cancellationToken);
         
-        return Ok(token);
+        HttpContext.Response.Cookies.Append(TokenConstants.AccessToken, res.AccessToken, 
+            new CookieOptions
+            {
+                Expires = DateTimeOffset.Now.AddHours(8),
+                HttpOnly = true,
+                IsEssential = true,
+                Secure = true,
+                SameSite = SameSiteMode.None
+            });
+        
+        HttpContext.Response.Cookies.Append(TokenConstants.RefreshToken, res.RefreshToken, 
+            new CookieOptions
+            {
+                Expires = DateTimeOffset.Now.AddDays(7),
+                HttpOnly = true,
+                IsEssential = true,
+                Secure = true,
+                SameSite = SameSiteMode.None
+            });
+        
+        return Ok(new { Message = "Succeed authentication" });
     }
     
     [HttpPost("forgot-password")]
@@ -54,5 +70,30 @@ public class AccountController(
     {
         await sender.Send(new ResetPasswordCommand(request), cancellationToken);
         return Ok(new { Message = "Password change successfully" });
+    }
+    
+    [HttpPost("token")]
+    public async Task<IActionResult> RefreshAccessToken(CancellationToken cancellationToken = default)
+    {
+        HttpContext.Request.Cookies.TryGetValue(TokenConstants.RefreshToken ,out var refreshToken);
+        
+        var tokenDto = new TokenResponse
+        {
+            RefreshToken = refreshToken
+        };
+        
+        var res = await sender.Send(new RefreshAccessTokenCommand(tokenDto), cancellationToken);
+        
+        HttpContext.Response.Cookies.Append(TokenConstants.AccessToken, res.AccessToken, 
+            new CookieOptions
+            {
+                Expires = DateTimeOffset.Now.AddHours(8),
+                HttpOnly = true,
+                IsEssential = true,
+                Secure = true,
+                SameSite = SameSiteMode.None
+            });
+        
+        return Ok(new { Message = "Token change successfully" });
     }
 }

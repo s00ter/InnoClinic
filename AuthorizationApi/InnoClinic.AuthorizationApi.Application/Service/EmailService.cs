@@ -1,5 +1,6 @@
 using InnoClinic.Application.IService;
 using InnoClinic.Application.Models.Email;
+using InnoClinic.Application.Options;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
 using MimeKit;

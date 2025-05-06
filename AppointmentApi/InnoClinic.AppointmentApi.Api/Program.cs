@@ -1,7 +1,8 @@
-using System.Text.Json.Serialization;
+using FluentValidation;
 using InnoClinic.AppointmentApi.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using InnoClinic.AppointmentApi.Api.DependencyInjection;
+using InnoClinic.AppointmentApi.BL.Validators.AppointmentValidators;
 using InnoClinic.Shared.DependencyInjection;
 using InnoClinic.Shared.Middlewares;
 
@@ -9,18 +10,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddControllers()
-    .AddJsonOptions(x => 
-        x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+builder.Services.AddValidatorsFromAssemblyContaining<CreateAppointmentValidator>();
 
 builder.Services.AddDbContext<InnoClinicAppointmentContext>(options => 
     options.UseNpgsql(builder.Configuration.GetConnectionString("InnoClinicAppointments")));
 
 builder.Services.AddServices();
 builder.Services.AddRepositories();
+builder.Services.AddControllerSettings();
+
 builder.Services.AddJwtSettings();
 builder.Services.AddPoliciesSettings();
-builder.Services.AddValidatorsSettings();
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
@@ -38,8 +38,6 @@ app.UseExceptionHandler(opt => { });
 
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.UseMiddleware<ValidationMiddleware>();
 
 app.MapControllers();
 

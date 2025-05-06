@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>InnoClinic.Prof.BusinessLogic</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\AuthorizationApi\InnoClinic.AuthorizationApi.Application\InnoClinic.AuthorizationApi.Application.csproj" />
+      <ProjectReference Include="..\..\Shared\InnoClinic.Shared\InnoClinic.Shared.csproj" />
+      <ProjectReference Include="..\InnoClinic.ProfilesApi.DAL\InnoClinic.ProfilesApi.DAL.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
+      <PackageReference Include="MassTransit" Version="8.4.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Dto\Doctor\IventTypes\" />
+    </ItemGroup>
+
+</Project>
