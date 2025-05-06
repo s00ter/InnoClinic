@@ -20,12 +20,6 @@ public class ReceptionistRepository(InnoClinicProfContext context) : IReceptioni
         return patient;
     }
 
-    public Task UpdateRange(List<Receptionist> patients, CancellationToken cancellationToken)
-    {
-        context.Receptionists.UpdateRange(patients);
-        return context.SaveChangesAsync(cancellationToken);
-    }
-
     public async Task<Receptionist> Delete(Guid id, CancellationToken cancellationToken)
     {
         var res = await context.Receptionists.FirstOrDefaultAsync(x => x.Id == id, cancellationToken: cancellationToken)

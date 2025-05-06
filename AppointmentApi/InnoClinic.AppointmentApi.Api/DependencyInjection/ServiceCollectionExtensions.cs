@@ -26,23 +26,4 @@ public static class ServiceCollectionExtensions
 
         return services;
     }
-    
-    public static IServiceCollection AddControllerSettings(
-        this IServiceCollection services)
-    {
-        services.AddControllers(options =>
-            {
-                options.Filters.Add<GlobalValidationFilter>();
-            })
-            .AddJsonOptions(x =>
-            {
-                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-                
-                x.JsonSerializerOptions.Converters.Add(new DateTimeOffsetConverter());
-                x.JsonSerializerOptions.Converters.Add(new GuidConverter());
-            });
-                
-
-        return services;
-    }
 }

@@ -39,20 +39,4 @@ public static class ServiceCollectionExtensions
 
         return services;
     }
-    
-    public static IServiceCollection AddControllersSettings(
-        this IServiceCollection services)
-    {
-        services.AddControllers(options =>
-            {
-                options.Filters.Add<GlobalValidationFilter>();
-            })
-            .AddJsonOptions(options =>
-            {
-                options.JsonSerializerOptions.Converters.Add(new DateTimeOffsetConverter());
-                options.JsonSerializerOptions.Converters.Add(new GuidConverter());
-            });
-
-        return services;
-    }
 }

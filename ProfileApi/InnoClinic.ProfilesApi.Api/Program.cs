@@ -29,8 +29,8 @@ try
 
     builder.Services.AddServicesSettings();
     builder.Services.AddRepositoriesSettings();
+    
     builder.Services.AddControllersSettings();
-
     builder.Services.AddJwtSettings();
     builder.Services.AddPoliciesSettings();
 

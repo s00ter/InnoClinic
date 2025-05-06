@@ -14,7 +14,11 @@
   <Folder Name="/GatewayApi/">
     <Project Path="GatewayApi\InnoClinic.GatewayApi.Api\InnoClinic.GatewayApi.Api.csproj" Type="Classic C#" />
   </Folder>
-  <Folder Name="/OfficesApi/" />
+  <Folder Name="/OfficesApi/">
+    <Project Path="OfficeApi\InnoClinic.OfficesApi.Api\InnoClinic.OfficesApi.Api.csproj" Type="Classic C#" />
+    <Project Path="OfficeApi\InnoClinic.OfficesApi.BL\InnoClinic.OfficesApi.BL.csproj" Type="Classic C#" />
+    <Project Path="OfficeApi\InnoClinic.OfficesApi.DAL\InnoClinic.OfficesApi.DAL.csproj" Type="Classic C#" />
+  </Folder>
   <Folder Name="/ProfilesApi/">
     <Project Path="ProfileApi\InnoClinic.ProfilesApi.Api\InnoClinic.ProfilesApi.Api.csproj" Type="Classic C#" />
     <Project Path="ProfileApi\InnoClinic.ProfilesApi.BL\InnoClinic.ProfilesApi.BL.csproj" Type="Classic C#" />

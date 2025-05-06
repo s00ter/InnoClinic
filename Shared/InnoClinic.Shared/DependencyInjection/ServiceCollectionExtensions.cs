@@ -1,7 +1,10 @@
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json.Serialization;
 using InnoClinic.Shared.Configurations;
 using InnoClinic.Shared.Constants;
+using InnoClinic.Shared.Extensions;
+using InnoClinic.Shared.Filters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -53,6 +56,24 @@ public static class ServiceCollectionExtensions
             };
         });
 
+        return services;
+    }
+    
+    public static IServiceCollection AddControllersSettings(
+        this IServiceCollection services)
+    {
+        services.AddControllers(options =>
+            {
+                options.Filters.Add<GlobalValidationFilter>();
+            })
+            .AddJsonOptions(x =>
+            {
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                
+                x.JsonSerializerOptions.Converters.Add(new DateTimeOffsetConverter());
+                x.JsonSerializerOptions.Converters.Add(new GuidConverter());
+            });
+        
         return services;
     }
 }
