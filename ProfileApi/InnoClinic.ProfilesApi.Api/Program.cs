@@ -25,11 +25,11 @@ try
     builder.Services.AddValidatorsFromAssemblyContaining<RegistrationDoctorValidator>();
 
     builder.Services.AddDbContext<InnoClinicProfContext>(options =>
-        options.UseSqlServer(builder.Configuration.GetConnectionString("InnoClinicProfile")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("InnoClinicProfile")));
 
     builder.Services.AddServicesSettings();
     builder.Services.AddRepositoriesSettings();
-    
+
     builder.Services.AddControllersSettings();
     builder.Services.AddJwtSettings();
     builder.Services.AddPoliciesSettings();
@@ -41,12 +41,14 @@ try
 
     var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+    // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
     {
         app.UseSwagger();
         app.UseSwaggerUI();
     }
+
+    app.UseSerilogRequestLogging();
 
     app.UseExceptionHandler(opt => { });
 

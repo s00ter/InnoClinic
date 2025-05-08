@@ -7,9 +7,9 @@ public static class ApplicationExtension
 {
     public static void ConfigureSerilog(this IHostBuilder host)
     {
-        host.UseSerilog((ctx, lc) =>
+        host.UseSerilog((ctx, configuration) =>
         {
-            lc.WriteTo.Console();
+            configuration.ReadFrom.Configuration(ctx.Configuration);
         });
     }
 }

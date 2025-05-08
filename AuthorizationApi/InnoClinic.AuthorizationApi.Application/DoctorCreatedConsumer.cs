@@ -7,7 +7,8 @@ using Microsoft.Extensions.Logging;
 namespace InnoClinic.Application;
 
 public class DoctorCreatedConsumer(
-    UserManager<User> userManager
+    UserManager<User> userManager,
+    ILogger<DoctorCreatedConsumer> logger
     ) : IConsumer<DoctorCreated>
 {
     public async Task Consume(ConsumeContext<DoctorCreated> context)
@@ -18,7 +19,8 @@ public class DoctorCreatedConsumer(
        var res = await userManager.AddToRoleAsync(user, context.Message.Role);
        if (!res.Succeeded)
        {
-           Console.WriteLine("Failed adding role: {0} to user: {1}, error: {2}",context.Message.Role, user.Id, string.Join(", ", res.Errors.Select(e => e.Description)));
+           logger.LogError("Failed adding role: {role} to user: {userId}, error: {error}",context.Message.Role, user.Id, string.Join(", ", res.Errors.Select(e => e.Description)));
+           
        }
     }
 }

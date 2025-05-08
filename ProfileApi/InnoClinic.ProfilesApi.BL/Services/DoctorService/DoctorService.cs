@@ -8,13 +8,15 @@ using InnoClinic.Shared.Extensions;
 using InnoClinic.Shared.IventTypes;
 using InnoClinic.Shared.Models;
 using MassTransit;
+using Microsoft.Extensions.Logging;
 
 namespace InnoClinic.Prof.BusinessLogic.Services.DoctorService;
 
 public class DoctorService(
     IDoctorRepository doctorRepository,
     ICurrentUserInfo currentUserInfo,
-    IPublishEndpoint publishEndpoint
+    IPublishEndpoint publishEndpoint,
+    ILogger<DoctorService> logger
     ) : IDoctorService
 {
     public async Task<FrozenSet<ShowDoctorResponse>> GetAllDoctors(QueryPaginationArguments queryPagination, CancellationToken cancellationToken)
@@ -49,6 +51,8 @@ public class DoctorService(
             Status = request.Status
         };
         var res = await doctorRepository.Add(doctor, cancellationToken);
+        
+        logger.LogInformation("Sent message to add {role} role to {userId} user",RoleConstants.Doctor,res.UserId);
         
         await publishEndpoint.Publish<DoctorCreated>(new
         {
