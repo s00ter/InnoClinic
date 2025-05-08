@@ -8,7 +8,7 @@ namespace InnoClinic.ProfilesApi.Controllers;
 
 [ApiController]
 [Authorize(Policy = "OnlyForMembers")]
-[Route("api/receptionist")]
+[Route("api/receptionists")]
 public class ReceptionistController(
     IReceptionistService receptionistService
     ) : ControllerBase

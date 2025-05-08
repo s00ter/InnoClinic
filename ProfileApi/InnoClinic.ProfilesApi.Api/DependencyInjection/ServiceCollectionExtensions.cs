@@ -8,7 +8,6 @@ using InnoClinic.Prof.DataAccess.Repositories.PatientRepository;
 using InnoClinic.Prof.DataAccess.Repositories.ReceptionistRepository;
 using InnoClinic.Prof.DataAccess.Repositories.SpecializationRepository;
 using InnoClinic.Shared.Extensions;
-using InnoClinic.Shared.Filters;
 
 namespace InnoClinic.ProfilesApi.DependencyInjection;
 
@@ -36,22 +35,6 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IPatientRepository, PatientRepository>();
         services.AddScoped<IReceptionistRepository, ReceptionistRepository>();
         services.AddScoped<ISpecializationRepository, SpecializationRepository>();
-
-        return services;
-    }
-    
-    public static IServiceCollection AddControllersSettings(
-        this IServiceCollection services)
-    {
-        services.AddControllers(options =>
-            {
-                options.Filters.Add<GlobalValidationFilter>();
-            })
-            .AddJsonOptions(options =>
-            {
-                options.JsonSerializerOptions.Converters.Add(new DateTimeOffsetConverter());
-                options.JsonSerializerOptions.Converters.Add(new GuidConverter());
-            });
 
         return services;
     }

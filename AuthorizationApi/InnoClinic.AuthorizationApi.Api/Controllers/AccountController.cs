@@ -1,5 +1,6 @@
 using InnoClinic.Application.Commands;
 using InnoClinic.Application.Dto.Account;
+using InnoClinic.Authorization.Extensions;
 using InnoClinic.Shared.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -33,25 +34,8 @@ public class AccountController(
     {
         var res = await sender.Send(new UserAuthenticationCommand(request), cancellationToken);
         
-        HttpContext.Response.Cookies.Append(TokenConstants.AccessToken, res.AccessToken, 
-            new CookieOptions
-            {
-                Expires = DateTimeOffset.Now.AddHours(8),
-                HttpOnly = true,
-                IsEssential = true,
-                Secure = true,
-                SameSite = SameSiteMode.None
-            });
-        
-        HttpContext.Response.Cookies.Append(TokenConstants.RefreshToken, res.RefreshToken, 
-            new CookieOptions
-            {
-                Expires = DateTimeOffset.Now.AddDays(7),
-                HttpOnly = true,
-                IsEssential = true,
-                Secure = true,
-                SameSite = SameSiteMode.None
-            });
+        HttpContext.Response.Cookies.SetAuthCookie(TokenConstants.AccessToken, res.AccessToken, DateTimeOffset.Now.AddHours(8));
+        HttpContext.Response.Cookies.SetAuthCookie(TokenConstants.RefreshToken, res.RefreshToken, DateTimeOffset.Now.AddDays(7));
         
         return Ok(new { Message = "Succeed authentication" });
     }
@@ -84,15 +68,7 @@ public class AccountController(
         
         var res = await sender.Send(new RefreshAccessTokenCommand(tokenDto), cancellationToken);
         
-        HttpContext.Response.Cookies.Append(TokenConstants.AccessToken, res.AccessToken, 
-            new CookieOptions
-            {
-                Expires = DateTimeOffset.Now.AddHours(8),
-                HttpOnly = true,
-                IsEssential = true,
-                Secure = true,
-                SameSite = SameSiteMode.None
-            });
+        HttpContext.Response.Cookies.SetAuthCookie(TokenConstants.AccessToken, res.AccessToken, DateTimeOffset.Now.AddHours(8));
         
         return Ok(new { Message = "Token change successfully" });
     }

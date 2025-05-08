@@ -54,7 +54,7 @@ public class SpecializationRepository(
     {
         cancellationToken.ThrowIfCancellationRequested();
         
-        var query = "SELECT * FROM Specializations WHERE Id = @Id";
+        var query = "SELECT Id, Name, IsActive FROM Specializations WHERE Id = @Id";
         using var connection = dapperContext.CreateConnection();
         return await connection.QueryFirstOrDefaultAsync<Specialization>(query, new { Id = id })
                ?? throw new Exception("Specialization not found");
@@ -66,11 +66,10 @@ public class SpecializationRepository(
         
         var skipNumber = (queryPagination.PageNumber - 1) * queryPagination.PageSize;
         
-        var query = "SELECT * FROM Specializations";
+        var query = @"SELECT Id, Name, IsActive FROM Specializations ORDER BY Name OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY";
+        
         using var connection = dapperContext.CreateConnection();
-        return connection.QueryAsync<Specialization>(query).Result
-            .Skip(skipNumber)
-            .Take(queryPagination.PageSize)
-            .ToList();;
+        var result = await connection.QueryAsync<Specialization>(query, new { Skip = skipNumber, Take = queryPagination.PageSize });
+        return result.ToList();
     }
 }

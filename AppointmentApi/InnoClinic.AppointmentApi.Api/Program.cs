@@ -17,8 +17,8 @@ builder.Services.AddDbContext<InnoClinicAppointmentContext>(options =>
 
 builder.Services.AddServices();
 builder.Services.AddRepositories();
-builder.Services.AddControllerSettings();
 
+builder.Services.AddControllersSettings();
 builder.Services.AddJwtSettings();
 builder.Services.AddPoliciesSettings();
 
