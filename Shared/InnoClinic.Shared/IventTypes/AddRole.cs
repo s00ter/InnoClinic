@@ -1,6 +1,6 @@
 namespace InnoClinic.Shared.IventTypes;
 
-public class DoctorCreated
+public class AddRole
 {
     public Guid UserId { get; init; }
     public string Role { get; init; }
