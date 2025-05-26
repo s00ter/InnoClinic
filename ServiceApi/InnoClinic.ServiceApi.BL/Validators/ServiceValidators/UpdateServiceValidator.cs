@@ -1,0 +1,25 @@
+using FluentValidation;
+using InnoClinic.ServiceApi.BusinessLogic.Dto.Service;
+
+namespace InnoClinic.ServiceApi.BusinessLogic.Validators.ServiceValidators;
+
+public class UpdateServiceValidator : AbstractValidator<UpdateServiceRequest>
+{
+    public UpdateServiceValidator()
+    {
+        RuleFor(x => x.CategoryId)
+            .NotEmpty().WithMessage("CategoryId is required");
+        
+        RuleFor(x => x.Name)
+            .NotEmpty().WithMessage("Name is required");
+        
+        RuleFor(x => x.Price)
+            .NotEmpty().WithMessage("Price is required");
+        
+        RuleFor(x => x.SpecializationId)
+            .NotEmpty().WithMessage("SpecializationId is required");
+        
+        RuleFor(x => x.IsActive)
+            .NotEmpty().WithMessage("IsActive is required");
+    }
+}
