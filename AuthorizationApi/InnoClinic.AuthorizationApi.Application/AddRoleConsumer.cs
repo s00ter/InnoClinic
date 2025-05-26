@@ -6,12 +6,12 @@ using Microsoft.Extensions.Logging;
 
 namespace InnoClinic.Application;
 
-public class DoctorCreatedConsumer(
+public class AddRoleConsumer(
     UserManager<User> userManager,
-    ILogger<DoctorCreatedConsumer> logger
-    ) : IConsumer<DoctorCreated>
+    ILogger<AddRoleConsumer> logger
+    ) : IConsumer<AddRole>
 {
-    public async Task Consume(ConsumeContext<DoctorCreated> context)
+    public async Task Consume(ConsumeContext<AddRole> context)
     {
         var user = await userManager.FindByIdAsync(context.Message.UserId.ToString())
             ?? throw new Exception("User not found");

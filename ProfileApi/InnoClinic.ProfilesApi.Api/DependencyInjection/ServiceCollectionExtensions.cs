@@ -7,7 +7,10 @@ using InnoClinic.Prof.DataAccess.Repositories.DoctorRepository;
 using InnoClinic.Prof.DataAccess.Repositories.PatientRepository;
 using InnoClinic.Prof.DataAccess.Repositories.ReceptionistRepository;
 using InnoClinic.Prof.DataAccess.Repositories.SpecializationRepository;
+using InnoClinic.Shared.Configurations;
 using InnoClinic.Shared.Extensions;
+using MassTransit;
+using Microsoft.EntityFrameworkCore;
 
 namespace InnoClinic.ProfilesApi.DependencyInjection;
 
@@ -36,6 +39,30 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IReceptionistRepository, ReceptionistRepository>();
         services.AddScoped<ISpecializationRepository, SpecializationRepository>();
 
+        return services;
+    }
+    
+    public static IServiceCollection AddDbSettings(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        services.AddDbContext<InnoClinicProfContext>(options =>
+            options.UseSqlServer(configuration.GetConnectionString("InnoClinicProfile")));
+
+        return services;
+    }
+    
+    public static IServiceCollection AddMassTransitSettings(
+        this IServiceCollection services)
+    {
+        services.AddMassTransit(x =>
+        {
+            x.UsingRabbitMq((ctx, cfg) =>
+            {
+                cfg.Host(MassTransitConfiguration.Host);
+            });
+        });
+        
         return services;
     }
 }

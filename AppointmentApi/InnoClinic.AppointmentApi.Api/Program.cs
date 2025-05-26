@@ -5,42 +5,60 @@ using InnoClinic.AppointmentApi.Api.DependencyInjection;
 using InnoClinic.AppointmentApi.BL.Validators.AppointmentValidators;
 using InnoClinic.Shared.DependencyInjection;
 using InnoClinic.Shared.Middlewares;
+using Serilog;
 
-var builder = WebApplication.CreateBuilder(args);
+Log.Logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddValidatorsFromAssemblyContaining<CreateAppointmentValidator>();
-
-builder.Services.AddDbContext<InnoClinicAppointmentContext>(options => 
-    options.UseNpgsql(builder.Configuration.GetConnectionString("InnoClinicAppointments")));
-
-builder.Services.AddServices();
-builder.Services.AddRepositories();
-
-builder.Services.AddControllersSettings();
-builder.Services.AddJwtSettings();
-builder.Services.AddPoliciesSettings();
-
-builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
-builder.Services.AddProblemDetails();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+try
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    Log.Information("Starting application");
+
+    var builder = WebApplication.CreateBuilder(args);
+
+    builder.Host.ConfigureSerilog();
+    
+    builder.Services.AddHttpContextAccessor();
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen();
+    
+    builder.Services.AddValidatorsFromAssemblyContaining<CreateAppointmentValidator>();
+
+    builder.Services.AddDbSettings(builder.Configuration);
+    builder.Services.AddServices();
+    builder.Services.AddRepositories();
+
+    builder.Services.AddControllersSettings();
+    builder.Services.AddJwtSettings();
+    builder.Services.AddPoliciesSettings();
+
+    builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+    builder.Services.AddProblemDetails();
+
+    var app = builder.Build();
+
+    // Configure the HTTP request pipeline.
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+
+    app.UseExceptionHandler(opt => { });
+
+    app.UseAuthentication();
+    app.UseAuthorization();
+
+    app.MapControllers();
+
+    await app.MigrateDatabase();
+
+    app.Run();
 }
-
-app.UseExceptionHandler(opt => { });
-
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.MapControllers();
-
-await app.MigrateDatabase();
-
-app.Run();
+catch (Exception e)
+{
+    Log.Fatal(e, "Host terminated unexpectedly");
+}
+finally
+{
+    Log.CloseAndFlush();
+}
