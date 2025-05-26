@@ -12,8 +12,4 @@
       <ProjectReference Include="..\InnoClinic.ServiceApi.DAL\InnoClinic.ServiceApi.DAL.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <PackageReference Include="Ignore" Version="0.2.1" />
-    </ItemGroup>
-
 </Project>
