@@ -3,14 +3,20 @@ using InnoClinic.Prof.BusinessLogic.Dto.Receptionist;
 using InnoClinic.Prof.BusinessLogic.Mappers;
 using InnoClinic.Prof.DataAccess.Entities;
 using InnoClinic.Prof.DataAccess.Repositories.ReceptionistRepository;
+using InnoClinic.Shared.Constants;
 using InnoClinic.Shared.Extensions;
+using InnoClinic.Shared.IventTypes;
 using InnoClinic.Shared.Models;
+using MassTransit;
+using Microsoft.Extensions.Logging;
 
 namespace InnoClinic.Prof.BusinessLogic.Services.ReceptionistService;
 
 public class ReceptionistService(
     IReceptionistRepository receptionistRepository,
-    ICurrentUserInfo currentUserInfo
+    ICurrentUserInfo currentUserInfo,
+    IPublishEndpoint publishEndpoint,
+    ILogger<ReceptionistService> logger
     ) : IReceptionistService
 {
     public async Task<FrozenSet<ShowReceptionistResponse>> GetAllReceptionists(QueryPaginationArguments queryPagination, CancellationToken cancellationToken)
@@ -40,8 +46,17 @@ public class ReceptionistService(
             AccountId = userId,
             OfficeId = request.OfficeId
         };
-            
-        return await receptionistRepository.Add(patient, cancellationToken);
+        var res = await receptionistRepository.Add(patient, cancellationToken);
+        
+        logger.LogInformation("Sent message to add {role} role to {userId} user",RoleConstants.Doctor,res.AccountId);
+        
+        await publishEndpoint.Publish<RoleAdded>(new
+        {
+            UserId = res.AccountId,
+            Role = RoleConstants.Receptionist
+        }, cancellationToken);
+
+        return res;
     }
     
     public async Task<ShowReceptionistResponse> UpdateReceptionist(Guid id, UpdateReceptionistRequest request, CancellationToken cancellationToken)

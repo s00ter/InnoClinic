@@ -3,14 +3,20 @@ using InnoClinic.Prof.BusinessLogic.Dto.Patient;
 using InnoClinic.Prof.BusinessLogic.Mappers;
 using InnoClinic.Prof.DataAccess.Entities;
 using InnoClinic.Prof.DataAccess.Repositories.PatientRepository;
+using InnoClinic.Shared.Constants;
 using InnoClinic.Shared.Extensions;
+using InnoClinic.Shared.IventTypes;
 using InnoClinic.Shared.Models;
+using MassTransit;
+using Microsoft.Extensions.Logging;
 
 namespace InnoClinic.Prof.BusinessLogic.Services.PatientService;
 
 public class PatientService(
     IPatientRepository patientRepository,
-    ICurrentUserInfo currentUserInfo
+    ICurrentUserInfo currentUserInfo,
+    IPublishEndpoint publishEndpoint,
+    ILogger<PatientService> logger
     ) : IPatientService
 {
     public async Task<FrozenSet<ShowPatientResponse>> GetAllPatients(QueryPaginationArguments queryPagination, CancellationToken cancellationToken)
@@ -41,8 +47,17 @@ public class PatientService(
             IsLinkedToAccount = request.isLinkedToAccount,
             DateOfBirth = request.DateOfBirth
         };
-            
-        return await patientRepository.Add(patient, cancellationToken);
+        var res = await patientRepository.Add(patient, cancellationToken);
+        
+        logger.LogInformation("Sent message to add {role} role to {userId} user",RoleConstants.Doctor,res.UserId);
+        
+        await publishEndpoint.Publish<RoleAdded>(new
+        {
+            UserId = res.UserId,
+            Role = RoleConstants.Patient
+        }, cancellationToken);
+
+        return res;
     }
     
     public async Task<ShowPatientResponse> UpdatePatient(Guid id, UpdatePatientRequest request, CancellationToken cancellationToken)

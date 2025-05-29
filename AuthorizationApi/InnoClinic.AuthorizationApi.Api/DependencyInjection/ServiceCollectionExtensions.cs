@@ -5,16 +5,18 @@ using InnoClinic.Application.Options;
 using InnoClinic.Application.Service;
 using InnoClinic.BusinessLogic.Entities;
 using InnoClinic.DataAccess;
+using InnoClinic.Shared.Configurations;
+using InnoClinic.Shared.Constants;
 using InnoClinic.Shared.Extensions;
 using MassTransit;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
+using Microsoft.EntityFrameworkCore;
 
 namespace InnoClinic.Authorization.DependencyInjection;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddServices(
+    public static IServiceCollection AddServicesSettings(
         this IServiceCollection services)
     {
         services.AddScoped<IEmailService, EmailService>();
@@ -60,20 +62,17 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddMassTransitSettings(
         this IServiceCollection services)
     {
-        var massTransitConfiguration = services.BuildServiceProvider().GetRequiredService<IOptions<MassTransitConfiguration>>().Value;
-        var rabitMqConfiguration = services.BuildServiceProvider().GetRequiredService<IOptions<RabbitMqConfiguration>>().Value;
-        
         services.AddMassTransit(x =>
         {
-            x.AddConsumer<DoctorCreatedConsumer>();
+            x.AddConsumer<AddRoleConsumer>();
 
             x.UsingRabbitMq((ctx, cfg) =>
             {
-                cfg.Host(massTransitConfiguration.RabbitMqHost);
+                cfg.Host(MassTransitConfiguration.Host);
 
-                cfg.ReceiveEndpoint(rabitMqConfiguration.CreateDoctorQueue, e =>
+                cfg.ReceiveEndpoint(RabbitMqQueues.AddRoleQueue, e =>
                 {
-                    e.ConfigureConsumer<DoctorCreatedConsumer>(ctx);
+                    e.ConfigureConsumer<AddRoleConsumer>(ctx);
                 });
             });
         });
@@ -86,12 +85,20 @@ public static class ServiceCollectionExtensions
         IConfiguration configuration)
     {
         services.Configure<EmailConfiguration>(configuration.GetSection("EmailConfiguration"));
-        services.Configure<MassTransitConfiguration>(configuration.GetSection("MassTransitConfiguration"));
-        services.Configure<RabbitMqConfiguration>(configuration.GetSection("RabbitMqConfiguration"));
         
         services.Configure<DataProtectionTokenProviderOptions>(opt =>
             opt.TokenLifespan = TimeSpan.FromHours(configuration.GetValue<int>("TokenProviderOptions:TokenLifespanHours")));
         
+        return services;
+    }
+    
+    public static IServiceCollection AddDbSettings(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        services.AddDbContext<InnoClinicAuthContext>(options => 
+            options.UseSqlServer(configuration.GetConnectionString("InnoClinicAuth")));
+
         return services;
     }
 }

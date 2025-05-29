@@ -54,7 +54,7 @@ public class DoctorService(
         
         logger.LogInformation("Sent message to add {role} role to {userId} user",RoleConstants.Doctor,res.UserId);
         
-        await publishEndpoint.Publish<DoctorCreated>(new
+        await publishEndpoint.Publish<RoleAdded>(new
         {
             UserId = res.UserId,
             Role = RoleConstants.Doctor

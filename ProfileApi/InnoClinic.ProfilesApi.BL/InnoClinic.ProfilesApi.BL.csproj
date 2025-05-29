@@ -18,8 +18,4 @@
       <PackageReference Include="MassTransit" Version="8.4.0" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Dto\Doctor\IventTypes\" />
-    </ItemGroup>
-
 </Project>

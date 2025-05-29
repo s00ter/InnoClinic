@@ -1,6 +1,5 @@
 using FluentValidation;
 using InnoClinic.DataAccess;
-using Microsoft.EntityFrameworkCore;
 using InnoClinic.Authorization.DependencyInjection;
 using InnoClinic.Shared.DependencyInjection;
 using InnoClinic.Shared.Middlewares;
@@ -20,7 +19,8 @@ try
     builder.Services.AddSwaggerGen();
     builder.Services.AddControllers();
 
-    builder.Services.AddServices();
+    builder.Services.AddDbSettings(builder.Configuration);
+    builder.Services.AddServicesSettings();
     builder.Services.AddIdentitySettings();
     builder.Services.AddMediatrSettings();
     builder.Services.AddOptionsSettings(builder.Configuration);
@@ -33,9 +33,6 @@ try
 
     builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
     builder.Services.AddProblemDetails();
-
-    builder.Services.AddDbContext<InnoClinicAuthContext>(options => 
-        options.UseSqlServer(builder.Configuration.GetConnectionString("InnoClinicAuth")));
 
     var app = builder.Build();
 
@@ -58,7 +55,6 @@ try
     await app.MigrateDatabase();
 
     app.Run();
-    
 }
 catch (Exception e)
 {

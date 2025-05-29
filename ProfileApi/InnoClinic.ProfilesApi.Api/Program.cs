@@ -4,8 +4,6 @@ using InnoClinic.Prof.DataAccess;
 using InnoClinic.ProfilesApi.DependencyInjection;
 using InnoClinic.Shared.DependencyInjection;
 using InnoClinic.Shared.Middlewares;
-using MassTransit;
-using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
@@ -23,18 +21,15 @@ try
     builder.Services.AddSwaggerGen();
 
     builder.Services.AddValidatorsFromAssemblyContaining<RegistrationDoctorValidator>();
-
-    builder.Services.AddDbContext<InnoClinicProfContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("InnoClinicProfile")));
-
+    
+    builder.Services.AddDbSettings(builder.Configuration);
     builder.Services.AddServicesSettings();
     builder.Services.AddRepositoriesSettings();
+    builder.Services.AddMassTransitSettings();
 
     builder.Services.AddControllersSettings();
     builder.Services.AddJwtSettings();
     builder.Services.AddPoliciesSettings();
-
-    builder.Services.AddMassTransit(x => { x.UsingRabbitMq((ctx, cfg) => { cfg.Host("rabbitmq://localhost"); }); });
 
     builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
     builder.Services.AddProblemDetails();
@@ -60,7 +55,6 @@ try
     await app.MigrateDatabase();
 
     app.Run();
-
 }
 catch (Exception e)
 {
