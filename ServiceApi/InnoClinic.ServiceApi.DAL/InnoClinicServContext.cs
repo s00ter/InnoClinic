@@ -7,14 +7,4 @@ public class InnoClinicServContext(DbContextOptions<InnoClinicServContext> optio
 {
     public DbSet<Service> Services { get; set; }
     public DbSet<ServiceCategory> ServiceCategories { get; set; }
-    
-    protected override void OnModelCreating(ModelBuilder builder)
-    {
-        base.OnModelCreating(builder);
-    }
-    
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        
-    }
 }

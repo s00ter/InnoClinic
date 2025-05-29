@@ -50,7 +50,7 @@ public class ReceptionistService(
         
         logger.LogInformation("Sent message to add {role} role to {userId} user",RoleConstants.Doctor,res.AccountId);
         
-        await publishEndpoint.Publish<AddRole>(new
+        await publishEndpoint.Publish<RoleAdded>(new
         {
             UserId = res.AccountId,
             Role = RoleConstants.Receptionist

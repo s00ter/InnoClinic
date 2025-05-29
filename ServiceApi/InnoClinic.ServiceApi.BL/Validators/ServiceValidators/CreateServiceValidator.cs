@@ -14,7 +14,8 @@ public class CreateServiceValidator : AbstractValidator<CreateServiceRequest>
             .NotEmpty().WithMessage("Name is required");
         
         RuleFor(x => x.Price)
-            .NotEmpty().WithMessage("Price is required");
+            .NotEmpty().WithMessage("Price is required")
+            .GreaterThan(0).WithMessage("Price must be greater than 0");
         
         RuleFor(x => x.SpecializationId)
             .NotEmpty().WithMessage("SpecializationId is required");

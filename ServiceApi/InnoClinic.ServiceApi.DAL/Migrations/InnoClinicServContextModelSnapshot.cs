@@ -38,8 +38,8 @@ namespace InnoClinic.ServiceApi.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("Price")
-                        .HasColumnType("real");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid>("SpecializationId")
                         .HasColumnType("uniqueidentifier");

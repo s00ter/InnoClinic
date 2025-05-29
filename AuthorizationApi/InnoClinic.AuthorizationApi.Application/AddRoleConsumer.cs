@@ -9,9 +9,9 @@ namespace InnoClinic.Application;
 public class AddRoleConsumer(
     UserManager<User> userManager,
     ILogger<AddRoleConsumer> logger
-    ) : IConsumer<AddRole>
+    ) : IConsumer<RoleAdded>
 {
-    public async Task Consume(ConsumeContext<AddRole> context)
+    public async Task Consume(ConsumeContext<RoleAdded> context)
     {
         var user = await userManager.FindByIdAsync(context.Message.UserId.ToString())
             ?? throw new Exception("User not found");
