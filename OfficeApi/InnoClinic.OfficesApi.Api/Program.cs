@@ -41,6 +41,8 @@ try
         app.UseSwagger();
         app.UseSwaggerUI();
     }
+    
+    app.UseSerilogRequestLogging();
 
     app.UseExceptionHandler(opt => { });
 
@@ -49,7 +51,14 @@ try
 
     app.MapControllers();
 
-    app.Run();
+    await app.StartAsync();
+    
+    foreach (var url in app.Urls)
+    {
+        Log.Information("Application started and listening on {Url}", url);
+    }
+
+    app.WaitForShutdown();
 }
 catch (Exception e)
 {
