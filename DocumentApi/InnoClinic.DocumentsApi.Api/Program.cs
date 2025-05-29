@@ -1,6 +1,4 @@
-using FluentValidation;
-using InnoClinic.DataAccess;
-using InnoClinic.Authorization.DependencyInjection;
+using InnoClinic.DocumentsApi.Api.DependencyInjection;
 using InnoClinic.Shared.DependencyInjection;
 using InnoClinic.Shared.Middlewares;
 using Serilog;
@@ -12,25 +10,20 @@ try
     Log.Information("Starting application");
 
     var builder = WebApplication.CreateBuilder(args);
-
+    
     builder.Host.ConfigureSerilog();
 
+    builder.Services.AddHttpContextAccessor();
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
     builder.Services.AddControllers();
-
+    
     builder.Services.AddDbSettings(builder.Configuration);
     builder.Services.AddServicesSettings();
-    builder.Services.AddIdentitySettings();
-    builder.Services.AddMediatrSettings();
-    builder.Services.AddOptionsSettings(builder.Configuration);
-    builder.Services.AddMassTransitSettings();
-
+    
     builder.Services.AddJwtSettings();
     builder.Services.AddPoliciesSettings();
-
-    builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
-
+    
     builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
     builder.Services.AddProblemDetails();
 
@@ -42,18 +35,16 @@ try
         app.UseSwagger();
         app.UseSwaggerUI();
     }
-
+    
     app.UseSerilogRequestLogging();
-
+    
     app.UseExceptionHandler(opt => { });
 
     app.UseAuthentication();
     app.UseAuthorization();
 
     app.MapControllers();
-
-    await app.MigrateDatabase();
-
+    
     await app.StartAsync();
     
     foreach (var url in app.Urls)

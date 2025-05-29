@@ -10,7 +10,11 @@
     <Project Path="AuthorizationApi\InnoClinic.AuthorizationApi.Core\InnoClinic.AuthorizationApi.Core.csproj" Type="Classic C#" />
     <Project Path="AuthorizationApi\InnoClinic.AuthorizationApi.Infrastructure\InnoClinic.AuthorizationApi.Infrastructure.csproj" Type="Classic C#" />
   </Folder>
-  <Folder Name="/DocumentsApi/" />
+  <Folder Name="/DocumentsApi/">
+    <Project Path="DocumentApi\InnoClinic.DocumentsApi.Api\InnoClinic.DocumentsApi.Api.csproj" Type="Classic C#" />
+    <Project Path="DocumentApi\InnoClinic.DocumentsApi.BL\InnoClinic.DocumentsApi.BL.csproj" Type="Classic C#" />
+    <Project Path="DocumentApi\InnoClinic.DocumentsApi.DAL\InnoClinic.DocumentsApi.DAL.csproj" Type="Classic C#" />
+  </Folder>
   <Folder Name="/GatewayApi/">
     <Project Path="GatewayApi\InnoClinic.GatewayApi.Api\InnoClinic.GatewayApi.Api.csproj" Type="Classic C#" />
   </Folder>
